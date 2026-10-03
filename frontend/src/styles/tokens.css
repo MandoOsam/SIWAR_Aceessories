@@ -1,0 +1,73 @@
+/**
+ * Design tokens — `05-ui-context.md` section 4.
+ *
+ * Every colour in the app is one of these variables. Components and Tailwind classes must
+ * reference the token names, never a raw hex value, so switching theme is only a class change.
+ *
+ * Light values live on `:root` and dark values on `.dark` (Tailwind `darkMode: "class"`).
+ * Dark is the product default (D-013).
+ */
+
+:root {
+  /* Colours — light */
+  --bg: #f6f0e8;
+  --surface: #ffffff;
+  --surface-2: #efe6db;
+  --border: #ddd0c2;
+  --text: #1a1213;
+  --text-muted: #6e605c;
+  --accent: #8a6a2f;
+  --accent-2: #a24f5c;
+  /* 05 section 4.1 defines --wine and --silver for dark mode only; these light-mode
+     equivalents keep every token readable on the light background. */
+  --wine: #6e1f2e;
+  --silver: #6f6f78;
+  --glass: rgb(246 240 232 / 82%);
+  /* Text/icon colour that sits on top of an accent fill. */
+  --on-accent: #fdf9f3;
+
+  /*
+   * The hero background is a dark, animated asset in both themes, so text sitting on top of it
+   * keeps a fixed light ink instead of following the theme.
+   */
+  --ink-on-hero: #f3ede6;
+  --ink-on-hero-muted: #a89c98;
+
+  /* Typography — overridden per language below */
+  --font-heading: "Playfair Display", "Amiri", "Times New Roman", serif;
+  --font-body: "Inter", "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+  /* Condensed uppercase editorial face for big statements; falls back to the heading face. */
+  --font-editorial: "Playfair Display", "Amiri", "Times New Roman", serif;
+
+  /* Shape and rhythm */
+  --radius-card: 3px;
+  --radius-control: 2px;
+  --radius-pill: 999px;
+  --container-max: 1280px;
+
+  /* Motion */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.4s;
+  --duration-slow: 0.9s;
+}
+
+.dark {
+  --bg: #0b0909;
+  --surface: #151112;
+  --surface-2: #1e1819;
+  --border: #2c2325;
+  --text: #f3ede6;
+  --text-muted: #a89c98;
+  --accent: #c9a66b;
+  --accent-2: #b76e79;
+  --wine: #3a141d;
+  --silver: #cfcfd4;
+  --glass: rgb(11 9 9 / 72%);
+  --on-accent: #17110a;
+}
+
+:root[lang="ar"] {
+  --font-heading: "Amiri", "Playfair Display", "Times New Roman", serif;
+  --font-body: "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+  --font-editorial: "Amiri", "Playfair Display", serif;
+}

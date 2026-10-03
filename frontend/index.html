@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/assets/logo/siwar-logo-dark-ink.png" />
+    <link rel="apple-touch-icon" href="/assets/logo/siwar-logo-dark-ink.png" />
+    <meta name="theme-color" content="#0B0909" />
+
+    <title>SIWAR | Accessories</title>
+    <meta
+      name="description"
+      content="SIWAR — stainless steel jewelry for women. Rust-resistant, tarnish-resistant, gentle on sensitive skin."
+    />
+
+    <!--
+      Applied before first paint so the page never flashes the wrong theme or direction.
+      Mirrors `readInitialTheme` / `readInitialLocale` in `src/store/preferencesStore.ts`:
+      dark is the product default (D-013), and on a first visit the OS preference wins.
+    -->
+    <script>
+      (function bootstrapDocument() {
+        try {
+          var storedTheme = window.localStorage.getItem("siwar-theme");
+          var theme =
+            storedTheme === "light" || storedTheme === "dark"
+              ? storedTheme
+              : window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+          document.documentElement.style.colorScheme = theme;
+
+          var storedLocale = window.localStorage.getItem("siwar-locale");
+          var locale = storedLocale === "ar" || storedLocale === "en" ? storedLocale : "ar";
+          document.documentElement.lang = locale;
+          document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+        } catch (error) {
+          // Storage blocked (private mode): fall back to the defaults already set on <html>.
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

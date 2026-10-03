@@ -1,0 +1,105 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-body text-fg antialiased;
+    /* Theme changes fade instead of snapping (05 section 5.2). */
+    transition:
+      background-color var(--duration-fast) var(--ease-smooth),
+      color var(--duration-fast) var(--ease-smooth);
+  }
+
+  /* Headings use the display face; `font-editorial` gives the condensed uppercase look. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-bg;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  /* Keep the scrollbar from flashing the page width when locking body scroll. */
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  /*
+   * Direction of the drawer's entrance, consumed by the `slide-in-start` keyframe in
+   * tailwind.config.ts. Setting it here (rather than a `.rtl:` variant) keeps a single keyframe
+   * working in both directions. `dir` lives on <html>, and custom properties inherit.
+   */
+  [dir="ltr"] {
+    --drawer-from: -100%;
+  }
+
+  [dir="rtl"] {
+    --drawer-from: 100%;
+  }
+}
+
+@layer components {
+  /*
+   * Horizontal rhythm: 16px side padding on mobile, 32px from `sm` up.
+   * `container` here is a component, not the Tailwind utility, so page markup stays short.
+   */
+  .container-page {
+    @apply mx-auto w-full max-w-container px-4 sm:px-8;
+  }
+
+  /* Visible only to screen readers, used for icon-only controls. */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+}
+
+@layer utilities {
+  /* Mirrors animations that are direction-dependent, so a single keyframe set works in RTL. */
+  [dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Hide scrollbars on horizontal sliders without losing scrolling. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/*
+ * Reduced motion: drop every transition and animation (05 section 5.4).
+ * Kept outside the layers so it also wins over Tailwind's animation utilities.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

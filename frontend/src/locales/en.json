@@ -1,0 +1,98 @@
+{
+  "brand": {
+    "name": "SIWAR",
+    "tagline": "Stainless steel jewelry",
+    "homeLabel": "SIWAR — home"
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "newArrivals": "New Arrivals",
+    "offers": "Offers",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "search": "Search",
+    "openSearch": "Open search",
+    "closeSearch": "Close search",
+    "searchPlaceholder": "Search for a piece…",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "account": "Account",
+    "login": "Sign in",
+    "trackOrder": "Track order",
+    "recentSearches": "Recent searches",
+    "popularSearches": "Popular searches",
+    "noSuggestions": "No matching results"
+  },
+  "search": {
+    "type": {
+      "product": "Product",
+      "category": "Category",
+      "query": "Search"
+    }
+  },
+  "categories": {
+    "title": "Shop by category",
+    "shopAll": "All products"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "dark": "Dark mode",
+    "light": "Light mode"
+  },
+  "language": {
+    "switch": "Change language",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "footer": {
+    "about": "Quietly designed stainless steel pieces that resist rust and tarnish and suit sensitive skin.",
+    "shop": "Shop",
+    "help": "Help",
+    "legal": "Legal",
+    "followUs": "Follow us",
+    "paymentMethods": "Payment methods",
+    "copyright": "© {{year}} SIWAR. All rights reserved.",
+    "links": {
+      "shopAll": "All products",
+      "newArrivals": "New Arrivals",
+      "bestSellers": "Best Sellers",
+      "offers": "Offers",
+      "faq": "FAQ",
+      "shipping": "Shipping",
+      "returns": "Returns",
+      "trackOrder": "Track order",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms and Conditions",
+      "about": "About"
+    }
+  },
+  "payment": {
+    "cod": "Cash on Delivery",
+    "instapay": "InstaPay",
+    "vodafoneCash": "Vodafone Cash"
+  },
+  "trust": {
+    "rustResistant": "Rust resistant",
+    "tarnishResistant": "Tarnish resistant",
+    "skinFriendly": "Sensitive-skin friendly",
+    "waterFriendly": "Water friendly"
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "loading": "Loading…",
+    "error": "Something went wrong. Please try again.",
+    "retry": "Try again",
+    "close": "Close",
+    "back": "Back",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The link you are looking for does not exist or has changed.",
+    "goHome": "Back to home",
+    "comingSoon": "This page arrives in phase {{phase}}.",
+    "mockBanner": "Preview mode: data comes from mock files and switches to the real API later."
+  }
+}

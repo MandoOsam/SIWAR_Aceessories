@@ -1,0 +1,19 @@
+# Dependencies and build output are generated, never hand-formatted.
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+
+# Local env files may contain real values and are not ours to reformat.
+.env
+.env.*
+!.env.example
+
+# Large owner-provided media.
+public/assets/hero/*.mp4
+public/assets/hero/*.webm
+public/assets/hero/*.mov
+
+# Lockfiles are generated.
+package-lock.json

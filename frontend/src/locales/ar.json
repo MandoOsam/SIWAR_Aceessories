@@ -1,0 +1,98 @@
+{
+  "brand": {
+    "name": "SIWAR",
+    "tagline": "إكسسوار ستانلس ستيل",
+    "homeLabel": "سيوار — الصفحة الرئيسية"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "newArrivals": "وصل حديثاً",
+    "offers": "العروض",
+    "about": "من نحن",
+    "contact": "تواصلي معنا",
+    "menu": "القائمة",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "search": "بحث",
+    "openSearch": "فتح البحث",
+    "closeSearch": "إغلاق البحث",
+    "searchPlaceholder": "دوّري على إكسسوار…",
+    "wishlist": "المفضلة",
+    "cart": "السلة",
+    "account": "الحساب",
+    "login": "تسجيل الدخول",
+    "trackOrder": "تتبع الطلب",
+    "recentSearches": "أخر بحث",
+    "popularSearches": "الأكثر بحثاً",
+    "noSuggestions": "مفيش نتائج مطابقة"
+  },
+  "search": {
+    "type": {
+      "product": "منتج",
+      "category": "قسم",
+      "query": "بحث"
+    }
+  },
+  "categories": {
+    "title": "تسوّقي حسب النوع",
+    "shopAll": "كل المنتجات"
+  },
+  "theme": {
+    "toggle": "تغيير المظهر",
+    "dark": "الوضع الداكن",
+    "light": "الوضع الفاتح"
+  },
+  "language": {
+    "switch": "تغيير اللغة",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "footer": {
+    "about": "قطع ستانلس ستيل بتصميم هادي، تقاوم الصدأ والأسوداد ومناسبة للبشرة الحساسة.",
+    "shop": "المتجر",
+    "help": "المساعدة",
+    "legal": "قانوني",
+    "followUs": "تابعينا",
+    "paymentMethods": "طرق الدفع",
+    "copyright": "© {{year}} SIWAR. كل الحقوق محفوظة.",
+    "links": {
+      "shopAll": "كل المنتجات",
+      "newArrivals": "وصل حديثاً",
+      "bestSellers": "الأكثر مبيعاً",
+      "offers": "العروض",
+      "faq": "الأسئلة الشائعة",
+      "shipping": "الشحن",
+      "returns": "الاستبدال والاسترجاع",
+      "trackOrder": "تتبع الطلب",
+      "contact": "تواصلي معنا",
+      "privacy": "سياسة الخصوصية",
+      "terms": "الشروط والأحكام",
+      "about": "من نحن"
+    }
+  },
+  "payment": {
+    "cod": "الدفع عند الاستلام",
+    "instapay": "إنستاباي",
+    "vodafoneCash": "فودافون كاش"
+  },
+  "trust": {
+    "rustResistant": "مقاوم للصدأ",
+    "tarnishResistant": "مقاوم للأسوداد",
+    "skinFriendly": "لطيف على البشرة الحساسة",
+    "waterFriendly": "مناسب للماء"
+  },
+  "common": {
+    "skipToContent": "تخطي للمحتوى",
+    "loading": "جاري التحميل…",
+    "error": "حصلت مشكلة، حاولي تاني.",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundBody": "الرابط اللي بتدوري عليه مش موجود أو اتغيّر.",
+    "goHome": "الرجوع للرئيسية",
+    "comingSoon": "الصفحة دي هتبان في المرحلة {{phase}}.",
+    "mockBanner": "وضع العرض التجريبي: البيانات من mock، هتتحول لـ API حقيقي."
+  }
+}
