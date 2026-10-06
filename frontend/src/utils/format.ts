@@ -63,3 +63,27 @@ export function isPlaceholder(value: string | null | undefined): boolean {
   const trimmed = value.trim();
   return trimmed === "" || trimmed.startsWith(PLACEHOLDER_MARKER);
 }
+
+/**
+ * Converts a published phone number to the international form `tel:` and `wa.me` need.
+ *
+ * The owner publishes the local Egyptian format (`01041921899`), which only dials from inside
+ * Egypt. Country code 20 is prefixed and the national trunk 0 is dropped. Inputs that are already
+ * international are passed through, so this is safe to run on API data of unknown shape.
+ */
+export function toInternationalPhone(value: string): string {
+  let digits = value.replace(/\D/g, "");
+  if (digits === "") {
+    return "";
+  }
+  // `00` is the international access prefix written out in full.
+  if (digits.startsWith("00")) {
+    digits = digits.slice(2);
+  }
+  // Egyptian mobiles always start 01, so a leading 20 can only already be the country code.
+  if (digits.startsWith("20")) {
+    return `+${digits}`;
+  }
+  digits = digits.replace(/^0+/, "");
+  return digits === "" ? "" : `+20${digits}`;
+}

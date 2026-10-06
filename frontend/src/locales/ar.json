@@ -55,6 +55,9 @@
     "legal": "قانوني",
     "followUs": "تابعينا",
     "paymentMethods": "طرق الدفع",
+    "contactUs": "تواصلي معنا",
+    "whatsappCta": "تواصلي عبر واتساب",
+    "phoneLabel": "الهاتف",
     "copyright": "© {{year}} SIWAR. كل الحقوق محفوظة.",
     "links": {
       "shopAll": "كل المنتجات",
@@ -75,6 +78,12 @@
     "cod": "الدفع عند الاستلام",
     "instapay": "إنستاباي",
     "vodafoneCash": "فودافون كاش"
+  },
+  "social": {
+    "instagram": "انستجرام",
+    "tiktok": "تيك توك",
+    "facebook": "فيسبوك",
+    "openInNewTab": "{{platform}} (يفتح في تبويب جديد)"
   },
   "trust": {
     "rustResistant": "مقاوم للصدأ",

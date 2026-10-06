@@ -8,7 +8,12 @@
 
 const RAW_API_URL = import.meta.env.VITE_API_URL ?? "";
 
-export const API_BASE_URL = RAW_API_URL.replace(/\/+$/, "");
+/**
+ * Trailing slashes are stripped so `https://api.siwar.com/api/v1/` and `.../api/v1` build the same
+ * request URLs, and surrounding whitespace is removed: an `.env` line like `VITE_API_URL=   ` must
+ * still mean "stay on mock data" instead of pointing the storefront at an unusable base URL.
+ */
+export const API_BASE_URL = RAW_API_URL.trim().replace(/\/+$/, "");
 
 export const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME ?? "";
 

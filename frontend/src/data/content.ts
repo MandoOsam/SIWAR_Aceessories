@@ -6,8 +6,12 @@ const PLACEHOLDER = "/assets/placeholder";
  * Mock store settings — the single row the admin will edit in A6.
  * Source: `GET /settings/public`.
  *
- * TODO(Mando): the owner must confirm the shipping fee, the payment instructions and the
- * real contact details (open questions O-003 and O-005).
+ * Contact channels are the owner's confirmed values (2026-10-04). They live here only, never in a
+ * component, so the admin dashboard becomes the single place to edit them later.
+ *
+ * TODO(Mando): the owner still has to confirm the shipping fee and the payment account numbers,
+ * and supply a support email (open questions O-003 and O-005). Those stay `TODO(Mando)` on purpose:
+ * `isPlaceholder()` hides them instead of publishing a broken link.
  */
 export const storeSettings: StoreSettings = {
   storeName: "SIWAR",
@@ -62,14 +66,14 @@ export const storeSettings: StoreSettings = {
     },
   },
   social: [
-    { platform: "instagram", url: "TODO(Mando)" },
-    { platform: "tiktok", url: "TODO(Mando)" },
-    { platform: "facebook", url: "TODO(Mando)" },
+    { platform: "instagram", url: "https://www.instagram.com/siwar_accessories00/" },
+    { platform: "tiktok", url: "https://www.tiktok.com/@siwar.accessories0" },
+    { platform: "facebook", url: "https://www.facebook.com/share/1FrbTF2X3L/?mibextid=wwXIfr" },
   ],
   contact: {
-    phone: "TODO(Mando)",
+    phone: "01041921899",
     email: "TODO(Mando)",
-    whatsapp: "TODO(Mando)",
+    whatsapp: "https://wa.me/201041921899",
   },
 };
 

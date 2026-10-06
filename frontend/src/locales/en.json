@@ -55,6 +55,9 @@
     "legal": "Legal",
     "followUs": "Follow us",
     "paymentMethods": "Payment methods",
+    "contactUs": "Contact us",
+    "whatsappCta": "Chat on WhatsApp",
+    "phoneLabel": "Phone",
     "copyright": "© {{year}} SIWAR. All rights reserved.",
     "links": {
       "shopAll": "All products",
@@ -75,6 +78,12 @@
     "cod": "Cash on Delivery",
     "instapay": "InstaPay",
     "vodafoneCash": "Vodafone Cash"
+  },
+  "social": {
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "facebook": "Facebook",
+    "openInNewTab": "{{platform}} (opens in a new tab)"
   },
   "trust": {
     "rustResistant": "Rust resistant",

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 
 import { Logo } from "@/components/layout/Logo";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -7,7 +8,7 @@ import { FOOTER_HELP_LINKS, FOOTER_LEGAL_LINKS, FOOTER_SHOP_LINKS } from "@/conf
 import { ROUTES } from "@/config/app";
 import type { PaymentMethodId } from "@/services/types";
 import { usePublicSettings } from "@/hooks/useCatalog";
-import { isPlaceholder } from "@/utils/format";
+import { isPlaceholder, toInternationalPhone } from "@/utils/format";
 
 /** Payment method id from the contract -> i18n key. */
 const PAYMENT_LABEL_KEY: Record<PaymentMethodId, string> = {
@@ -17,16 +18,25 @@ const PAYMENT_LABEL_KEY: Record<PaymentMethodId, string> = {
 };
 
 /**
- * Site footer: brand line, link columns, payment methods, social links and copyright.
+ * Site footer: brand line, link columns, payment methods, contact channels, social links and
+ * copyright.
  *
- * Contact details and payment methods are not hard-coded — they come from `GET /settings/public`,
- * so the owner edits them from the admin dashboard (05-ui-context.md section 6).
+ * Contact details, payment methods and social URLs are not hard-coded — they come from
+ * `GET /settings/public` via `usePublicSettings()`, so the owner edits them from the admin
+ * dashboard (05-ui-context.md section 6). Anything still marked `TODO(Mando)` is hidden here rather
+ * than rendered as a broken link.
  */
 export function Footer() {
   const { t } = useTranslation();
   const { data: settings, isPending } = usePublicSettings();
 
   const year = new Date().getFullYear();
+
+  const contact = settings?.contact;
+  const whatsappUrl =
+    contact?.whatsapp !== undefined && !isPlaceholder(contact.whatsapp) ? contact.whatsapp : null;
+  const phoneNumber = contact !== undefined && !isPlaceholder(contact.phone) ? contact.phone : null;
+  const showContact = whatsappUrl !== null || phoneNumber !== null;
 
   return (
     <footer className="mt-24 border-t border-line bg-surface">
@@ -63,6 +73,41 @@ export function Footer() {
         </div>
 
         <div className="lg:col-span-3">
+          {showContact && (
+            <div className="mb-8">
+              <h2 className="mb-4 font-heading text-xs uppercase tracking-[0.24em] text-fg-muted">
+                {t("footer.contactUs")}
+              </h2>
+              <ul className="space-y-1">
+                {whatsappUrl !== null && (
+                  <li>
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex min-h-11 min-w-11 items-center gap-2 text-sm text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
+                    >
+                      <MessageCircle aria-hidden="true" className="size-4 shrink-0" />
+                      {t("footer.whatsappCta")}
+                    </a>
+                  </li>
+                )}
+                {phoneNumber !== null && (
+                  <li>
+                    <a
+                      href={`tel:${toInternationalPhone(phoneNumber)}`}
+                      className="inline-flex min-h-11 min-w-11 items-center text-sm text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
+                    >
+                      <span className="sr-only">{t("footer.phoneLabel")}: </span>
+                      {/* A phone number stays left-to-right even inside the RTL layout. */}
+                      <span dir="ltr">{phoneNumber}</span>
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+
           <h2 className="mb-4 font-heading text-xs uppercase tracking-[0.24em] text-fg-muted">
             {t("footer.followUs")}
           </h2>
@@ -82,9 +127,12 @@ export function Footer() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-flex min-h-11 items-center text-sm capitalize text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
+                      aria-label={t("social.openInNewTab", {
+                        platform: t(`social.${item.platform}`),
+                      })}
+                      className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
                     >
-                      {item.platform}
+                      {t(`social.${item.platform}`)}
                     </a>
                   </li>
                 ))

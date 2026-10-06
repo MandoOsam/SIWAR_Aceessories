@@ -16,6 +16,7 @@ import { paginate, simulateLatency } from "./mockAdapter";
 import type {
   Category,
   CategorySlug,
+  L10n,
   Paginated,
   Product,
   ProductDetail,
@@ -177,9 +178,14 @@ export async function searchSuggest(
     };
   }
 
+  // Both sides are lower-cased, so `?q=necklaces` and `?q=NECKLACES` behave the same. English
+  // names start with a capital, so matching the raw term would only ever find a capitalised query.
+  const matches = (name: L10n): boolean =>
+    name.ar.toLowerCase().includes(term) || name.en.toLowerCase().includes(term);
+
   const suggestions = [
     ...categories
-      .filter((category) => category.name.ar.includes(term) || category.name.en.includes(term))
+      .filter((category) => matches(category.name))
       .map((category) => ({
         type: "category" as const,
         label: category.name,
@@ -187,7 +193,7 @@ export async function searchSuggest(
         imageUrl: category.imageUrl,
       })),
     ...products
-      .filter((product) => product.name.ar.includes(term) || product.name.en.includes(term))
+      .filter((product) => matches(product.name))
       .slice(0, 6)
       .map((product) => ({
         type: "product" as const,
