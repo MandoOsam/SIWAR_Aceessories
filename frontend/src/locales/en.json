@@ -102,7 +102,11 @@
     "notFoundBody": "The link you are looking for does not exist or has changed.",
     "goHome": "Back to home",
     "comingSoon": "This page arrives in phase {{phase}}.",
-    "mockBanner": "Preview mode: data comes from mock files and switches to the real API later."
+    "mockBanner": "Preview mode: data comes from mock files and switches to the real API later.",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
   },
   "product": {
     "new": "New",
@@ -110,6 +114,9 @@
     "addToCart": "Add to cart",
     "viewAll": "View all",
     "featuredCollections": "Featured collections",
-    "newArrivals": "New arrivals"
+    "newArrivals": "New arrivals",
+    "bestSellers": "Best sellers",
+    "offers": "Offers",
+    "limitedTime": "Limited time offers"
   }
 }

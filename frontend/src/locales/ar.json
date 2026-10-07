@@ -102,7 +102,11 @@
     "notFoundBody": "الرابط اللي بتدوري عليه مش موجود أو اتغيّر.",
     "goHome": "الرجوع للرئيسية",
     "comingSoon": "الصفحة دي هتبان في المرحلة {{phase}}.",
-    "mockBanner": "وضع العرض التجريبي: البيانات من mock، هتتحول لـ API حقيقي."
+    "mockBanner": "وضع العرض التجريبي: البيانات من mock، هتتحول لـ API حقيقي.",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
   },
   "product": {
     "new": "جديد",
@@ -110,6 +114,9 @@
     "addToCart": "أضف إلى السلة",
     "viewAll": "عرض الكل",
     "featuredCollections": "مجموعات مميزة",
-    "newArrivals": "وصل حديثا"
+    "newArrivals": "وصل حديثا",
+    "bestSellers": "الأكثر مبيعا",
+    "offers": "Offers",
+    "limitedTime": "Limited time offers"
   }
 }
