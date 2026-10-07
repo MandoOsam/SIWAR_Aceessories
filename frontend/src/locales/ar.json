@@ -118,5 +118,11 @@
     "bestSellers": "الأكثر مبيعا",
     "offers": "Offers",
     "limitedTime": "Limited time offers"
+  },
+  "home": {
+    "ourStory": "Our Story",
+    "learnMore": "Learn more",
+    "recommended": "Recommended for You",
+    "recentlyViewed": "Recently Viewed"
   }
 }

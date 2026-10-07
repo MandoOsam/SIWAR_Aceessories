@@ -7,7 +7,7 @@
 > Last updated: 2026-10-03 (Phase 0 frontend scope + F1 complete, owner decision D-018).
 
 
-| **Current phase** | **F2 - Our Story + Recommended + Recently Viewed (F2.6)** - in progress |
+| **Current phase** | **F2 - Polish (F2.8)** - in progress |
 ## 1. Current status
 
 
@@ -128,7 +128,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F1** Foundation ———————————?? Vite + TS scaffold, tokens, fonts, i18n/RTL, dark/light, layout, Navbar/Footer, service layer with mock data
 
-- [ ] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1 done, F2.2 next)
+- [ ] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
 - [ ] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet
 
@@ -240,7 +240,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 |---|---|---|
 
-| O-001 | Animated hero background: file type (MP4/WebM/Lottie/other), size, and the file itself | F2 |
+| O-001 | Animated hero background: MP4 (H.264) + poster provided. Use prefers-reduced-motion. | F2 (resolved) |
 
 | O-002 | Domain name (affects cookie domain and `api.` subdomain) | B2 / B8 |
 
@@ -313,3 +313,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 
 
+
+### Phase history
+- **F2.5**: Best Sellers + Offers (countdown) — done.
+- **F2.6**: Our Story + Recommended + Recently Viewed (store created) — in progress.
