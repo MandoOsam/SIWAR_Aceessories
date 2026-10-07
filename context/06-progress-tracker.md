@@ -1,4 +1,4 @@
-# 06 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Progress Tracker
+﻿# 06 ———————————?? Progress Tracker
 
 
 
@@ -7,7 +7,7 @@
 > Last updated: 2026-10-03 (Phase 0 frontend scope + F1 complete, owner decision D-018).
 
 
-| **Current phase** | **F2 - Home page (Hero + all sections)** - in progress (F2.1) |
+| **Current phase** | **F2 - Hero (F2.2)** - in progress |
 ## 1. Current status
 
 
@@ -16,11 +16,11 @@
 
 |---|---|
 
-| **Current phase** | **F2 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Home page (Hero + all sections)** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— in progress (F2.1) |
+| **Current phase** | **F2 ———————————?? Home page (Hero + all sections)** ———————————?? in progress (F2.1) |
 
-| Last completed phase | Phase 0 (frontend scope only) + F1 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Storefront foundation |
+| Last completed phase | Phase 0 (frontend scope only) + F1 ———————————?? Storefront foundation |
 
-| Next phase (proposed) | F2 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Home page (Hero + all sections) |
+| Next phase (proposed) | F2 ———————————?? Home page (Hero + all sections) |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -50,11 +50,11 @@
 
 - [x] **F1 Storefront foundation:** Vite 6 + React 18 + TS strict scaffold, Tailwind tokens, Arabic/English i18n with RTL, dark/light themes, base layout, Navbar + categories + search overlay + mobile drawer + Footer, typed service layer over mock data behind the `02-architecture.md` contract
 
-- [ ] Real product images ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— owner has them; to be uploaded through the admin later
+- [ ] Real product images ———————————?? owner has them; to be uploaded through the admin later
 
-- [ ] Animated hero background ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— owner will provide (file type TBD, see O-001)
+- [ ] Animated hero background ———————————?? owner will provide (file type TBD, see O-001)
 
-- [ ] Full processed logo set (light/gold PNG, monogram, standard favicon sizes) ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— only 3 source files exist; see O-009
+- [ ] Full processed logo set (light/gold PNG, monogram, standard favicon sizes) ———————————?? only 3 source files exist; see O-009
 
 
 
@@ -64,49 +64,49 @@
 
 
 
-Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚Ã‚Â· `[x]` done
+Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress —————— `[x]` done
 
 
 
-### Phase 0 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Project setup
+### Phase 0 ———————————?? Project setup
 
-- [~] Create repo `siwar/` with `backend/`, `frontend/`, `admin/`, `context/` ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— done for `frontend/` + `context/`; `backend/` is an empty folder, `admin/` not created yet (both out of scope per D-018)
+- [~] Create repo `siwar/` with `backend/`, `frontend/`, `admin/`, `context/` ———————————?? done for `frontend/` + `context/`; `backend/` is an empty folder, `admin/` not created yet (both out of scope per D-018)
 
 - [x] Place `AGENTS.md` at the root and the context files in `context/`
 
-- [ ] Clone the admin template into `admin/` (keep its MIT `LICENSE`, add owner's copyright line) ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— deferred (D-018)
+- [ ] Clone the admin template into `admin/` (keep its MIT `LICENSE`, add owner's copyright line) ———————————?? deferred (D-018)
 
-- [~] Copy logo files to `frontend/public/assets/logo/` and `admin/public/assets/logo/`; copy reference images to `frontend/public/assets/reference/` ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— storefront side done with the 3 real files; `admin/` side deferred; **no reference images exist**
+- [~] Copy logo files to `frontend/public/assets/logo/` and `admin/public/assets/logo/`; copy reference images to `frontend/public/assets/reference/` ———————————?? storefront side done with the 3 real files; `admin/` side deferred; **no reference images exist**
 
 - [x] `.gitignore`, `.editorconfig`, root `README.md` (short)
 
 - [x] Initial commit (`427b2da`)
 
-- [x] Fix asset folder typo: `public/assetes/` ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ `public/assets/`
+- [x] Fix asset folder typo: `public/assetes/` ——————? ————?? `public/assets/`
 
 
 
 ### Backend (`backend/`)
 
-- [ ] **B1 Foundation** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Express + TypeScript, env validation, Drizzle + Supabase connection, migrations setup, health check, error handler, pino logging, helmet/CORS, lint/test setup. *(If a leftover `mongoose` dependency exists, remove it.)*
+- [ ] **B1 Foundation** ———————————?? Express + TypeScript, env validation, Drizzle + Supabase connection, migrations setup, health check, error handler, pino logging, helmet/CORS, lint/test setup. *(If a leftover `mongoose` dependency exists, remove it.)*
 
-- [ ] **B2 Auth & sessions** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— users, sessions, argon2, customer + admin login, CSRF, roles/permissions middleware, rate limits, RLS enabled on all tables
+- [ ] **B2 Auth & sessions** ———————————?? users, sessions, argon2, customer + admin login, CSRF, roles/permissions middleware, rate limits, RLS enabled on all tables
 
-- [ ] **B3 Catalog** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— categories, products, images, Cloudinary signing endpoint, public listing/filter/search/sort/pagination
+- [ ] **B3 Catalog** ———————————?? categories, products, images, Cloudinary signing endpoint, public listing/filter/search/sort/pagination
 
-- [ ] **B4 Content & settings** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— content blocks (hero, banners, story), static pages, store settings, public settings endpoint
+- [ ] **B4 Content & settings** ———————————?? content blocks (hero, banners, story), static pages, store settings, public settings endpoint
 
-- [ ] **B5 Orders** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— coupons, order creation (transaction, server-side totals, stock), manual payment methods + proof upload, tracking, order events, admin order management
+- [ ] **B5 Orders** ———————————?? coupons, order creation (transaction, server-side totals, stock), manual payment methods + proof upload, tracking, order events, admin order management
 
-- [ ] **B6 Customer features** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— reviews (submit/moderate), wishlist, addresses, notifications, newsletter, recently viewed support
+- [ ] **B6 Customer features** ———————————?? reviews (submit/moderate), wishlist, addresses, notifications, newsletter, recently viewed support
 
-- [ ] **B7 Admin analytics & ops** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— dashboard stats, inventory movements, campaigns, activity log, CSV export
+- [ ] **B7 Admin analytics & ops** ———————————?? dashboard stats, inventory movements, campaigns, activity log, CSV export
 
-- [ ] **B8 Hardening & deploy** ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— security review, tests, seed data, production config, deployment (see D-001)
+- [ ] **B8 Hardening & deploy** ———————————?? security review, tests, seed data, production config, deployment (see D-001)
 
 
 
-### Admin (`admin/`) ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— phases mirror section 12 of `05b`
+### Admin (`admin/`) ———————————?? phases mirror section 12 of `05b`
 
 - [ ] **A1** Foundation & rebrand
 
@@ -126,13 +126,13 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 ### Storefront (`frontend/`)
 
-- [x] **F1** Foundation ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Vite + TS scaffold, tokens, fonts, i18n/RTL, dark/light, layout, Navbar/Footer, service layer with mock data
+- [x] **F1** Foundation ———————————?? Vite + TS scaffold, tokens, fonts, i18n/RTL, dark/light, layout, Navbar/Footer, service layer with mock data
 
-- [ ] **F2** Home ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— all sections, Hero with swappable animated background + one 3D element
+- [ ] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1 done, F2.2 next)
 
-- [ ] **F3** Shop, Category, Search ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— filters, sort, pagination, mobile filter sheet
+- [ ] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet
 
-- [ ] **F4** Product page ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— gallery, variants, reviews, related/matching
+- [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
 
 - [ ] **F5** Cart, Checkout, Order success, Track order
 
@@ -158,7 +158,7 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
   broken link or visible `TODO` text.
 
-- Routes for F3ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€ÂœF7 already exist and render `src/pages/PlaceholderPage.tsx`, so navbar links work
+- Routes for F3———————————?F7 already exist and render `src/pages/PlaceholderPage.tsx`, so navbar links work
 
   before their real page is built. Replace each placeholder as its phase lands.
 
@@ -174,11 +174,11 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 ### Suggested sequence
 
-`Phase 0 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F1 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F2 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F3 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F4 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F5 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F6 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ F7 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B1 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B2 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B3 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B4 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B5 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B6 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B7 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ B8 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A1 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A2 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A3 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A4 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A5 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A6 ÃƒÂ¢Ã¢Â€Â Ã¢Â€Â™ A7`
+`Phase 0 ——————? ————?? F1 ——————? ————?? F2 ——————? ————?? F3 ——————? ————?? F4 ——————? ————?? F5 ——————? ————?? F6 ——————? ————?? F7 ——————? ————?? B1 ——————? ————?? B2 ——————? ————?? B3 ——————? ————?? B4 ——————? ————?? B5 ——————? ————?? B6 ——————? ————?? B7 ——————? ————?? B8 ——————? ————?? A1 ——————? ————?? A2 ——————? ————?? A3 ——————? ————?? A4 ——————? ————?? A5 ——————? ————?? A6 ——————? ————?? A7`
 
 
 
-**The storefront is built first, end to end, on the mock service layer** (D-018). The backend comes after, and the admin last. Frontends switch from mock to the real API by setting `VITE_API_URL` once the matching backend phase is done ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— components never change.
+**The storefront is built first, end to end, on the mock service layer** (D-018). The backend comes after, and the admin last. Frontends switch from mock to the real API by setting `VITE_API_URL` once the matching backend phase is done ———————————?? components never change.
 
 
 
@@ -194,13 +194,13 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 |---|---|---|---|
 
-| D-001 | ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— | **PENDING ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Backend hosting.** Owner wants Cloudflare + Supabase. Cloudflare Pages hosts the two frontends. Express is a long-lived Node server and does not run on Cloudflare Workers out of the box. Options: (a) Express on Render/Railway/Fly.io; (b) rewrite the API on Hono for Cloudflare Workers (+ Hyperdrive for Postgres); (c) Cloudflare Containers. Decide before B8 | open |
+| D-001 | ———————————?? | **PENDING ———————————?? Backend hosting.** Owner wants Cloudflare + Supabase. Cloudflare Pages hosts the two frontends. Express is a long-lived Node server and does not run on Cloudflare Workers out of the box. Options: (a) Express on Render/Railway/Fly.io; (b) rewrite the API on Hono for Cloudflare Workers (+ Hyperdrive for Postgres); (c) Cloudflare Containers. Decide before B8 | open |
 
 | D-002 | 2026-10-03 | TypeScript (strict) in all three folders | owner |
 
 | D-003 | 2026-10-03 | Database: PostgreSQL on Supabase (used only as managed Postgres). MongoDB/Mongoose dropped | owner |
 
-| D-004 | ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— | **PENDING ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Email provider** for password reset and order emails (e.g. Resend). Not needed until B2 | open |
+| D-004 | ———————————?? | **PENDING ———————————?? Email provider** for password reset and order emails (e.g. Resend). Not needed until B2 | open |
 
 | D-005 | 2026-10-03 | Auth via httpOnly cookie. Implementation: server-side sessions in PostgreSQL (not JWT), two cookie names (customer/admin), CSRF token + Origin check | owner chose cookie; sessions = default |
 
@@ -260,7 +260,7 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 | O-010 | Real values for the footer/contact block: contact email, phone, address, and the Instagram/TikTok/Facebook URLs (all `TODO(Mando)` in `src/data/content.ts`) | F7 |
 
-| O-011 | Reference/inspiration images for `frontend/public/assets/reference/` ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— none were supplied, so F1 was built from the written spec in `05-ui-context.md` alone | when available |
+| O-011 | Reference/inspiration images for `frontend/public/assets/reference/` ———————————?? none were supplied, so F1 was built from the written spec in `05-ui-context.md` alone | when available |
 
 
 
@@ -268,7 +268,7 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 
 
-- The admin template is a UI-only template: no real data, auth, or working forms. Every screen must be wired in A3ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€ÂœA6.
+- The admin template is a UI-only template: no real data, auth, or working forms. Every screen must be wired in A3———————————?A6.
 
 - Template asset paths (`/src/assets/...`) break in production builds; fixed in A1.
 
@@ -302,7 +302,7 @@ Legend: `[ ]` in progress (F2.1) ÃƒÂ‚Ã‚Â· `[~]` in progress ÃƒÂ‚�
 
 | Phase 0 (frontend scope) | 2026-10-03 | Git repo initialised on `main`, `.gitignore` / `.editorconfig` / root `README.md` added, asset folder typo `public/assetes/` fixed and files sorted into `assets/{logo,hero,reference}`. `backend/` and `admin/` deliberately untouched (D-018) | `427b2da` |
 
-| F1 ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€Â— Storefront foundation | 2026-10-03 | Vite 6 + React 18 + TS strict + Tailwind 3 scaffold; light/dark tokens from `05`; Arabic/English i18n with RTL and a pre-paint theme/locale bootstrap in `index.html`; typed service layer over mock data matching the `02-architecture.md` contract; base layout, Navbar (transparent over hero, hides on scroll down), category dropdown, search overlay, mobile drawer, Footer; 404 + placeholders for F3ÃƒÂ¢Ã¢Â‚Â¬Ã¢Â€ÂœF7 routes. `npm run build`, `npm run lint` and `npm run format:check` pass; verified in headless Edge at 360/768/1280 in both themes and both languages | Branch `phase/F1-foundation`. Issues found and fixed during verification: closed overlays kept focusable off-screen controls, tap targets under 44px, `TODO(Mando)` rendering as broken `href`s, drawer keyframe not mirrored in RTL |
+| F1 ———————————?? Storefront foundation | 2026-10-03 | Vite 6 + React 18 + TS strict + Tailwind 3 scaffold; light/dark tokens from `05`; Arabic/English i18n with RTL and a pre-paint theme/locale bootstrap in `index.html`; typed service layer over mock data matching the `02-architecture.md` contract; base layout, Navbar (transparent over hero, hides on scroll down), category dropdown, search overlay, mobile drawer, Footer; 404 + placeholders for F3———————————?F7 routes. `npm run build`, `npm run lint` and `npm run format:check` pass; verified in headless Edge at 360/768/1280 in both themes and both languages | Branch `phase/F1-foundation`. Issues found and fixed during verification: closed overlays kept focusable off-screen controls, tap targets under 44px, `TODO(Mando)` rendering as broken `href`s, drawer keyframe not mirrored in RTL |
 
 
 
