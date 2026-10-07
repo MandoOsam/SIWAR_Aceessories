@@ -123,6 +123,15 @@
     "ourStory": "Our Story",
     "learnMore": "Learn more",
     "recommended": "Recommended for You",
-    "recentlyViewed": "Recently Viewed"
+    "recentlyViewed": "Recently Viewed",
+    "testimonials": "Testimonials"
+  },
+  "newsletter": {
+    "title": "Stay in the loop",
+    "subtitle": "Get the latest news and offers",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "success": "Subscribed successfully",
+    "error": "Invalid email"
   }
 }

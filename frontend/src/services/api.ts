@@ -22,3 +22,9 @@ export {
   listReviews,
   listStaticPages,
 } from "./contentService";
+
+
+export async function subscribeNewsletter(email: string): Promise<{ ok: boolean }> {
+  void email;
+  return { ok: true };
+}
