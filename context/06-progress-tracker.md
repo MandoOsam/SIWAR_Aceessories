@@ -7,7 +7,7 @@
 > Last updated: 2026-10-03 (Phase 0 frontend scope + F1 complete, owner decision D-018).
 
 
-| **Current phase** | **F2 - Polish (F2.8)** - in progress |
+| **Current phase** | **F3 - Shop, Category, Search** - not started |
 ## 1. Current status
 
 
@@ -128,7 +128,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F1** Foundation ———————————?? Vite + TS scaffold, tokens, fonts, i18n/RTL, dark/light, layout, Navbar/Footer, service layer with mock data
 
-- [ ] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
+- [x] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
 - [ ] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet
 

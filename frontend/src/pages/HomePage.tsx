@@ -4,16 +4,19 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { useHomeContent } from "@/hooks/useCatalog";
 import { useLocale } from "@/hooks/useLocale";
 import { localize } from "@/utils/format";
+import TrustStrip from "@/sections/home/TrustStrip";
+import CategoryTiles from "@/sections/home/CategoryTiles";
+import NewArrivals from "@/sections/home/NewArrivals";
+import FeaturedCollections from "@/sections/home/FeaturedCollections";
+import BestSellers from "@/sections/home/BestSellers";
+import OffersSection from "@/sections/home/OffersSection";
+import OurStory from "@/sections/home/OurStory";
+import Recommended from "@/sections/home/Recommended";
+import RecentlyViewed from "@/sections/home/RecentlyViewed";
+import Testimonials from "@/sections/home/Testimonials";
+import TrustBadges from "@/components/TrustBadges";
+import Newsletter from "@/sections/home/Newsletter";
 
-/**
- * Home page shell.
- *
- * F1 delivers only the layer that F2 builds on: a hero-height block with the dark poster and the
- * headline coming from `GET /content/home`. It exists so the navbar's transparent-to-solid
- * behaviour can be verified on the real home route.
- *
- * TODO(F2): animated background, 3D element, CTAs, scroll indicator and all remaining sections.
- */
 export default function HomePage() {
   const { t } = useTranslation();
   const { locale } = useLocale();
@@ -41,15 +44,11 @@ export default function HomePage() {
             aria-hidden="true"
             width={1920}
             height={1080}
-            // The poster is the first paint, so it is eager; F2 replaces it with a lazy video.
             loading="eager"
             className="absolute inset-0 -z-10 size-full object-cover"
           />
         )}
-
-        {/* Overlay keeps the headline readable (05-ui-context.md §5.4). */}
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-black/55" />
-
         <div className="container-page">
           <p className="font-heading text-xs uppercase tracking-[0.3em] text-accent">SIWAR</p>
           <h1 className="mt-6 max-w-3xl font-heading text-display-lg leading-[1.05] text-on-hero">
@@ -70,11 +69,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="container-page py-24">
-        <p className="mx-auto max-w-xl text-center text-sm text-fg-muted">
-          {t("common.comingSoon", { phase: "F2" })}
-        </p>
-      </div>
+      <TrustStrip />
+      <CategoryTiles />
+      <NewArrivals />
+      <FeaturedCollections />
+      <BestSellers />
+      <OffersSection />
+      <OurStory />
+      <Recommended />
+      <RecentlyViewed />
+      <Testimonials />
+      <TrustBadges />
+      <Newsletter />
     </>
   );
 }
