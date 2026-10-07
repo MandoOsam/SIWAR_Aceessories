@@ -7,7 +7,7 @@
 > Last updated: 2026-10-03 (Phase 0 frontend scope + F1 complete, owner decision D-018).
 
 
-| **Current phase** | **F2 - Trust strip + Shop by Category (F2.3)** - in progress |
+| **Current phase** | **F2 - New Arrivals + Featured Collections (F2.4)** - done |
 ## 1. Current status
 
 

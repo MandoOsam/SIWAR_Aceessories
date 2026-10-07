@@ -103,5 +103,13 @@
     "goHome": "الرجوع للرئيسية",
     "comingSoon": "الصفحة دي هتبان في المرحلة {{phase}}.",
     "mockBanner": "وضع العرض التجريبي: البيانات من mock، هتتحول لـ API حقيقي."
+  },
+  "product": {
+    "new": "جديد",
+    "outOfStock": "نفذ المخزون",
+    "addToCart": "أضف إلى السلة",
+    "viewAll": "عرض الكل",
+    "featuredCollections": "مجموعات مميزة",
+    "newArrivals": "وصل حديثا"
   }
 }

@@ -103,5 +103,13 @@
     "goHome": "Back to home",
     "comingSoon": "This page arrives in phase {{phase}}.",
     "mockBanner": "Preview mode: data comes from mock files and switches to the real API later."
+  },
+  "product": {
+    "new": "New",
+    "outOfStock": "Out of stock",
+    "addToCart": "Add to cart",
+    "viewAll": "View all",
+    "featuredCollections": "Featured collections",
+    "newArrivals": "New arrivals"
   }
 }
