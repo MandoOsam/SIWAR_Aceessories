@@ -7,16 +7,22 @@ type Variant = "primary" | "secondary" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const BASE_CLASSES =
-  "inline-flex items-center justify-center gap-2 rounded-control font-body text-sm font-medium " +
+  "group inline-flex items-center justify-center gap-2 rounded-control font-body text-sm font-medium " +
   "uppercase tracking-[0.14em] transition-all duration-500 ease-smooth " +
   "disabled:cursor-not-allowed disabled:opacity-50";
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  // Gold fill with a slow sweep on hover (05 section 4.3).
+  // Gold fill with a slow fill-sweep hover animation (05 section 4.3)
   primary:
-    "relative overflow-hidden bg-accent text-on-accent hover:bg-transparent " +
-    "hover:text-accent ring-1 ring-inset ring-accent",
-  secondary: "border border-line bg-transparent text-fg hover:border-accent hover:text-accent",
+    "relative overflow-hidden bg-accent text-on-accent ring-1 ring-inset ring-accent " +
+    "before:absolute before:inset-0 before:-z-10 before:bg-bg before:origin-left before:scale-x-0 " +
+    "before:transition-transform before:duration-500 before:ease-smooth " +
+    "hover:text-accent hover:before:scale-x-100 rtl:before:origin-right",
+  secondary:
+    "relative overflow-hidden border border-line bg-transparent text-fg " +
+    "before:absolute before:inset-0 before:-z-10 before:bg-accent before:origin-left before:scale-x-0 " +
+    "before:transition-transform before:duration-500 before:ease-smooth " +
+    "hover:border-accent hover:text-on-accent hover:before:scale-x-100 rtl:before:origin-right",
   ghost: "text-fg-muted hover:text-accent",
 };
 
