@@ -119,6 +119,52 @@
     "offers": "Offers",
     "limitedTime": "Limited time offers"
   },
+  "shop": {
+    "sortLabel": "Sort by",
+    "sort": {
+      "newest": "Newest",
+      "bestSelling": "Best selling",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "rating": "Top rated"
+    },
+    "filters": {
+      "title": "Filters",
+      "active": "Active filters",
+      "clearAll": "Clear all",
+      "remove": "Remove filter: {{filter}}",
+      "priceRange": "{{min}} – {{max}}",
+      "priceFrom": "From {{min}}",
+      "priceTo": "Up to {{max}}",
+      "ratingChip": "{{rating}} stars & up",
+      "inStockOnly": "In stock only",
+      "onSale": "On sale",
+      "newOnly": "New only",
+      "sizeChip": "Size {{size}}"
+    },
+    "colors": {
+      "gold": "Gold",
+      "silver": "Silver",
+      "rose-gold": "Rose gold",
+      "black": "Black"
+    },
+    "empty": {
+      "title": "No products found",
+      "description": "Try changing or clearing your filters.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "Could not load products",
+      "description": "Something went wrong while loading the products. Please try again."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "status": "Page {{page}} of {{total}}",
+      "page": "Page {{page}}"
+    }
+  },
   "home": {
     "ourStory": "Our Story",
     "learnMore": "Learn more",

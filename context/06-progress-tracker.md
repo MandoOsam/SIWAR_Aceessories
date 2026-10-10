@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-10 (F2 done + hero video wired/O-001 resolved; F3.1 URL state foundation in progress).
+> Last updated: 2026-10-10 (F3.2 shared product list UI done; committing).
 
 ## 1. Current status
 
@@ -14,11 +14,11 @@
 
 |---|---|
 
-| **Current phase** | **F3.1 — URL state foundation** — in progress (branch `feature/f3-shop-and-search`) |
+| **Current phase** | **F3.2 — Shared product list UI** — done (branch `feature/f3-shop-and-search`) |
 
-| Last completed phase | F2 — Home page (all sections) + hero-video hotfix |
+| Last completed phase | F3.2 — Shared product list UI (grid, sort, pagination, chips, states) |
 
-| Next phase | F3.2 — Shared product list UI (grid, sort, pagination, chips) |
+| Next phase | F3.3 — Filters UI (desktop `FilterPanel` + mobile `FilterSheet`) |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -130,7 +130,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
-- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) in progress**; F3.2–F3.7 pending
+- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) done** (`b9af2d6`); **F3.2 (shared product list UI) done**; F3.3–F3.7 pending
 
 - [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
 
@@ -314,6 +314,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F2 (hotfix) ———————————?? Home page black screen | 2026-10-10 | **Root cause of the black home page:** `TrustStrip` read `storeSettings.trustBadges` with the product-benefit key set (`rustResistant`/`tarnishResistant`/`skinFriendly`/`waterFriendly`) instead of the service keys (`shipping`/`payment`/`returns`/`support`), so it passed `undefined` to `localize()` and threw at `utils/format.ts:10`. The uncaught error unmounted the whole React tree, leaving `#root` empty and the dark `--bg` showing as a black page (the 4 console errors were all this crash). Fixed `TrustStrip` to use the `trust.*` i18n labels only. Also: `HeroBackground` now falls back to `/assets/placeholder/hero-poster.svg` and hides the video on error; `Hero3D` shows a static image as the `Suspense` fallback and skips three.js when WebGL is unavailable. `npm run build` (separate `Hero3DScene` chunk) and `npm run lint` pass; verified in headless Edge on dev + preview, normal and `prefers-reduced-motion`. | Branch `feature/f2-home-page`. Committed `24e66b1` (`fix f2 erroes`). |
 
+| F3.2 — Shared product list UI | 2026-10-10 | Product-list building blocks for the shop/category/search pages: responsive `ProductGrid` (2/3/4 cols) with reduced-motion-aware mount stagger, `SortSelect` and `Pagination` (both URL-driven via `useProductFilters`, RTL-safe mirrored arrows, visible "Page X of Y"), removable `ActiveFilterChips` with a "clear all" action, plus `ProductGridSkeleton` (shimmer shape), `ProductGridEmpty` and `ProductGridError`. `useProductFilters` gained `setFilters(patch)` so the combined price chip clears `minPrice`+`maxPrice` in a single URL update. `shop.*` i18n keys added to `ar.json`/`en.json`. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. No pages yet — F3.4–F3.6 wire these into `/shop`, `/category/:slug`, `/search`. |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -341,4 +343,5 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F2.7**: Testimonials + Trust Badges + Newsletter — done.
 - **F2.8**: Home page assembled + polish — done.
 - **F2 (hotfix)**: Black home page fixed — `TrustStrip` crashed `localize()` on an undefined `trustBadges` key (2026-10-10). Hero video fallbacks + lazy `Hero3D` static fallback added. Committed `24e66b1`.
-- **F3.1**: URL state foundation (`useProductFilters`, `data/search.ts`, popular-searches refactor, unit tests) — done.
+- **F3.1**: URL state foundation (`useProductFilters`, `data/search.ts`, popular-searches refactor, unit tests) — done (`b9af2d6`).
+- **F3.2**: Shared product list UI (`ProductGrid`, `ProductGridSkeleton`, `ProductGridEmpty`, `ProductGridError`, `SortSelect`, `Pagination`, `ActiveFilterChips`; `useProductFilters.setFilters` added; `shop.*` i18n keys) — done.

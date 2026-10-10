@@ -119,6 +119,52 @@
     "offers": "Offers",
     "limitedTime": "Limited time offers"
   },
+  "shop": {
+    "sortLabel": "ترتيب حسب",
+    "sort": {
+      "newest": "الأحدث",
+      "bestSelling": "الأكثر مبيعاً",
+      "priceAsc": "السعر: من الأقل للأعلى",
+      "priceDesc": "السعر: من الأعلى للأقل",
+      "rating": "الأعلى تقييماً"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "active": "الفلاتر المفعّلة",
+      "clearAll": "مسح الكل",
+      "remove": "إزالة الفلتر: {{filter}}",
+      "priceRange": "{{min}} – {{max}}",
+      "priceFrom": "من {{min}}",
+      "priceTo": "حتى {{max}}",
+      "ratingChip": "{{rating}} نجوم أو أكثر",
+      "inStockOnly": "المتوفر فقط",
+      "onSale": "عليه خصم",
+      "newOnly": "الجديد فقط",
+      "sizeChip": "مقاس {{size}}"
+    },
+    "colors": {
+      "gold": "ذهبي",
+      "silver": "فضي",
+      "rose-gold": "ذهبي وردي",
+      "black": "أسود"
+    },
+    "empty": {
+      "title": "مفيش منتجات",
+      "description": "جرّبي تغيّري الفلاتر أو تمسحيها.",
+      "action": "مسح الفلاتر"
+    },
+    "error": {
+      "title": "مقدرناش نحمّل المنتجات",
+      "description": "حصلت مشكلة أثناء تحميل المنتجات. حاولي تاني."
+    },
+    "pagination": {
+      "label": "التنقل بين الصفحات",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "status": "صفحة {{page}} من {{total}}",
+      "page": "صفحة {{page}}"
+    }
+  },
   "home": {
     "ourStory": "Our Story",
     "learnMore": "Learn more",

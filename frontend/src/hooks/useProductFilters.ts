@@ -210,6 +210,19 @@ export function clearFilters(state: ProductFilterState): ProductFilterState {
   return { sort: state.sort, page: DEFAULT_PAGE, search: state.search };
 }
 
+/**
+ * Applies several fields at once and resets the page once.
+ *
+ * Used by chips that own two values (the price range), so removing them is a single URL update
+ * instead of two commits built from a stale snapshot.
+ */
+export function applyFilterPatch(
+  state: ProductFilterState,
+  patch: Partial<ProductFilterState>,
+): ProductFilterState {
+  return { ...state, ...patch, page: DEFAULT_PAGE };
+}
+
 export type UseProductFiltersResult = {
   filters: ProductFilterState;
   /** Ready to pass to `useProducts(query)`. */
@@ -218,6 +231,8 @@ export type UseProductFiltersResult = {
     key: K,
     value: ProductFilterState[K],
   ) => void;
+  /** Applies several fields at once (e.g. clearing both price bounds). */
+  setFilters: (patch: Partial<ProductFilterState>) => void;
   toggleFilter: (key: BooleanFilterKey) => void;
   setSort: (sort: ProductSort) => void;
   setPage: (page: number) => void;
@@ -259,6 +274,11 @@ export function useProductFilters(options: ProductFilterOptions = {}): UseProduc
     [commit, filters],
   );
 
+  const setFilters = useCallback(
+    (patch: Partial<ProductFilterState>) => commit(applyFilterPatch(filters, patch)),
+    [commit, filters],
+  );
+
   const setSort = useCallback(
     (sort: ProductSort) => commit({ ...filters, sort, page: DEFAULT_PAGE }),
     [commit, filters],
@@ -288,6 +308,7 @@ export function useProductFilters(options: ProductFilterOptions = {}): UseProduc
     filters,
     query,
     setFilter,
+    setFilters,
     toggleFilter,
     setSort,
     setPage,

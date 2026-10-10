@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  applyFilterPatch,
   clearFilters,
   clearFilterValue,
   parseProductFilters,
@@ -208,5 +209,24 @@ describe("update helpers", () => {
       search: "ring",
     };
     expect(clearFilters(state)).toEqual({ sort: "price-asc", page: 1, search: "ring" });
+  });
+
+  it("patches several fields in one update and resets the page once", () => {
+    const state: ProductFilterState = {
+      minPrice: 200,
+      maxPrice: 800,
+      color: "gold",
+      sort: "price-asc",
+      page: 3,
+      search: "",
+    };
+    expect(applyFilterPatch(state, { minPrice: undefined, maxPrice: undefined })).toEqual({
+      minPrice: undefined,
+      maxPrice: undefined,
+      color: "gold",
+      sort: "price-asc",
+      page: 1,
+      search: "",
+    });
   });
 });
