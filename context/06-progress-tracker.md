@@ -240,7 +240,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 |---|---|---|
 
-| O-001 | Animated hero background: MP4 (H.264) + poster provided. Use prefers-reduced-motion. | F2 (resolved) |
+| O-001 | ~~Animated hero background: MP4 (H.264) + poster provided. Use prefers-reduced-motion.~~ **RESOLVED 2026-10-10**: `HeroBackground` wires `/assets/hero/hero.mp4` with `autoPlay/muted/loop/playsInline/preload=metadata`, a poster fallback, a dark overlay and `prefers-reduced-motion` support (poster only). Still outstanding before ship: compress the ~32 MB MP4 and add a WebM fallback. | F2 (resolved) |
 
 | O-002 | Domain name (affects cookie domain and `api.` subdomain) | B2 / B8 |
 
@@ -278,7 +278,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - All storefront content is placeholder mock data (`src/data/`). Nothing customer-facing is real yet, and the catalogue must not be published as-is.
 
-- `frontend/public/assets/hero/hero.mp4` is ~32 MB and is gitignored. F2 must compress it, add a poster frame, and provide a WebM fallback before it ships (see O-001).
+- `frontend/public/assets/hero/hero.mp4` is ~32 MB and is gitignored. F2 has added a poster frame (`hero-poster.jpg`) and a placeholder poster fallback; the video still needs compressing and a WebM fallback before it ships (see O-001).
 
 - Product and category images are locally generated placeholder SVGs in `frontend/public/assets/placeholder/`. They exist only so layout and image paths can be tested.
 
@@ -304,6 +304,19 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F1 ———————————?? Storefront foundation | 2026-10-03 | Vite 6 + React 18 + TS strict + Tailwind 3 scaffold; light/dark tokens from `05`; Arabic/English i18n with RTL and a pre-paint theme/locale bootstrap in `index.html`; typed service layer over mock data matching the `02-architecture.md` contract; base layout, Navbar (transparent over hero, hides on scroll down), category dropdown, search overlay, mobile drawer, Footer; 404 + placeholders for F3———————————?F7 routes. `npm run build`, `npm run lint` and `npm run format:check` pass; verified in headless Edge at 360/768/1280 in both themes and both languages | Branch `phase/F1-foundation`. Issues found and fixed during verification: closed overlays kept focusable off-screen controls, tap targets under 44px, `TODO(Mando)` rendering as broken `href`s, drawer keyframe not mirrored in RTL |
 
+| F2 (hotfix) ———————————?? Home page black screen | 2026-10-10 | **Root cause of the black home page:** `TrustStrip` read `storeSettings.trustBadges` with the product-benefit key set (`rustResistant`/`tarnishResistant`/`skinFriendly`/`waterFriendly`) instead of the service keys (`shipping`/`payment`/`returns`/`support`), so it passed `undefined` to `localize()` and threw at `utils/format.ts:10`. The uncaught error unmounted the whole React tree, leaving `#root` empty and the dark `--bg` showing as a black page (the 4 console errors were all this crash). Fixed `TrustStrip` to use the `trust.*` i18n labels only. Also: `HeroBackground` now falls back to `/assets/placeholder/hero-poster.svg` and hides the video on error; `Hero3D` shows a static image as the `Suspense` fallback and skips three.js when WebGL is unavailable. `npm run build` (separate `Hero3DScene` chunk) and `npm run lint` pass; verified in headless Edge on dev + preview, normal and `prefers-reduced-motion`. | Branch `feature/f2-home-page`. Not committed yet |
+
+Suggested commit message for the F2 hotfix:
+
+```
+fix(frontend): repair black home page and harden hero video/3D fallbacks
+
+- TrustStrip read storeSettings.trustBadges with the wrong key set, passing
+  undefined to localize() and crashing the whole React tree (empty #root)
+- HeroBackground: placeholder poster fallback + hide video on error
+- Hero3D: static-image Suspense fallback + skip three.js when WebGL is absent
+```
+
 
 
 
@@ -317,3 +330,4 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 ### Phase history
 - **F2.5**: Best Sellers + Offers (countdown) — done.
 - **F2.6**: Our Story + Recommended + Recently Viewed (store created) — in progress.
+- **F2 (hotfix)**: Black home page fixed — `TrustStrip` crashed `localize()` on an undefined `trustBadges` key (2026-10-10). Hero video fallbacks + lazy `Hero3D` static fallback added.
