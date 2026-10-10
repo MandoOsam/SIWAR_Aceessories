@@ -4,10 +4,8 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-03 (Phase 0 frontend scope + F1 complete, owner decision D-018).
+> Last updated: 2026-10-10 (F2 done + hero video wired/O-001 resolved; F3.1 URL state foundation in progress).
 
-
-| **Current phase** | **F3 - Shop, Category, Search** - not started |
 ## 1. Current status
 
 
@@ -16,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F2 ———————————?? Home page (Hero + all sections)** ———————————?? in progress (F2.1) |
+| **Current phase** | **F3.1 — URL state foundation** — in progress (branch `feature/f3-shop-and-search`) |
 
-| Last completed phase | Phase 0 (frontend scope only) + F1 ———————————?? Storefront foundation |
+| Last completed phase | F2 — Home page (all sections) + hero-video hotfix |
 
-| Next phase (proposed) | F2 ———————————?? Home page (Hero + all sections) |
+| Next phase | F3.2 — Shared product list UI (grid, sort, pagination, chips) |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | Phase 0 + F1 **done** on branch `phase/F1-foundation`. |
+| Storefront (`frontend/`) | F1 + F2 **done**. F3 (Shop, Category, Search) in progress on branch `feature/f3-shop-and-search`. |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -50,9 +48,11 @@
 
 - [x] **F1 Storefront foundation:** Vite 6 + React 18 + TS strict scaffold, Tailwind tokens, Arabic/English i18n with RTL, dark/light themes, base layout, Navbar + categories + search overlay + mobile drawer + Footer, typed service layer over mock data behind the `02-architecture.md` contract
 
+- [x] **F2 Home page:** hero (video background at `/assets/hero/hero.mp4` + 3D element with static fallback) and all sections (trust strip, categories, new arrivals, featured collections, best sellers, offers countdown, our story, recommended, recently viewed, testimonials, trust badges, newsletter); black-screen hotfix applied
+
 - [ ] Real product images ———————————?? owner has them; to be uploaded through the admin later
 
-- [ ] Animated hero background ———————————?? owner will provide (file type TBD, see O-001)
+- [x] Animated hero background ———————————?? wired at `/assets/hero/hero.mp4` with poster fallback and `prefers-reduced-motion` support (O-001 resolved 2026-10-10; still needs compression + WebM before ship)
 
 - [ ] Full processed logo set (light/gold PNG, monogram, standard favicon sizes) ———————————?? only 3 source files exist; see O-009
 
@@ -130,7 +130,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
-- [ ] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet
+- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) in progress**; F3.2–F3.7 pending
 
 - [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
 
@@ -230,6 +230,12 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-018 | 2026-10-03 | **Build order: storefront first.** Start with `frontend/` on the mock service layer; `backend/` and `admin/` come afterwards. Frontends switch to the real API later via `VITE_API_URL`. | owner |
 
+| D-019 | 2026-10-10 | The `/search` autocomplete component is `src/components/SearchAutocomplete.tsx`. The F1 navbar overlay `src/components/layout/SearchOverlay.tsx` stays untouched. One name = one job, no duplicate overlays. | owner |
+
+| D-020 | 2026-10-10 | Popular search terms live in `src/data/search.ts`; `src/services/catalogService.ts` imports from there (single source of truth). Small service-layer change, in F3 scope. | owner |
+
+| D-021 | 2026-10-10 | Recent searches (query strings only, max 5) are stored in `localStorage`, consistent with the allowed client-storage list (theme, language, cart, recently-viewed) in `03-code-standards.md` §5. No personal data, no tokens. | owner |
+
 
 
 ## 5. Open questions for the owner
@@ -304,7 +310,9 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F1 ———————————?? Storefront foundation | 2026-10-03 | Vite 6 + React 18 + TS strict + Tailwind 3 scaffold; light/dark tokens from `05`; Arabic/English i18n with RTL and a pre-paint theme/locale bootstrap in `index.html`; typed service layer over mock data matching the `02-architecture.md` contract; base layout, Navbar (transparent over hero, hides on scroll down), category dropdown, search overlay, mobile drawer, Footer; 404 + placeholders for F3———————————?F7 routes. `npm run build`, `npm run lint` and `npm run format:check` pass; verified in headless Edge at 360/768/1280 in both themes and both languages | Branch `phase/F1-foundation`. Issues found and fixed during verification: closed overlays kept focusable off-screen controls, tap targets under 44px, `TODO(Mando)` rendering as broken `href`s, drawer keyframe not mirrored in RTL |
 
-| F2 (hotfix) ———————————?? Home page black screen | 2026-10-10 | **Root cause of the black home page:** `TrustStrip` read `storeSettings.trustBadges` with the product-benefit key set (`rustResistant`/`tarnishResistant`/`skinFriendly`/`waterFriendly`) instead of the service keys (`shipping`/`payment`/`returns`/`support`), so it passed `undefined` to `localize()` and threw at `utils/format.ts:10`. The uncaught error unmounted the whole React tree, leaving `#root` empty and the dark `--bg` showing as a black page (the 4 console errors were all this crash). Fixed `TrustStrip` to use the `trust.*` i18n labels only. Also: `HeroBackground` now falls back to `/assets/placeholder/hero-poster.svg` and hides the video on error; `Hero3D` shows a static image as the `Suspense` fallback and skips three.js when WebGL is unavailable. `npm run build` (separate `Hero3DScene` chunk) and `npm run lint` pass; verified in headless Edge on dev + preview, normal and `prefers-reduced-motion`. | Branch `feature/f2-home-page`. Not committed yet |
+| F2 — Home page (all sections) | 2026-10-10 | Hero (swappable animated background video + one 3D element with a static fallback) and all home sections: trust strip, shop-by-category, new arrivals, featured collections, best sellers, offers countdown, our story, recommended, recently viewed, testimonials, trust badges, newsletter. `npm run build` and `npm run lint` pass. | Branch `feature/f2-home-page` |
+
+| F2 (hotfix) ———————————?? Home page black screen | 2026-10-10 | **Root cause of the black home page:** `TrustStrip` read `storeSettings.trustBadges` with the product-benefit key set (`rustResistant`/`tarnishResistant`/`skinFriendly`/`waterFriendly`) instead of the service keys (`shipping`/`payment`/`returns`/`support`), so it passed `undefined` to `localize()` and threw at `utils/format.ts:10`. The uncaught error unmounted the whole React tree, leaving `#root` empty and the dark `--bg` showing as a black page (the 4 console errors were all this crash). Fixed `TrustStrip` to use the `trust.*` i18n labels only. Also: `HeroBackground` now falls back to `/assets/placeholder/hero-poster.svg` and hides the video on error; `Hero3D` shows a static image as the `Suspense` fallback and skips three.js when WebGL is unavailable. `npm run build` (separate `Hero3DScene` chunk) and `npm run lint` pass; verified in headless Edge on dev + preview, normal and `prefers-reduced-motion`. | Branch `feature/f2-home-page`. Committed `24e66b1` (`fix f2 erroes`). |
 
 Suggested commit message for the F2 hotfix:
 
@@ -329,5 +337,8 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 
 ### Phase history
 - **F2.5**: Best Sellers + Offers (countdown) — done.
-- **F2.6**: Our Story + Recommended + Recently Viewed (store created) — in progress.
-- **F2 (hotfix)**: Black home page fixed — `TrustStrip` crashed `localize()` on an undefined `trustBadges` key (2026-10-10). Hero video fallbacks + lazy `Hero3D` static fallback added.
+- **F2.6**: Our Story + Recommended + Recently Viewed (store created) — done.
+- **F2.7**: Testimonials + Trust Badges + Newsletter — done.
+- **F2.8**: Home page assembled + polish — done.
+- **F2 (hotfix)**: Black home page fixed — `TrustStrip` crashed `localize()` on an undefined `trustBadges` key (2026-10-10). Hero video fallbacks + lazy `Hero3D` static fallback added. Committed `24e66b1`.
+- **F3.1**: URL state foundation (`useProductFilters`, `data/search.ts`, popular-searches refactor, unit tests) — done.

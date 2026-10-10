@@ -8,6 +8,7 @@
 
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
+import { popularSearches } from "@/data/search";
 import { DEFAULT_PAGE_LIMIT } from "@/config/app";
 import { IS_MOCK_MODE } from "@/config/env";
 
@@ -158,13 +159,6 @@ export async function searchSuggest(
   }
   await simulateLatency(signal);
   const term = query.trim().toLowerCase();
-
-  const popularSearches = [
-    { ar: "سلاسل", en: "Necklaces" },
-    { ar: "خواتم", en: "Rings" },
-    { ar: "حلقان", en: "Earrings" },
-    { ar: "سيتات", en: "Sets" },
-  ];
 
   if (term === "") {
     return {
