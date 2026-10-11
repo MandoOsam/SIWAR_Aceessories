@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-11 (F4.2 — product info, variants and actions done).
+> Last updated: 2026-10-11 (F4.3 — reviews and related products done).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F4 — Product page: in progress** (F4.1–F4.2 done, branch `feature/f4-product-page`) |
+| **Current phase** | **F4 — Product page: in progress** (F4.1–F4.3 done, branch `feature/f4-product-page`) |
 
-| Last completed phase | F4.2 — Product info, variants and actions |
+| Last completed phase | F4.3 — Reviews and related products |
 
-| Next phase | F4.3 — Reviews and related products |
+| Next phase | F4.4 — Product page assembly |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 **done**. F4 (Product page) in progress on branch `feature/f4-product-page` (F4.1–F4.2 done). |
+| Storefront (`frontend/`) | F1 + F2 + F3 **done**. F4 (Product page) in progress on branch `feature/f4-product-page` (F4.1–F4.3 done). |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -132,7 +132,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 done** (`b9af2d6`); **F3.2** done; **F3.3** done; **F3.4** done; **F3.5** done; **F3.6** done; **F3.7 (polish & verification)** done
 
-- [~] **F4** Product page ———————————?? **F4.1 (foundation: detail reuse, review endpoints, hooks, gallery, route) + F4.2 (info, variants, quantity, material, actions, accordion, sticky bar, toast) done**; F4.3–F4.4 pending
+- [~] **F4** Product page ———————————?? **F4.1 (foundation: detail reuse, review endpoints, hooks, gallery, route) + F4.2 (info, variants, quantity, material, actions, accordion, sticky bar, toast) + F4.3 (review summary, review form, reviews section, matching/related/recently-viewed rails) done**; F4.4 pending
 
 - [ ] **F5** Cart, Checkout, Order success, Track order
 
@@ -262,6 +262,14 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-034 | 2026-10-11 | **No per-variant stock in the contract** (`Product.stock` is aggregate only), so F4.2 disables all colour/size options together when `stock <= 0` and caps quantity at the aggregate `stock` (fallback 10). Per-variant inventory is a later contract change. | default |
 
+| D-035 | 2026-10-11 | **`ReviewForm` uses Zod + controlled `useState`, not `react-hook-form`.** The F4.3 scope asked for React Hook Form + Zod, but RHF is not installed and AGENTS.md rule 3 / 03-code-standards forbid new libraries. The existing `Newsletter` form already validates with `zod.safeParse` (D-011 sanctions Zod), so F4.3 follows that pattern. `safeParse` issues are mapped to per-field i18n messages, the first invalid field is focused, and errors are announced with `role="alert"`. | default |
+
+| D-036 | 2026-10-11 | **Submitted review text is stored in both `L10n` fields with the same string** (`{ ar: text, en: text }`). There is no client-side translation service, so the single entered value is duplicated; the admin separates the languages later. `ProductReviewInput.text` requires both fields. | default |
+
+| D-037 | 2026-10-11 | **`MatchingProducts`/`RelatedProducts` are prop-driven** wrappers over the F2 `ProductSlider` (`{ products }`), returning `null` when empty; F4.4 passes `matching`/`related` from the existing `useRelatedProducts` hook. **`ProductReviews` self-fetches** via the existing `useProductReviews(productId)` hook and always renders `ReviewForm` (its `onSubmit` is the hook's `submit`). The F4.1 hook exposes no `refetch`, so the error retry calls `queryClient.invalidateQueries({ queryKey: ["product-reviews", productId] })`. | default |
+
+| D-038 | 2026-10-11 | **`RecentlyViewedProducts` records the current product on mount and excludes it from the rail**, so the widget only shows *other* previously-viewed products and can be empty (nothing else viewed yet). ids are resolved against the mock catalogue (`@/data/products`), mirroring the F2 `sections/home/RecentlyViewed.tsx` — there is no `products/by-ids` endpoint and `catalogService.ts` is out of scope. **Deviation** from "components never import `src/data/`"; to be replaced by a service call when the backend lands. | default |
+
 
 
 ## 5. Open questions for the owner
@@ -358,6 +366,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F4.2 — Product info & actions | 2026-10-11 | Product-page interaction layer, all presentational/prop-driven: `ProductInfo` (name, stars + review link, price/old price/discount badge, truncated description, stock badge), `VariantSelector` (colour swatches + rings-only sizes, roving-focus radiogroups, RTL-mirrored arrow keys, all options disabled when out of stock), `QuantityStepper` (min/max clamp, typed input, `aria-live`), `MaterialBlock` (reuses `trust.*` copy + icons), `Accordion` (reduced-motion-aware disclosure with `aria-expanded`/`aria-controls`), `ProductActions` (add-to-cart + toast, buy-now → cart, wishlist local state, Web Share with copy fallback), `StickyAddToCart` (mobile bar driven by `IntersectionObserver` on `anchorRef`). New pure `utils/product.ts` (`clampQuantity`/`resolveStockStatus`/`buildCartItem`) + unit tests; new `store/toastStore.ts` + `components/ui/Toast.tsx`; `product.info/quantity/material/actions/toast.*` + top-level `toast.*` keys (AR/EN parity). Components are not yet assembled into a page (F4.4). `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f4-product-page`. Decisions D-030–D-034. |
 
+| F4.3 — Reviews & related products | 2026-10-11 | Product-page reviews and recommendation rails. `ReviewSummary` (big average, star row, 5→1 distribution bars that grow from the logical start in RTL, per-bar `aria-label`). `ReviewForm` (clickable 1–5 star radiogroup with arrow-key nav, name + text + optional image-URL textarea, Zod + controlled-state validation with per-field i18n errors, first-error focus, success toast + reset, error state; entered text stored in both `L10n` fields per D-036). `ProductReviews` (id="reviews" anchor used by `ProductInfo`; self-fetches approved reviews via `useProductReviews`, 10-at-a-time "Show more", empty/loading-skeleton/error-with-retry states, reuses F2 `ReviewCard` — still no "Verified purchase" badge, and always renders the form). `MatchingProducts`/`RelatedProducts` (prop-driven `ProductSlider` rails, hidden when empty). `RecentlyViewedProducts` (records current product, shows the rest, hidden when empty). `product.reviews.*` + `product.matching/related/recentlyViewed` keys (AR/EN parity 248/248). Components not assembled into a page yet (F4.4). `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f4-product-page`. Decisions D-035–D-038. `react-hook-form` not installed → used Zod + controlled state (D-035). |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -396,3 +406,4 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F3 (whole)**: Shop + Category + Search complete — one `ProductListLayout`, URL-owned state, 69 tests green, lazy chunks — done.
 - **F4.1**: Product foundation — `getProductReviews`/`submitProductReview` + `selectProductReviews`, `useProduct`/`useRelatedProducts`/`useProductReviews`, `ProductGallery`, `ProductPage`, lazy `/products/:slug`; reuses existing `getProductBySlug` + `cartStore` — done.
 - **F4.2**: Product info & actions — `ProductInfo`, `VariantSelector`, `QuantityStepper`, `MaterialBlock`, `Accordion`, `ProductActions`, `StickyAddToCart`; pure `utils/product.ts` (+ tests), `store/toastStore.ts` + `components/ui/Toast.tsx`; `product.*` i18n keys (77 tests) — done.
+- **F4.3**: Reviews & related products — `ReviewSummary`, `ReviewForm` (Zod + controlled state, D-035), `ProductReviews`, `MatchingProducts`, `RelatedProducts`, `RecentlyViewedProducts`; `product.reviews.*` + section heading keys (parity 248/248) — done.

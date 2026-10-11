@@ -174,6 +174,52 @@
     },
     "toast": {
       "added": "Added to cart"
+    },
+    "matching": "Matching products",
+    "related": "You may also like",
+    "recentlyViewed": "Recently viewed",
+    "reviews": {
+      "title": "Reviews",
+      "loading": "Loading reviews…",
+      "summary": {
+        "basedOn_one": "Based on 1 review",
+        "basedOn_other": "Based on {{count}} reviews",
+        "averageLabel": "Average rating {{rating}} out of 5",
+        "distributionLabel": "Rating distribution",
+        "barLabel": "{{star}} stars: {{reviews}} reviews ({{percent}}%)"
+      },
+      "list": {
+        "showMore": "Show more"
+      },
+      "empty": {
+        "title": "No reviews yet",
+        "body": "Be the first to review this product!"
+      },
+      "form": {
+        "heading": "Write a review",
+        "ratingLabel": "Your rating",
+        "ratingError": "Please choose a rating from 1 to 5.",
+        "starLabel": "{{value}} out of 5 stars",
+        "nameLabel": "Name",
+        "namePlaceholder": "Your name",
+        "nameError": "Name is required (at least 2 characters).",
+        "textLabel": "Your review",
+        "textPlaceholder": "Share your experience with the product",
+        "textError": "Please write at least 10 characters.",
+        "imagesLabel": "Image links (optional)",
+        "imagesPlaceholder": "One image URL per line",
+        "imagesHint": "Put a valid URL on each line. Image upload arrives soon.",
+        "imagesError": "Make sure every link is a valid URL (up to 5).",
+        "submit": "Submit review",
+        "submitting": "Submitting…",
+        "success": "Thanks! Your review is awaiting approval.",
+        "error": "We couldn't submit your review. Please try again.",
+        "errorSummary": "Please fix the highlighted fields."
+      },
+      "error": {
+        "title": "Couldn't load reviews",
+        "description": "Something went wrong while loading reviews. Please try again."
+      }
     }
   },
   "shop": {
