@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import { Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -9,10 +8,11 @@ import { useLocale } from "@/hooks/useLocale";
 import { useCategories } from "@/hooks/useCatalog";
 import { useProductFilters } from "@/hooks/useProductFilters";
 import { Skeleton } from "@/components/ui/Skeleton";
-import {
-  PRODUCT_COLORS,
-  type CategorySlug,
-} from "@/services/types";
+import { FilterGroup } from "@/components/filters/FilterGroup";
+import { ToggleRow } from "@/components/filters/ToggleRow";
+import { PillButton } from "@/components/filters/PillButton";
+import { PriceInput } from "@/components/filters/PriceInput";
+import { PRODUCT_COLORS, type CategorySlug } from "@/services/types";
 
 /**
  * Single-value filter sets stay on the frozen F3.1 contract (`color?: ProductColor`,
@@ -31,122 +31,15 @@ export interface FilterPanelProps {
   className?: string;
 }
 
-function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <fieldset className="border-t border-line pt-5 first:border-t-0 first:pt-0">
-      <legend className="mb-4 font-heading text-xs uppercase tracking-[0.24em] text-fg-muted">
-        {title}
-      </legend>
-      <div className="flex flex-col gap-1">{children}</div>
-    </fieldset>
-  );
-}
-
-function ToggleRow({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm text-fg">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-        className="size-4 shrink-0 accent-accent"
-      />
-      <span>{label}</span>
-    </label>
-  );
-}
-
-function PillButton({
-  selected,
-  label,
-  onClick,
-  children,
-}: {
-  selected: boolean;
-  label: string;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={selected}
-      aria-label={label}
-      className={cn(
-        "inline-flex min-h-11 items-center justify-center rounded-control border px-4 text-sm",
-        "transition-colors duration-500 ease-smooth",
-        selected
-          ? "border-accent bg-accent text-on-accent"
-          : "border-line text-fg hover:border-accent hover:text-accent",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
-
-function PriceInput({
-  value,
-  onValueChange,
-  onCommit,
-  label,
-  placeholder,
-}: {
-  value: string;
-  onValueChange: (value: string) => void;
-  onCommit: () => void;
-  label: string;
-  placeholder: string;
-}) {
-  return (
-    <label className="flex-1">
-      <span className="sr-only">{label}</span>
-      <input
-        type="number"
-        min={0}
-        inputMode="numeric"
-        value={value}
-        onChange={(event) => onValueChange(event.target.value)}
-        onBlur={onCommit}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            onCommit();
-          }
-        }}
-        placeholder={placeholder}
-        aria-label={label}
-        className={cn(
-          "w-full rounded-control border border-line bg-surface px-3 py-2 text-sm text-fg",
-          "placeholder:text-fg-muted transition-colors duration-500 ease-smooth focus:border-accent",
-        )}
-      />
-    </label>
-  );
-}
-
 /**
- * Desktop filters sidebar (05-ui-context.md §7.3): category, price range, rating, availability,
- * colour, size (rings only), discount and new arrivals. Every control reads and writes the URL
- * through `useProductFilters`, so the sheet and the sidebar never hold their own copy.
+ * Filters sidebar (05-ui-context.md §7.3): category, price range, rating, availability, colour,
+ * size (rings only), discount and new arrivals. Every control reads and writes the URL through
+ * `useProductFilters`, so the sheet and the sidebar never hold their own copy.
  */
-export function FilterPanel({
-  category,
-  showCategory = true,
-  className,
-}: FilterPanelProps) {
+export function FilterPanel({ category, showCategory = true, className }: FilterPanelProps) {
   const { t } = useTranslation();
   const { locale } = useLocale();
-  const { filters, setFilter, setFilters, toggleFilter, removeFilter } =
-    useProductFilters();
+  const { filters, setFilter, setFilters, toggleFilter, removeFilter } = useProductFilters();
   const categoriesQuery = useCategories();
 
   const activeCategory = category ?? filters.category;
