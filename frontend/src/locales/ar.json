@@ -199,6 +199,26 @@
       },
       "browseAll": "تصفح جميع المنتجات"
     },
+    "search": {
+      "title": "البحث",
+      "resultsFor": "نتائج البحث عن «{{query}}»",
+      "whatAreYouLookingFor": "عن ماذا تبحث؟",
+      "placeholder": "ابحث عن منتجات",
+      "suggestionsLabel": "اقتراحات البحث",
+      "suggestions": "اقتراحات",
+      "recentSearches": "عمليات البحث الأخيرة",
+      "clearRecent": "مسح عمليات البحث الأخيرة",
+      "popularSearches": "عمليات البحث الشائعة",
+      "suggestionsAnnounce_one": "يتوفر {{count}} اقتراح",
+      "suggestionsAnnounce_other": "يتوفر {{count}} اقتراحات",
+      "noResultsFor": "لا توجد نتائج عن «{{query}}»",
+      "noResultsBody": "جرّب كلمة أخرى، أو تصفّح كل منتجات المتجر.",
+      "suggestedProducts": "قد يعجبك",
+      "meta": {
+        "title": "البحث: {{query}} | سيوار",
+        "description": "نتائج البحث عن «{{query}}» في سيوار."
+      }
+    },
     "results": {
       "count_one": "{{count}} منتج",
       "count_other": "{{count}} منتجات"

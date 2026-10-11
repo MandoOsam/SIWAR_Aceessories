@@ -36,6 +36,8 @@ export type ProductListLayoutProps = {
   documentTitle: string;
   /** Translated meta description. */
   metaDescription: string;
+  /** Replaces the default `ProductGridEmpty` when the query returns no products (search page). */
+  emptyStateSlot?: ReactNode;
 };
 
 export function ProductListLayout({
@@ -44,6 +46,7 @@ export function ProductListLayout({
   ownedCategory,
   documentTitle,
   metaDescription,
+  emptyStateSlot,
 }: ProductListLayoutProps) {
   const { t } = useTranslation();
   const { query } = useProductFilters({ manageCategory: ownedCategory === undefined });
@@ -114,7 +117,11 @@ export function ProductListLayout({
           ) : productsQuery.isError ? (
             <ProductGridError onRetry={() => void productsQuery.refetch()} className="mt-6" />
           ) : productsQuery.data !== undefined && productsQuery.data.data.length === 0 ? (
-            <ProductGridEmpty className="mt-6" />
+            emptyStateSlot !== undefined ? (
+              <div className="mt-6">{emptyStateSlot}</div>
+            ) : (
+              <ProductGridEmpty className="mt-6" />
+            )
           ) : productsQuery.data !== undefined ? (
             <>
               <ProductGrid products={productsQuery.data.data} className="mt-6" />

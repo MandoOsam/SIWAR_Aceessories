@@ -199,6 +199,26 @@
       },
       "browseAll": "Browse all products"
     },
+    "search": {
+      "title": "Search",
+      "resultsFor": "Results for “{{query}}”",
+      "whatAreYouLookingFor": "What are you looking for?",
+      "placeholder": "Search products",
+      "suggestionsLabel": "Search suggestions",
+      "suggestions": "Suggestions",
+      "recentSearches": "Recent searches",
+      "clearRecent": "Clear recent searches",
+      "popularSearches": "Popular searches",
+      "suggestionsAnnounce_one": "{{count}} suggestion available",
+      "suggestionsAnnounce_other": "{{count}} suggestions available",
+      "noResultsFor": "No results for “{{query}}”",
+      "noResultsBody": "Try a different word, or browse everything in the shop.",
+      "suggestedProducts": "You might like",
+      "meta": {
+        "title": "Search: {{query}} | SIWAR",
+        "description": "Search results for “{{query}}” on SIWAR."
+      }
+    },
     "results": {
       "count_one": "{{count}} product",
       "count_other": "{{count}} products"
