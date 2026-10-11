@@ -9,6 +9,7 @@ import { ROUTES } from "@/config/app";
 const HomePage = lazy(async () => import("@/pages/HomePage"));
 const NotFoundPage = lazy(async () => import("@/pages/NotFoundPage"));
 const ShopPage = lazy(async () => import("@/pages/ShopPage"));
+const CategoryPage = lazy(async () => import("@/pages/CategoryPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -22,7 +23,7 @@ export function AppRoutes() {
           works today without inventing page content before its phase.
         */}
         <Route path={ROUTES.shop} element={<ShopPage />} />
-        <Route path="/category/:slug" element={<PlaceholderPage phase="F3" />} />
+        <Route path="/category/:slug" element={<CategoryPage />} />
         <Route path="/search" element={<PlaceholderPage phase="F3" />} />
         <Route path="/products/:slug" element={<PlaceholderPage phase="F4" />} />
         <Route path="/cart" element={<PlaceholderPage phase="F5" />} />

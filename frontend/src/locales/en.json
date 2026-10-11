@@ -189,6 +189,16 @@
         "shop": "Shop"
       }
     },
+    "category": {
+      "meta": {
+        "title": "{{name}} | SIWAR"
+      },
+      "notFound": {
+        "title": "Category not found",
+        "body": "We can't find the category you're looking for. It may have been moved or removed."
+      },
+      "browseAll": "Browse all products"
+    },
     "results": {
       "count_one": "{{count}} product",
       "count_other": "{{count}} products"
