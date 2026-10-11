@@ -75,6 +75,26 @@ Work through the layers in this order (change the contract first):
 
 Colour and size are single-select per decision D-022 (multi-select is deferred).
 
+## Product page (F4)
+
+- `/products/:slug` — one product (`src/pages/ProductPage.tsx`), lazily loaded by the router.
+
+`ProductPage` assembles the gallery with the info column (rating, price, description, stock), the
+variant selector, quantity stepper, the add-to-cart / buy-now / wishlist / share actions, the
+material block and a shipping / returns / material accordion. Below that it renders the reviews
+section and the matching / related / recently-viewed rails.
+
+The selected colour, size and quantity are **page-local state**, held in `ProductPage` and passed
+down as props (no store, D-030); the selection resets cleanly when the slug changes. The mobile
+sticky add-to-cart bar appears once the actions block scrolls out of view, driven by an
+`IntersectionObserver` rather than a scroll listener. Toasts render through a single
+`ToastViewport` mounted on this page.
+
+Below-the-fold sections (`Accordion`, `ProductReviews`, `MatchingProducts`, `RelatedProducts`,
+`RecentlyViewedProducts`) are code-split with `React.lazy` + `Suspense` (D-039), keeping
+framer-motion and zod off the critical path. The page sets its own `<title>`, meta description and
+Open Graph tags in a cleanup-safe effect (D-040); JSON-LD is deferred to F7.
+
 ## Conventions
 
 - TypeScript strict, no `any`; one React component per file; files stay ≤ 300 lines.

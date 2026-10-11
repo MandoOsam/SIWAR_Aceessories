@@ -36,7 +36,11 @@ export function ProductInfo({ product, reviewsHref = "#reviews", className }: Pr
       <h1 className="font-heading text-heading text-fg">{localize(product.name, locale)}</h1>
 
       <div className="flex flex-wrap items-center gap-4">
-        <span className="flex items-center gap-1" aria-label={t("product.info.ratingLabel", { rating: product.rating })}>
+        <span
+          role="img"
+          aria-label={t("product.info.ratingLabel", { rating: product.rating })}
+          className="flex items-center gap-1"
+        >
           {RATING_STARS.map((index) => (
             <Star
               key={index}

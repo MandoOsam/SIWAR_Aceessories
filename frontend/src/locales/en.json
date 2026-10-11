@@ -165,6 +165,20 @@
       "title": "Stainless steel",
       "plating": "Plating: {{value}}"
     },
+    "details": {
+      "shipping": {
+        "title": "Shipping",
+        "body": "Orders are prepared within 1–2 business days and delivered in 2–5 business days across Egypt. Free shipping on orders over EGP 1,500."
+      },
+      "returns": {
+        "title": "Returns & exchanges",
+        "body": "Changed your mind? You have 14 days to return or exchange an unworn piece in its original packaging."
+      },
+      "material": {
+        "title": "Care & materials",
+        "body": "Stainless steel resists rust and tarnish and is kind to sensitive skin. Keep it dry, avoid perfume, and clean it with a soft cloth."
+      }
+    },
     "actions": {
       "buyNow": "Buy now",
       "wishlistAdd": "Add to wishlist",
