@@ -128,19 +128,36 @@
       "priceDesc": "السعر: من الأعلى للأقل",
       "rating": "الأعلى تقييماً"
     },
-    "filters": {
+"filters": {
       "title": "الفلاتر",
+      "open": "الفلاتر",
+      "openCount": "الفلاتر ({{count}})",
+      "apply": "تطبيق",
+      "close": "إغلاق الفلاتر",
+      "all": "الكل",
       "active": "الفلاتر المفعّلة",
       "clearAll": "مسح الكل",
       "remove": "إزالة الفلتر: {{filter}}",
       "priceRange": "{{min}} – {{max}}",
       "priceFrom": "من {{min}}",
       "priceTo": "حتى {{max}}",
+      "minPriceLabel": "أقل سعر",
+      "maxPriceLabel": "أعلى سعر",
       "ratingChip": "{{rating}} نجوم أو أكثر",
       "inStockOnly": "المتوفر فقط",
       "onSale": "عليه خصم",
       "newOnly": "الجديد فقط",
-      "sizeChip": "مقاس {{size}}"
+      "sizeChip": "مقاس {{size}}",
+      "section": {
+        "category": "الفئة",
+        "price": "السعر",
+        "rating": "التقييم",
+        "availability": "التوفر",
+        "color": "اللون",
+        "size": "المقاس",
+        "discount": "الخصم",
+        "new": "وصل حديثاً"
+      }
     },
     "colors": {
       "gold": "ذهبي",

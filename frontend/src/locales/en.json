@@ -130,17 +130,34 @@
     },
     "filters": {
       "title": "Filters",
+      "open": "Filters",
+      "openCount": "Filters ({{count}})",
+      "apply": "Apply",
+      "close": "Close filters",
+      "all": "All",
       "active": "Active filters",
       "clearAll": "Clear all",
       "remove": "Remove filter: {{filter}}",
       "priceRange": "{{min}} – {{max}}",
       "priceFrom": "From {{min}}",
       "priceTo": "Up to {{max}}",
+      "minPriceLabel": "Min price",
+      "maxPriceLabel": "Max price",
       "ratingChip": "{{rating}} stars & up",
       "inStockOnly": "In stock only",
       "onSale": "On sale",
       "newOnly": "New only",
-      "sizeChip": "Size {{size}}"
+      "sizeChip": "Size {{size}}",
+      "section": {
+        "category": "Category",
+        "price": "Price",
+        "rating": "Rating",
+        "availability": "Availability",
+        "color": "Color",
+        "size": "Size",
+        "discount": "Discount",
+        "new": "New arrivals"
+      }
     },
     "colors": {
       "gold": "Gold",

@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-10 (F3.2 shared product list UI done; committing).
+> Last updated: 2026-10-11 (F3.3 filters UI done; committing).
 
 ## 1. Current status
 
@@ -14,11 +14,11 @@
 
 |---|---|
 
-| **Current phase** | **F3.2 — Shared product list UI** — done (branch `feature/f3-shop-and-search`) |
+| **Current phase** | **F3.3 — Filters UI** — done (branch `feature/f3-shop-and-search`) |
 
-| Last completed phase | F3.2 — Shared product list UI (grid, sort, pagination, chips, states) |
+| Last completed phase | F3.3 — Filters UI (desktop `FilterPanel` + mobile `FilterSheet`) |
 
-| Next phase | F3.3 — Filters UI (desktop `FilterPanel` + mobile `FilterSheet`) |
+| Next phase | F3.4 — `/shop` page (assembles F3.2 + F3.3 pieces + Pagination) |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -130,7 +130,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
-- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) done** (`b9af2d6`); **F3.2 (shared product list UI) done**; F3.3–F3.7 pending
+- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) done** (`b9af2d6`); **F3.2 (shared product list UI) done**; **F3.3 (filters UI) done**; F3.4–F3.7 pending
 
 - [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
 
@@ -236,6 +236,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-021 | 2026-10-10 | Recent searches (query strings only, max 5) are stored in `localStorage`, consistent with the allowed client-storage list (theme, language, cart, recently-viewed) in `03-code-standards.md` §5. No personal data, no tokens. | owner |
 
+| D-022 | 2026-10-11 | Filter **Color & Size are single-select for now**, built on the frozen F3.1 contract (`color?: ProductColor`, `size?: string`). True multi-select (OR inside one filter, e.g. gold OR silver) is deferred to its own sub-phase that changes the contract first — `services/types.ts` (`02-architecture.md` is the source of truth) → `useProductFilters` → `catalogService` → hook tests — then the multi-select UI. | owner |
+
 
 
 ## 5. Open questions for the owner
@@ -316,6 +318,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F3.2 — Shared product list UI | 2026-10-10 | Product-list building blocks for the shop/category/search pages: responsive `ProductGrid` (2/3/4 cols) with reduced-motion-aware mount stagger, `SortSelect` and `Pagination` (both URL-driven via `useProductFilters`, RTL-safe mirrored arrows, visible "Page X of Y"), removable `ActiveFilterChips` with a "clear all" action, plus `ProductGridSkeleton` (shimmer shape), `ProductGridEmpty` and `ProductGridError`. `useProductFilters` gained `setFilters(patch)` so the combined price chip clears `minPrice`+`maxPrice` in a single URL update. `shop.*` i18n keys added to `ar.json`/`en.json`. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. No pages yet — F3.4–F3.6 wire these into `/shop`, `/category/:slug`, `/search`. |
 
+| F3.3 — Filters UI | 2026-10-11 | Desktop `FilterPanel` (category radios, price via two native `number` inputs committed on blur/Enter, rating 1–4 stars, availability / discount / new toggles, single-select colour, size group shown only when the effective category is `rings`) and mobile `FilterSheet` (bottom sheet reusing `FilterPanel`, drag-to-close + backdrop + Escape, sticky Apply/Clear, active-count badge on the trigger, `prefers-reduced-motion` aware, `aria-expanded`/`role="dialog"`), plus `FilterPanelSkeleton` and an SSR-safe `useMediaQuery`. `shop.filters.*` i18n keys added. Colour/size are single-select per D-022. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Not wired to a page yet — F3.4–F3.6 assemble these with the F3.2 pieces. |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -345,3 +349,4 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F2 (hotfix)**: Black home page fixed — `TrustStrip` crashed `localize()` on an undefined `trustBadges` key (2026-10-10). Hero video fallbacks + lazy `Hero3D` static fallback added. Committed `24e66b1`.
 - **F3.1**: URL state foundation (`useProductFilters`, `data/search.ts`, popular-searches refactor, unit tests) — done (`b9af2d6`).
 - **F3.2**: Shared product list UI (`ProductGrid`, `ProductGridSkeleton`, `ProductGridEmpty`, `ProductGridError`, `SortSelect`, `Pagination`, `ActiveFilterChips`; `useProductFilters.setFilters` added; `shop.*` i18n keys) — done.
+- **F3.3**: Filters UI (`FilterPanel`, `FilterSheet`, `FilterPanelSkeleton`, `useMediaQuery`; `shop.filters.*` keys; colour/size single-select per D-022) — done.
