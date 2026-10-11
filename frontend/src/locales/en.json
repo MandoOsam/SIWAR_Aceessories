@@ -141,6 +141,39 @@
       "next": "Next image",
       "goTo": "View image {{index}} of {{count}}",
       "noImage": "No image available"
+    },
+    "info": {
+      "ratingLabel": "Rated {{rating}} out of 5",
+      "reviews_one": "{{count}} review",
+      "reviews_other": "{{count}} reviews",
+      "discount": "{{percent}}% off",
+      "readMore": "Read more",
+      "readLess": "Read less",
+      "stock": {
+        "in": "In stock — {{available}} available",
+        "low": "Only {{left}} left",
+        "out": "Out of stock"
+      }
+    },
+    "quantity": {
+      "label": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "value": "Selected quantity: {{qty}}"
+    },
+    "material": {
+      "title": "Stainless steel",
+      "plating": "Plating: {{value}}"
+    },
+    "actions": {
+      "buyNow": "Buy now",
+      "wishlistAdd": "Add to wishlist",
+      "wishlistRemove": "Remove from wishlist",
+      "share": "Share product",
+      "shareCopied": "Link copied"
+    },
+    "toast": {
+      "added": "Added to cart"
     }
   },
   "shop": {
@@ -258,6 +291,9 @@
     "recommended": "Recommended for You",
     "recentlyViewed": "Recently Viewed",
     "testimonials": "Testimonials"
+  },
+  "toast": {
+    "regionLabel": "Notifications"
   },
   "newsletter": {
     "title": "Stay in the loop",

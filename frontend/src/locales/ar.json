@@ -141,6 +141,39 @@
       "next": "الصورة التالية",
       "goTo": "عرض الصورة {{index}} من {{count}}",
       "noImage": "لا توجد صورة"
+    },
+    "info": {
+      "ratingLabel": "التقييم {{rating}} من 5",
+      "reviews_one": "تقييم واحد",
+      "reviews_other": "{{count}} تقييمات",
+      "discount": "خصم {{percent}}%",
+      "readMore": "اقرأي المزيد",
+      "readLess": "اقرأي أقل",
+      "stock": {
+        "in": "متوفر — {{available}} قطعة",
+        "low": "آخر {{left}} قطع",
+        "out": "نفذ المخزون"
+      }
+    },
+    "quantity": {
+      "label": "الكمية",
+      "decrease": "تقليل الكمية",
+      "increase": "زيادة الكمية",
+      "value": "الكمية المختارة: {{qty}}"
+    },
+    "material": {
+      "title": "ستانلس ستيل",
+      "plating": "الطلاء: {{value}}"
+    },
+    "actions": {
+      "buyNow": "اشتري الآن",
+      "wishlistAdd": "أضيفي إلى المفضلة",
+      "wishlistRemove": "إزالة من المفضلة",
+      "share": "شاركي المنتج",
+      "shareCopied": "تم نسخ الرابط"
+    },
+    "toast": {
+      "added": "تمت الإضافة إلى السلة"
     }
   },
   "shop": {
@@ -258,6 +291,9 @@
     "recommended": "Recommended for You",
     "recentlyViewed": "Recently Viewed",
     "testimonials": "Testimonials"
+  },
+  "toast": {
+    "regionLabel": "الإشعارات"
   },
   "newsletter": {
     "title": "Stay in the loop",
