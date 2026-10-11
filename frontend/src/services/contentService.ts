@@ -9,9 +9,15 @@ import { homeContent, staticPages, storeSettings } from "@/data/content";
 import { reviews } from "@/data/reviews";
 import { IS_MOCK_MODE } from "@/config/env";
 
-import { getList, getOne } from "./http";
+import { getList, getOne, post } from "./http";
 import { simulateLatency } from "./mockAdapter";
-import type { HomeContent, Review, StaticPage, StoreSettings } from "./types";
+import type {
+  HomeContent,
+  ProductReviewInput,
+  Review,
+  StaticPage,
+  StoreSettings,
+} from "./types";
 
 /** `GET /content/home` */
 export async function getHomeContent(signal?: AbortSignal): Promise<HomeContent> {
@@ -64,6 +70,66 @@ export async function listReviews(
     if (options.showOnHome === true && !review.showOnHome) return false;
     return true;
   });
+}
+
+/**
+ * Pure filter behind `getProductReviews`.
+ *
+ * Separated from the async endpoint so it can be unit-tested without timers. Seeded samples carry
+ * no `productId`, so they are shown under every product (D-028); a real review must match the
+ * requested product. Only `approved` reviews are ever public.
+ */
+export function selectProductReviews(all: Review[], productId: string): Review[] {
+  return all.filter(
+    (review) => review.status === "approved" && (review.isSeed || review.productId === productId),
+  );
+}
+
+/** `GET /products/:id/reviews` — approved reviews only. */
+export async function getProductReviews(
+  productId: string,
+  signal?: AbortSignal,
+): Promise<Review[]> {
+  if (!IS_MOCK_MODE) {
+    const response = await getList<Review>(
+      `/products/${encodeURIComponent(productId)}/reviews`,
+      signal,
+    );
+    return response.data;
+  }
+  await simulateLatency(signal);
+  return selectProductReviews(reviews, productId);
+}
+
+/**
+ * `POST /products/:id/reviews` — the new review is stored with `status: "pending"` for moderation
+ * (02-architecture.md §7). In mock mode it is pushed into the in-memory list so a later
+ * `getProductReviews` call (after moderation) can see it; nothing is persisted across reloads.
+ */
+export async function submitProductReview(
+  productId: string,
+  input: ProductReviewInput,
+  signal?: AbortSignal,
+): Promise<Review> {
+  if (!IS_MOCK_MODE) {
+    return post<Review>(`/products/${encodeURIComponent(productId)}/reviews`, input, signal);
+  }
+  await simulateLatency(signal);
+  const review: Review = {
+    id: `local-${String(Date.now())}`,
+    productId,
+    authorName: input.authorName,
+    rating: input.rating,
+    text: input.text,
+    images: input.images ?? [],
+    status: "pending",
+    isSeed: false,
+    isVerifiedPurchase: false,
+    showOnHome: false,
+    createdAt: new Date().toISOString(),
+  };
+  reviews.push(review);
+  return review;
 }
 
 /** `GET /settings/public` */

@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-11 (F3.7 polish + verification done; **F3 — Shop, Category, Search complete**).
+> Last updated: 2026-10-11 (F4 — Product page done; F4.4 assembly & polish complete).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F3 — Shop, Category, Search: done** (branch `feature/f3-shop-and-search`) |
+| **Current phase** | **F4 — Product page: done.** (branch `feature/f4-product-page`) |
 
-| Last completed phase | F3.7 — F3 polish & verification (a11y, i18n, edge cases, Lighthouse) |
+| Last completed phase | F4 — Product page (sub-phases F4.1–F4.4) |
 
-| Next phase | F4 — Product page (gallery, variants, reviews, related/matching) |
+| Next phase | F5 — Cart, Checkout, Order success, Track order |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 **done**. F3 (Shop, Category, Search) in progress on branch `feature/f3-shop-and-search`. |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 **done**. Next: F5 (cart/checkout). F4 built on branch `feature/f4-product-page`. |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -132,7 +132,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 done** (`b9af2d6`); **F3.2** done; **F3.3** done; **F3.4** done; **F3.5** done; **F3.6** done; **F3.7 (polish & verification)** done
 
-- [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
+- [x] **F4** Product page ———————————?? **F4.1 (foundation: detail reuse, review endpoints, hooks, gallery, route) + F4.2 (info, variants, quantity, material, actions, accordion, sticky bar, toast) + F4.3 (review summary, review form, reviews section, matching/related/recently-viewed rails) + F4.4 (page assembly, SEO, a11y, code-split) done**
 
 - [ ] **F5** Cart, Checkout, Order success, Track order
 
@@ -242,6 +242,38 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-024 | 2026-10-11 | **Modal surfaces trap focus and restore it.** `FilterSheet` (and any future dialog) keeps Tab inside the open sheet and returns focus to the element that opened it on close, in addition to Escape-to-close. Implemented in F3.7. | default |
 
+| D-025 | 2026-10-11 | **Types stay in `src/services/types.ts`.** The F4.1 spec proposed `src/types/product.ts` + `review.ts`, but `Product`/`Review` (and every other contract type) already live in `services/types.ts` and are imported across F1–F3. No `src/types/` folder is created; new types are added to `services/types.ts`. | default |
+
+| D-026 | 2026-10-11 | **One cart store: `src/store/cartStore.ts`.** F4.1 does not create a second `src/store/cart.ts`; the existing persisted Zustand cart (`addItem`/`removeItem`/`setQty`/`clear` + `selectCartCount`/`selectSubtotal`, `STORAGE_KEYS.cart`) already covers it. Product actions in F4.2 reuse it. | default |
+
+| D-027 | 2026-10-11 | **Product detail reuses `getProductBySlug`** (returns `ProductDetail { product, matching, related }`); F4.1 adds only the review endpoints. Separate `getRelatedProducts`/`getMatchingProducts` service functions are **not** added — `useProduct`/`useRelatedProducts` read the single `getProductBySlug` query (shared query key). | default |
+
+| D-028 | 2026-10-11 | **Mock product reviews.** Seeded reviews (no `productId`) are treated as generic samples and shown under every product; `GET /products/:id/reviews` and `POST /products/:id/reviews` are the real endpoints. `submitProductReview` stores a new review as `pending` in memory (moderation), so it never appears in the public list in mock mode. | default |
+
+| D-029 | 2026-10-11 | **Routes stay in `src/app/AppRoutes.tsx`** (not `src/App.tsx`, which only mounts providers). The `/products/:slug` route is added there, lazy-loading `ProductPage`. Same deviation accepted in F3. | default |
+
+| D-030 | 2026-10-11 | **F4.2 product-selection state is lifted to `ProductPage`** (assembled in F4.4). `VariantSelector`/`QuantityStepper`/`ProductInfo`/`MaterialBlock`/`ProductActions`/`StickyAddToCart` are presentational and prop-driven; no React context is introduced for the selected colour/size/quantity. | default |
+
+| D-031 | 2026-10-11 | **Sticky bar visibility uses `IntersectionObserver`** on an `anchorRef` (the main purchase block), not a scroll listener. `StickyAddToCart` is mobile-only (`lg:hidden`) and hides again when the inline actions are back in view. | default |
+
+| D-032 | 2026-10-11 | **Toasts use a minimal `src/store/toastStore.ts` + `src/components/ui/Toast.tsx`** (Zustand queue + `aria-live` viewport), not a new library. The `ToastViewport` is mounted once when the product page is assembled in F4.4. | default |
+
+| D-033 | 2026-10-11 | **"Buy now" adds the line and routes to `ROUTES.cart`** for now: there is no `/checkout` route yet and `app/AppRoutes.tsx` is out of F4.2 scope. F5 repoints it to `/checkout`. | default |
+
+| D-034 | 2026-10-11 | **No per-variant stock in the contract** (`Product.stock` is aggregate only), so F4.2 disables all colour/size options together when `stock <= 0` and caps quantity at the aggregate `stock` (fallback 10). Per-variant inventory is a later contract change. | default |
+
+| D-035 | 2026-10-11 | **`ReviewForm` uses Zod + controlled `useState`, not `react-hook-form`.** The F4.3 scope asked for React Hook Form + Zod, but RHF is not installed and AGENTS.md rule 3 / 03-code-standards forbid new libraries. The existing `Newsletter` form already validates with `zod.safeParse` (D-011 sanctions Zod), so F4.3 follows that pattern. `safeParse` issues are mapped to per-field i18n messages, the first invalid field is focused, and errors are announced with `role="alert"`. | default |
+
+| D-036 | 2026-10-11 | **Submitted review text is stored in both `L10n` fields with the same string** (`{ ar: text, en: text }`). There is no client-side translation service, so the single entered value is duplicated; the admin separates the languages later. `ProductReviewInput.text` requires both fields. | default |
+
+| D-037 | 2026-10-11 | **`MatchingProducts`/`RelatedProducts` are prop-driven** wrappers over the F2 `ProductSlider` (`{ products }`), returning `null` when empty; F4.4 passes `matching`/`related` from the existing `useRelatedProducts` hook. **`ProductReviews` self-fetches** via the existing `useProductReviews(productId)` hook and always renders `ReviewForm` (its `onSubmit` is the hook's `submit`). The F4.1 hook exposes no `refetch`, so the error retry calls `queryClient.invalidateQueries({ queryKey: ["product-reviews", productId] })`. | default |
+
+| D-038 | 2026-10-11 | **`RecentlyViewedProducts` records the current product on mount and excludes it from the rail**, so the widget only shows *other* previously-viewed products and can be empty (nothing else viewed yet). ids are resolved against the mock catalogue (`@/data/products`), mirroring the F2 `sections/home/RecentlyViewed.tsx` — there is no `products/by-ids` endpoint and `catalogService.ts` is out of scope. **Deviation** from "components never import `src/data/`"; to be replaced by a service call when the backend lands. | default |
+
+| D-039 | 2026-10-11 | **Below-the-fold product sections are code-split** (`React.lazy` + `Suspense` in `ProductPage`): `Accordion`, `ProductReviews`, `MatchingProducts`, `RelatedProducts`, `RecentlyViewedProducts`. Keeps framer-motion (accordion/sliders) and zod (review form) off the above-the-fold critical path where the LCP `<h1>` renders. Cut product-page TBT from ~1.75 s to ~0.1 s in Lighthouse. | default |
+
+| D-040 | 2026-10-11 | **Per-page SEO (title + `meta[name=description]` + Open Graph) is applied by a single cleanup-safe effect in `ProductPage`** — no `react-helmet` (no new libraries). JSON-LD Product schema is deferred to F7. The page-local variant selection stays as D-030. | default |
+
 
 
 ## 5. Open questions for the owner
@@ -302,6 +334,12 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - **Light-theme `accent` on `bg` contrast is 4.43:1** (token `--accent` `#8a6a2f` on `--bg` `#f6f0e8`), just under the WCAG AA 4.5:1 for normal text. Affected: `SearchAutocomplete` active option (`bg-bg text-accent`) and primary-button hover text. All other pairs pass (`text`/`bg` 16.27, `text-muted`/`bg` 5.31, dark theme all ≥4.92). `tokens.css` is an F1 file, so not changed here — flagged for the owner (darken `--accent` in light theme slightly).
 
+- **`Hero3DScene` is an 825 kB chunk (222 kB gzip).** An F2 artifact (three.js + `@react-three/fiber`), loaded lazily only on the home page; it is the main reason the ≥500 kB chunk warning fires on every build. Not touched in F4.1 (F2 file) — flagged for the F7 performance pass (shrink the geometry, drop unused three.js modules, or replace with a static/CSS hero).
+
+- **Lighthouse mobile on `/products/signature-ring-band` (F4.4): Accessibility 100, Best Practices 100, Performance ~61–65 (below the ≥80 target).** FCP ~2.3s, LCP ~5.1s, TBT ~0.1s, CLS 0. The remaining gap is **F1/F0 assets, not F4 code**: the **render-blocking Google Fonts stylesheet** (`fonts.googleapis.com/css2`, ~2.4s estimated savings; four families ~350 KB) and a **233 KB `siwar-logo-dark-ink.png`** (F1 `Logo` asset). F4.4 itself improved the page (below-the-fold code-split, D-039; TBT 1.75s → ~0.1s, ProductCard chunk 131 KB → 3.35 KB). Fix is the same F1/F7 task already logged for `/shop`: self-host/subset the fonts, preconnect/preload, compress the logo. **Not fixed in F4.4** — `index.html`, `tokens.css` and the logo are F1 files (no F1/F2/F3 edits). `Hero3D` confirmed absent from the product page (0 requests).
+
+- **F2 token hygiene in reused components (out of F4 scope).** `ReviewCard.tsx` uses `text-fg-subtle` (not a token) and `shadow-sm`, and `CategoryTile.tsx` uses `drop-shadow-sm`; the design system is flat. These are F2 files reused by F4/Rails — flagged, not changed.
+
 
 
 ## 7. Phase history
@@ -331,6 +369,16 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 | F3.5 — `/category/:slug` page | 2026-10-11 | Category page: banner (image + bilingual name/description) over a **new shared `ProductListLayout`** (`ProductListLayout.tsx`), which owns the filter/sort/chips/grid/pagination states, the sticky sidebar, the results counter and the `<title>`/meta effect — ShopPage slimmed to just its header slot + SEO strings. On `/category/:slug` the route slug is injected into the products query and the hook runs with `manageCategory: false` (URL never carries `category`); the Category radios are hidden but the rings-only size group still works. Invalid slugs render a friendly "category not found" state with a "Browse all products" CTA — no silent redirect. `shop.category.*` i18n keys (meta title, notFound, browseAll). Lazy route; `ProductListLayout` chunk 27.4 kB, ShopPage 0.97 kB, CategoryPage 2.6 kB. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Commits: F3.5 (page + layout + route + locales + tracker).
 | F3.6 — `/search?q=` page | 2026-10-11 | Search page: `SearchAutocomplete.tsx` — an inline combobox (`role="combobox"`/`aria-expanded`/`aria-controls`/`aria-activedescendant`, arrow-key navigation, `aria-live` suggestion-count announcement) combining debounced suggestions (`searchSuggest`, existing F1 `useDebouncedValue`, 250ms), recent terms and popular terms; Enter/select → `/search?q=…`, Escape + outside-click close, RTL-safe. `useRecentSearches.ts` (localStorage key `siwar-recent-searches`, deduped, max 5, `clearAll`, SSR-safe). `SearchPage.tsx`: empty `q` → "what are you looking for?" + popular chips; `q` present → `ProductListLayout` with the field in the header; no results → "No results for {q}" + best-seller suggestions + browse-all link (`ProductListLayout` gained an optional `emptyStateSlot` prop; shop/category keep the default `ProductGridEmpty`). `search.*` i18n keys. Lazy route. `SearchPage` chunk 8.2 kB. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Commits: F3.6 (page + autocomplete + hook + route + locales + tracker). Verified: F1 `SearchOverlay.tsx` untouched (D-019); one optional prop added to the F3.5 `ProductListLayout` (owner-approved). |
 | **F3 — Shop, Category, Search (complete)** | 2026-10-11 | Whole-phase summary. URL is the single source of truth (`useProductFilters` + pure, unit-tested parse/serialize/query helpers). Three lazy routes — `/shop` (full catalogue), `/category/:slug` (route-owned slug, banner, friendly not-found), `/search?q=…` (autocomplete combobox, recents, popular, empty + no-results states) — all share one `ProductListLayout` (filter sidebar/`FilterSheet`, `ActiveFilterChips`, `SortSelect`, `aria-live` results counter, grid with skeleton/empty/error + pagination). **F3.7 polish:** fixed nested `<main>` (D-023), added `FilterSheet` focus trap + focus restore (D-024), ran Lighthouse mobile on `/shop` with filters (Accessibility 100, Best Practices 100, **Performance 47 — below the ≥80 target; see Known issues**), verified i18n key parity (178/178, AR/EN, no placeholder mismatch), WCAG token contrast, hard-coded-string scan, edge cases (`?page=999`, `?minPrice=abc`, invalid category, from-URL filters) and per-page code chunks. Added `frontend/README.md` (URL-state + how to add a filter). `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Commits: `b9af2d6` (F3.1), F3.2, F3.3, `6df816f` (split fix), F3.4, F3.5, F3.6, F3.7. Known flags: Lighthouse Performance below target (F1 fonts/bundle), unused `date-fns` dependency, light-theme `accent`-on-`bg` contrast 4.43:1. |
+
+| F4.1 — Product foundation | 2026-10-11 | Product-page foundation. Reused the existing `getProductBySlug` (`ProductDetail`) and added `getProductReviews`/`submitProductReview` (+ pure `selectProductReviews`) to `contentService.ts`, re-exported from `api.ts`; new `useProduct`/`useRelatedProducts`/`useProductReviews` hooks (TanStack Query, shared query key → one request). New `ProductGallery.tsx` (main + thumbnails, click/keyboard nav, desktop hover-zoom, mobile swipe, RTL-mirrored arrows, a11y region/labels, `prefers-reduced-motion` disables zoom, handles 0/1/many images). New `ProductPage.tsx` (loading skeleton / error / not-found / loaded with breadcrumb + name + gallery) wired to the lazy `/products/:slug` route in `app/AppRoutes.tsx`. Existing `store/cartStore.ts` reused (no duplicate). `product.page.*` + `product.gallery.*` i18n keys (AR/EN parity). `ProductPage` chunk 6.45 kB. `npm run build`, `npm run lint` and `npm test` pass (72 tests). | Branch `feature/f4-product-page`. Decisions D-025–D-029. Deviations from the F4.1 spec (types location, cart store, dedicated related/matching functions, `App.tsx` vs `AppRoutes.tsx`) were raised and the owner chose to reuse existing code. |
+
+| F4.2 — Product info & actions | 2026-10-11 | Product-page interaction layer, all presentational/prop-driven: `ProductInfo` (name, stars + review link, price/old price/discount badge, truncated description, stock badge), `VariantSelector` (colour swatches + rings-only sizes, roving-focus radiogroups, RTL-mirrored arrow keys, all options disabled when out of stock), `QuantityStepper` (min/max clamp, typed input, `aria-live`), `MaterialBlock` (reuses `trust.*` copy + icons), `Accordion` (reduced-motion-aware disclosure with `aria-expanded`/`aria-controls`), `ProductActions` (add-to-cart + toast, buy-now → cart, wishlist local state, Web Share with copy fallback), `StickyAddToCart` (mobile bar driven by `IntersectionObserver` on `anchorRef`). New pure `utils/product.ts` (`clampQuantity`/`resolveStockStatus`/`buildCartItem`) + unit tests; new `store/toastStore.ts` + `components/ui/Toast.tsx`; `product.info/quantity/material/actions/toast.*` + top-level `toast.*` keys (AR/EN parity). Components are not yet assembled into a page (F4.4). `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f4-product-page`. Decisions D-030–D-034. |
+
+| F4.3 — Reviews & related products | 2026-10-11 | Product-page reviews and recommendation rails. `ReviewSummary` (big average, star row, 5→1 distribution bars that grow from the logical start in RTL, per-bar `aria-label`). `ReviewForm` (clickable 1–5 star radiogroup with arrow-key nav, name + text + optional image-URL textarea, Zod + controlled-state validation with per-field i18n errors, first-error focus, success toast + reset, error state; entered text stored in both `L10n` fields per D-036). `ProductReviews` (id="reviews" anchor used by `ProductInfo`; self-fetches approved reviews via `useProductReviews`, 10-at-a-time "Show more", empty/loading-skeleton/error-with-retry states, reuses F2 `ReviewCard` — still no "Verified purchase" badge, and always renders the form). `MatchingProducts`/`RelatedProducts` (prop-driven `ProductSlider` rails, hidden when empty). `RecentlyViewedProducts` (records current product, shows the rest, hidden when empty). `product.reviews.*` + `product.matching/related/recentlyViewed` keys (AR/EN parity 248/248). Components not assembled into a page yet (F4.4). `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f4-product-page`. Decisions D-035–D-038. `react-hook-form` not installed → used Zod + controlled state (D-035). |
+
+| F4.4 — Product page assembly & polish | 2026-10-11 | Assembled the full `/products/:slug` page in `ProductPage.tsx`: breadcrumb (Home › Shop › Category › Product, category linked to `ROUTES.category`), 2-column desktop grid (gallery start / info end), then `ProductInfo` → `VariantSelector` → `QuantityStepper` → `ProductActions` → `MaterialBlock` → `Accordion` (shipping/returns/material), then `ProductReviews` + `MatchingProducts`/`RelatedProducts`/`RecentlyViewedProducts` rails + `StickyAddToCart` + `ToastViewport`. Page-local selection state lifted into `ProductPage` (D-030); below-the-fold sections code-split with `React.lazy`/`Suspense` (D-039); per-page SEO effect for title/meta-description/OG tags, JSON-LD deferred to F7 (D-040). F4.2 `ProductInfo` a11y fix (`role="img"` on the rating span). Added `product.details.*` i18n keys (AR/EN parity 254/254) and a `frontend/README.md` "Product page (F4)" section. `npm run build`, `npm run lint` and `npm test` pass (77 tests). Lighthouse mobile `/products/signature-ring-band`: **Accessibility 100, Best Practices 100, Performance ~61–65 (below the ≥80 target; root cause = F1 render-blocking Google Fonts + 233 KB logo — see Known issues)**. Hero3D confirmed not loaded on the product page. | Branch `feature/f4-product-page`. Decisions D-039–D-040. |
+
+| **F4 — Product page (complete)** | 2026-10-11 | Whole-phase summary. Reused the existing `getProductBySlug` and `cartStore`; added only the review endpoints + `useProduct`/`useRelatedProducts`/`useProductReviews`. Detail page: gallery (zoom/swipe/keyboard/RTL), info (stars/price/discount/stock), colour + rings-only sizes + quantity, material block, disclosures, add-to-cart/short buy-now/wishlist/share + mobile sticky bar + toasts, review summary/form/list (moderation-aware), and matching/related/recently-viewed rails. Page-local selection state, below-the-fold code-splitting, per-page SEO (title/description/OG), full loading/empty/error/404 states, RTL + both themes, i18n parity 254/254. 77 tests green. | Branch `feature/f4-product-page`. Commits: `ae37010` (F4.1), `d9a9713` (F4.2), `735f389` (F4.3), F4.4 (assembly). Flags: performance below target (F1 assets); F2 token-hygiene in `ReviewCard`/`CategoryTile`. |
 
 Suggested commit message for the F2 hotfix:
 
@@ -368,3 +416,8 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F3.6**: Search page (`SearchPage`, `SearchAutocomplete` combobox, `useRecentSearches`, `?q=` owned by URL, empty + no-results states, `search.*` keys) — done.
 - **F3.7**: F3 polish & verification — fixed nested `<main>` (D-023), added `FilterSheet` focus trap + restore (D-024), added `frontend/README.md`, verified i18n parity / contrast / edge cases / chunks / no console logs. Lighthouse mobile `/shop` = Accessibility 100, Best Practices 100, Performance 47 (below target — F1 fonts/bundle; see Known issues) — done.
 - **F3 (whole)**: Shop + Category + Search complete — one `ProductListLayout`, URL-owned state, 69 tests green, lazy chunks — done.
+- **F4.1**: Product foundation — `getProductReviews`/`submitProductReview` + `selectProductReviews`, `useProduct`/`useRelatedProducts`/`useProductReviews`, `ProductGallery`, `ProductPage`, lazy `/products/:slug`; reuses existing `getProductBySlug` + `cartStore` — done.
+- **F4.2**: Product info & actions — `ProductInfo`, `VariantSelector`, `QuantityStepper`, `MaterialBlock`, `Accordion`, `ProductActions`, `StickyAddToCart`; pure `utils/product.ts` (+ tests), `store/toastStore.ts` + `components/ui/Toast.tsx`; `product.*` i18n keys (77 tests) — done.
+- **F4.3**: Reviews & related products — `ReviewSummary`, `ReviewForm` (Zod + controlled state, D-035), `ProductReviews`, `MatchingProducts`, `RelatedProducts`, `RecentlyViewedProducts`; `product.reviews.*` + section heading keys (parity 248/248) — done.
+- **F4.4**: Page assembly & polish — assembled `ProductPage` (breadcrumb, 2-col grid, all sections + sticky bar + toast viewport), page-local selection state (D-030), below-the-fold code-split (D-039), SEO effect (D-040), `ProductInfo` a11y fix, `product.details.*` keys (parity 254/254), README section; Lighthouse a11y 100 / BP 100 / Perf ~61–65 (F1 fonts+logo ceiling) — done.
+- **F4 (whole)**: Product page complete — gallery, info/variants/quantity, actions+sticky+toast, reviews (summary/form/list), matching/related/recently-viewed rails; lazy `/products/:slug`; 77 tests green; parity 254/254 — done.

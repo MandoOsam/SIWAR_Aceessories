@@ -117,7 +117,124 @@
     "newArrivals": "New arrivals",
     "bestSellers": "Best sellers",
     "offers": "Offers",
-    "limitedTime": "Limited time offers"
+    "limitedTime": "Limited time offers",
+    "page": {
+      "loading": "Loading product…",
+      "notFound": {
+        "title": "Product not found",
+        "body": "We can't find the product you're looking for. It may have been moved or removed."
+      },
+      "browseAll": "Browse all products",
+      "breadcrumb": {
+        "label": "Breadcrumb",
+        "home": "Home",
+        "shop": "Shop"
+      },
+      "meta": {
+        "title": "{{name}} | SIWAR"
+      }
+    },
+    "gallery": {
+      "label": "Product gallery",
+      "thumbnails": "Product image thumbnails",
+      "previous": "Previous image",
+      "next": "Next image",
+      "goTo": "View image {{index}} of {{count}}",
+      "noImage": "No image available"
+    },
+    "info": {
+      "ratingLabel": "Rated {{rating}} out of 5",
+      "reviews_one": "{{count}} review",
+      "reviews_other": "{{count}} reviews",
+      "discount": "{{percent}}% off",
+      "readMore": "Read more",
+      "readLess": "Read less",
+      "stock": {
+        "in": "In stock — {{available}} available",
+        "low": "Only {{left}} left",
+        "out": "Out of stock"
+      }
+    },
+    "quantity": {
+      "label": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "value": "Selected quantity: {{qty}}"
+    },
+    "material": {
+      "title": "Stainless steel",
+      "plating": "Plating: {{value}}"
+    },
+    "details": {
+      "shipping": {
+        "title": "Shipping",
+        "body": "Orders are prepared within 1–2 business days and delivered in 2–5 business days across Egypt. Free shipping on orders over EGP 1,500."
+      },
+      "returns": {
+        "title": "Returns & exchanges",
+        "body": "Changed your mind? You have 14 days to return or exchange an unworn piece in its original packaging."
+      },
+      "material": {
+        "title": "Care & materials",
+        "body": "Stainless steel resists rust and tarnish and is kind to sensitive skin. Keep it dry, avoid perfume, and clean it with a soft cloth."
+      }
+    },
+    "actions": {
+      "buyNow": "Buy now",
+      "wishlistAdd": "Add to wishlist",
+      "wishlistRemove": "Remove from wishlist",
+      "share": "Share product",
+      "shareCopied": "Link copied"
+    },
+    "toast": {
+      "added": "Added to cart"
+    },
+    "matching": "Matching products",
+    "related": "You may also like",
+    "recentlyViewed": "Recently viewed",
+    "reviews": {
+      "title": "Reviews",
+      "loading": "Loading reviews…",
+      "summary": {
+        "basedOn_one": "Based on 1 review",
+        "basedOn_other": "Based on {{count}} reviews",
+        "averageLabel": "Average rating {{rating}} out of 5",
+        "distributionLabel": "Rating distribution",
+        "barLabel": "{{star}} stars: {{reviews}} reviews ({{percent}}%)"
+      },
+      "list": {
+        "showMore": "Show more"
+      },
+      "empty": {
+        "title": "No reviews yet",
+        "body": "Be the first to review this product!"
+      },
+      "form": {
+        "heading": "Write a review",
+        "ratingLabel": "Your rating",
+        "ratingError": "Please choose a rating from 1 to 5.",
+        "starLabel": "{{value}} out of 5 stars",
+        "nameLabel": "Name",
+        "namePlaceholder": "Your name",
+        "nameError": "Name is required (at least 2 characters).",
+        "textLabel": "Your review",
+        "textPlaceholder": "Share your experience with the product",
+        "textError": "Please write at least 10 characters.",
+        "imagesLabel": "Image links (optional)",
+        "imagesPlaceholder": "One image URL per line",
+        "imagesHint": "Put a valid URL on each line. Image upload arrives soon.",
+        "imagesError": "Make sure every link is a valid URL (up to 5).",
+        "submit": "Submit review",
+        "submitting": "Submitting…",
+        "success": "Thanks! Your review is awaiting approval.",
+        "error": "We couldn't submit your review. Please try again.",
+        "errorSummary": "Please fix the highlighted fields."
+      },
+      "error": {
+        "title": "Couldn't load reviews",
+        "description": "Something went wrong while loading reviews. Please try again."
+      }
+    }
   },
   "shop": {
     "sortLabel": "Sort by",
@@ -234,6 +351,9 @@
     "recommended": "Recommended for You",
     "recentlyViewed": "Recently Viewed",
     "testimonials": "Testimonials"
+  },
+  "toast": {
+    "regionLabel": "Notifications"
   },
   "newsletter": {
     "title": "Stay in the loop",

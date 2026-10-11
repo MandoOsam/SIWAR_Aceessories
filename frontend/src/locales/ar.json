@@ -117,7 +117,124 @@
     "newArrivals": "وصل حديثا",
     "bestSellers": "الأكثر مبيعا",
     "offers": "Offers",
-    "limitedTime": "Limited time offers"
+    "limitedTime": "Limited time offers",
+    "page": {
+      "loading": "جاري تحميل المنتج…",
+      "notFound": {
+        "title": "المنتج غير موجود",
+        "body": "لم نتمكن من العثور على المنتج الذي تبحث عنه. ربما تم نقله أو حذفه."
+      },
+      "browseAll": "تصفح جميع المنتجات",
+      "breadcrumb": {
+        "label": "مسار التنقل",
+        "home": "الرئيسية",
+        "shop": "المتجر"
+      },
+      "meta": {
+        "title": "{{name}} | سيوار"
+      }
+    },
+    "gallery": {
+      "label": "معرض صور المنتج",
+      "thumbnails": "صور المنتج المصغّرة",
+      "previous": "الصورة السابقة",
+      "next": "الصورة التالية",
+      "goTo": "عرض الصورة {{index}} من {{count}}",
+      "noImage": "لا توجد صورة"
+    },
+    "info": {
+      "ratingLabel": "التقييم {{rating}} من 5",
+      "reviews_one": "تقييم واحد",
+      "reviews_other": "{{count}} تقييمات",
+      "discount": "خصم {{percent}}%",
+      "readMore": "اقرأي المزيد",
+      "readLess": "اقرأي أقل",
+      "stock": {
+        "in": "متوفر — {{available}} قطعة",
+        "low": "آخر {{left}} قطع",
+        "out": "نفذ المخزون"
+      }
+    },
+    "quantity": {
+      "label": "الكمية",
+      "decrease": "تقليل الكمية",
+      "increase": "زيادة الكمية",
+      "value": "الكمية المختارة: {{qty}}"
+    },
+    "material": {
+      "title": "ستانلس ستيل",
+      "plating": "الطلاء: {{value}}"
+    },
+    "details": {
+      "shipping": {
+        "title": "الشحن",
+        "body": "تُجهّز الطلبات خلال 1–2 يوم عمل وتُسلّم خلال 2–5 أيام عمل داخل مصر. شحن مجاني للطلبات فوق 1500 جنيه."
+      },
+      "returns": {
+        "title": "الاستبدال والاسترجاع",
+        "body": "غيّرتي رأيك؟ لديك 14 يومًا لإرجاع أو استبدال قطعة غير مستخدمة في عبوتها الأصلية."
+      },
+      "material": {
+        "title": "العناية والمواد",
+        "body": "الستانلس ستيل يقاوم الصدأ والبهتان ومناسب للبشرة الحساسة. حافظي على جفافه، وتجنّبي العطور، ونظّفيه بقطعة قماش ناعمة."
+      }
+    },
+    "actions": {
+      "buyNow": "اشتري الآن",
+      "wishlistAdd": "أضيفي إلى المفضلة",
+      "wishlistRemove": "إزالة من المفضلة",
+      "share": "شاركي المنتج",
+      "shareCopied": "تم نسخ الرابط"
+    },
+    "toast": {
+      "added": "تمت الإضافة إلى السلة"
+    },
+    "matching": "منتجات مطابقة",
+    "related": "قد يعجبك أيضًا",
+    "recentlyViewed": "شوهدت مؤخرًا",
+    "reviews": {
+      "title": "التقييمات",
+      "loading": "جاري تحميل التقييمات…",
+      "summary": {
+        "basedOn_one": "بناءً على تقييم واحد",
+        "basedOn_other": "بناءً على {{count}} تقييمات",
+        "averageLabel": "متوسط التقييم {{rating}} من 5",
+        "distributionLabel": "توزيع التقييمات",
+        "barLabel": "{{star}} نجوم: {{reviews}} تقييم ({{percent}}%)"
+      },
+      "list": {
+        "showMore": "عرض المزيد"
+      },
+      "empty": {
+        "title": "لا توجد تقييمات بعد",
+        "body": "كوني أول من يقيّم هذا المنتج!"
+      },
+      "form": {
+        "heading": "اكتبي تقييمك",
+        "ratingLabel": "تقييمك",
+        "ratingError": "من فضلك اختاري تقييمًا من 1 إلى 5.",
+        "starLabel": "{{value}} من 5 نجوم",
+        "nameLabel": "الاسم",
+        "namePlaceholder": "اسمك",
+        "nameError": "الاسم مطلوب (حرفان على الأقل).",
+        "textLabel": "رأيك",
+        "textPlaceholder": "شاركي تجربتك مع المنتج",
+        "textError": "اكتبي 10 أحرف على الأقل.",
+        "imagesLabel": "روابط الصور (اختياري)",
+        "imagesPlaceholder": "رابط صورة في كل سطر",
+        "imagesHint": "ضعي رابطًا صحيحًا في كل سطر. رفع الصور هيتوفر قريبًا.",
+        "imagesError": "تأكدي إن كل الروابط صحيحة (بحد أقصى 5).",
+        "submit": "إرسال التقييم",
+        "submitting": "جاري الإرسال…",
+        "success": "شكرًا! تقييمك قيد المراجعة.",
+        "error": "تعذر إرسال التقييم. حاولي مرة أخرى.",
+        "errorSummary": "من فضلك صحّحي الحقول المميّزة."
+      },
+      "error": {
+        "title": "تعذر تحميل التقييمات",
+        "description": "حصلت مشكلة أثناء تحميل التقييمات. حاولي تاني."
+      }
+    }
   },
   "shop": {
     "sortLabel": "ترتيب حسب",
@@ -234,6 +351,9 @@
     "recommended": "Recommended for You",
     "recentlyViewed": "Recently Viewed",
     "testimonials": "Testimonials"
+  },
+  "toast": {
+    "regionLabel": "الإشعارات"
   },
   "newsletter": {
     "title": "Stay in the loop",
