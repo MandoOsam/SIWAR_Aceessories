@@ -117,7 +117,31 @@
     "newArrivals": "New arrivals",
     "bestSellers": "Best sellers",
     "offers": "Offers",
-    "limitedTime": "Limited time offers"
+    "limitedTime": "Limited time offers",
+    "page": {
+      "loading": "Loading product…",
+      "notFound": {
+        "title": "Product not found",
+        "body": "We can't find the product you're looking for. It may have been moved or removed."
+      },
+      "browseAll": "Browse all products",
+      "breadcrumb": {
+        "label": "Breadcrumb",
+        "home": "Home",
+        "shop": "Shop"
+      },
+      "meta": {
+        "title": "{{name}} | SIWAR"
+      }
+    },
+    "gallery": {
+      "label": "Product gallery",
+      "thumbnails": "Product image thumbnails",
+      "previous": "Previous image",
+      "next": "Next image",
+      "goTo": "View image {{index}} of {{count}}",
+      "noImage": "No image available"
+    }
   },
   "shop": {
     "sortLabel": "Sort by",

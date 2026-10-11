@@ -117,7 +117,31 @@
     "newArrivals": "وصل حديثا",
     "bestSellers": "الأكثر مبيعا",
     "offers": "Offers",
-    "limitedTime": "Limited time offers"
+    "limitedTime": "Limited time offers",
+    "page": {
+      "loading": "جاري تحميل المنتج…",
+      "notFound": {
+        "title": "المنتج غير موجود",
+        "body": "لم نتمكن من العثور على المنتج الذي تبحث عنه. ربما تم نقله أو حذفه."
+      },
+      "browseAll": "تصفح جميع المنتجات",
+      "breadcrumb": {
+        "label": "مسار التنقل",
+        "home": "الرئيسية",
+        "shop": "المتجر"
+      },
+      "meta": {
+        "title": "{{name}} | سيوار"
+      }
+    },
+    "gallery": {
+      "label": "معرض صور المنتج",
+      "thumbnails": "صور المنتج المصغّرة",
+      "previous": "الصورة السابقة",
+      "next": "الصورة التالية",
+      "goTo": "عرض الصورة {{index}} من {{count}}",
+      "noImage": "لا توجد صورة"
+    }
   },
   "shop": {
     "sortLabel": "ترتيب حسب",

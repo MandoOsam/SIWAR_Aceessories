@@ -17,10 +17,12 @@ export {
 } from "./catalogService";
 export {
   getHomeContent,
+  getProductReviews,
   getPublicSettings,
   getStaticPage,
   listReviews,
   listStaticPages,
+  submitProductReview,
 } from "./contentService";
 
 

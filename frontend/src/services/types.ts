@@ -104,6 +104,15 @@ export type Review = {
   createdAt: string;
 };
 
+/** Body of `POST /products/:id/reviews` (02-architecture.md §7). Submitted reviews go to `pending`. */
+export type ProductReviewInput = {
+  authorName: string;
+  /** 1–5, validated server-side (02-architecture.md §6). */
+  rating: number;
+  text: L10n;
+  images?: string[];
+};
+
 export const TRUST_BADGE_KEYS = ["shipping", "payment", "returns", "support"] as const;
 
 export type TrustBadgeKey = (typeof TRUST_BADGE_KEYS)[number];
