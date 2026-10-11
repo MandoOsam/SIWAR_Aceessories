@@ -180,6 +180,22 @@
       "next": "Next page",
       "status": "Page {{page}} of {{total}}",
       "page": "Page {{page}}"
+    },
+    "page": {
+      "title": "Shop",
+      "breadcrumb": {
+        "label": "Breadcrumb",
+        "home": "Home",
+        "shop": "Shop"
+      }
+    },
+    "results": {
+      "count_one": "{{count}} product",
+      "count_other": "{{count}} products"
+    },
+    "meta": {
+      "title": "Shop | SIWAR",
+      "description": "Shop SIWAR's stainless steel jewelry — necklaces, rings, earrings, bracelets and sets, in radiant gold."
     }
   },
   "home": {

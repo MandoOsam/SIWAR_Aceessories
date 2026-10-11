@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-11 (F3.3 filters UI done; committing).
+> Last updated: 2026-10-11 (F3.4 `/shop` page done; committing F3.3 post-review split + F3.4).
 
 ## 1. Current status
 
@@ -14,11 +14,11 @@
 
 |---|---|
 
-| **Current phase** | **F3.3 — Filters UI** — done (branch `feature/f3-shop-and-search`) |
+| **Current phase** | **F3.4 — `/shop` page** — done (branch `feature/f3-shop-and-search`) |
 
-| Last completed phase | F3.3 — Filters UI (desktop `FilterPanel` + mobile `FilterSheet`) |
+| Last completed phase | F3.4 — `/shop` page (assembles F3.2 + F3.3 pieces + Pagination) |
 
-| Next phase | F3.4 — `/shop` page (assembles F3.2 + F3.3 pieces + Pagination) |
+| Next phase | F3.5 — `/category/:slug` page (F3.4 layout with the category pinned to the route) |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -130,7 +130,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F2** Home - all sections, Hero with swappable animated background + one 3D element (F2.1-F2.7 structure in place; F2.8 polish) |
 
-- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) done** (`b9af2d6`); **F3.2 (shared product list UI) done**; **F3.3 (filters UI) done**; F3.4–F3.7 pending
+- [~] **F3** Shop, Category, Search ———————————?? filters, sort, pagination, mobile filter sheet. **F3.1 (URL state foundation) done** (`b9af2d6`); **F3.2 (shared product list UI) done**; **F3.3 (filters UI) done**; **F3.4 (/shop page) done**; F3.5–F3.7 pending
 
 - [ ] **F4** Product page ———————————?? gallery, variants, reviews, related/matching
 
@@ -319,6 +319,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 | F3.2 — Shared product list UI | 2026-10-10 | Product-list building blocks for the shop/category/search pages: responsive `ProductGrid` (2/3/4 cols) with reduced-motion-aware mount stagger, `SortSelect` and `Pagination` (both URL-driven via `useProductFilters`, RTL-safe mirrored arrows, visible "Page X of Y"), removable `ActiveFilterChips` with a "clear all" action, plus `ProductGridSkeleton` (shimmer shape), `ProductGridEmpty` and `ProductGridError`. `useProductFilters` gained `setFilters(patch)` so the combined price chip clears `minPrice`+`maxPrice` in a single URL update. `shop.*` i18n keys added to `ar.json`/`en.json`. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. No pages yet — F3.4–F3.6 wire these into `/shop`, `/category/:slug`, `/search`. |
 
 | F3.3 — Filters UI | 2026-10-11 | Desktop `FilterPanel` (category radios, price via two native `number` inputs committed on blur/Enter, rating 1–4 stars, availability / discount / new toggles, single-select colour, size group shown only when the effective category is `rings`) and mobile `FilterSheet` (bottom sheet reusing `FilterPanel`, drag-to-close + backdrop + Escape, sticky Apply/Clear, active-count badge on the trigger, `prefers-reduced-motion` aware, `aria-expanded`/`role="dialog"`), plus `FilterPanelSkeleton` and an SSR-safe `useMediaQuery`. `shop.filters.*` i18n keys added. Colour/size are single-select per D-022. `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Not wired to a page yet — F3.4–F3.6 assemble these with the F3.2 pieces. |
+| F3.4 — `/shop` page | 2026-10-11 | Full catalogue page assembling the F3.2/F3.3 pieces: header + breadcrumb, desktop `FilterPanel` in a sticky `lg` sidebar, mobile `FilterSheet` trigger, `ActiveFilterChips`, `SortSelect`, an `aria-live` results counter (`shop.results.count_one/_other`), `ProductGrid` with skeleton/empty/error states (error has a retry), and `Pagination`. The URL is the single source of truth through `useProductFilters`; the route is lazy-loaded via `React.lazy` (own 27.9 kB chunk). Per-page `<title>` + meta description from i18n (`shop.meta.*`). **Post-review: `FilterPanel` was 305 lines and was split into `components/filters/` helpers (`FilterGroup`, `ToggleRow`, `PillButton`, `PriceInput`) to honour the 300-line cap (`03-code-standards.md` §2); `FilterSheet` untouched.** `npm run build`, `npm run lint` and `npm test` pass (69 tests). | Branch `feature/f3-shop-and-search`. Commits: `6df816f` (split fix) + F3.4 (page + route + locales + tracker).
 
 Suggested commit message for the F2 hotfix:
 
@@ -350,3 +351,5 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F3.1**: URL state foundation (`useProductFilters`, `data/search.ts`, popular-searches refactor, unit tests) — done (`b9af2d6`).
 - **F3.2**: Shared product list UI (`ProductGrid`, `ProductGridSkeleton`, `ProductGridEmpty`, `ProductGridError`, `SortSelect`, `Pagination`, `ActiveFilterChips`; `useProductFilters.setFilters` added; `shop.*` i18n keys) — done.
 - **F3.3**: Filters UI (`FilterPanel`, `FilterSheet`, `FilterPanelSkeleton`, `useMediaQuery`; `shop.filters.*` keys; colour/size single-select per D-022) — done.
+- **F3.3 (post-review)**: `FilterPanel` split into `components/filters/` (`FilterGroup`, `ToggleRow`, `PillButton`, `PriceInput`); was 305 lines (over the 300 cap), now 202 — `6df816f`.
+- **F3.4**: Shop page (`ShopPage`, lazy route, breadcrumb, `<title>`/meta, aria-live results counter, sticky desktop sidebar + mobile sheet, skeleton/empty/error/grid/pagination states) — done.

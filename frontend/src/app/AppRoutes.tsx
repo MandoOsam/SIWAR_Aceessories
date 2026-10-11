@@ -8,6 +8,7 @@ import { ROUTES } from "@/config/app";
 // (03-code-standards.md §5: lazy-load routes).
 const HomePage = lazy(async () => import("@/pages/HomePage"));
 const NotFoundPage = lazy(async () => import("@/pages/NotFoundPage"));
+const ShopPage = lazy(async () => import("@/pages/ShopPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -20,7 +21,7 @@ export function AppRoutes() {
           Routes for phases F3–F6. They render one shared placeholder so navigation from the navbar
           works today without inventing page content before its phase.
         */}
-        <Route path="/shop" element={<PlaceholderPage phase="F3" />} />
+        <Route path={ROUTES.shop} element={<ShopPage />} />
         <Route path="/category/:slug" element={<PlaceholderPage phase="F3" />} />
         <Route path="/search" element={<PlaceholderPage phase="F3" />} />
         <Route path="/products/:slug" element={<PlaceholderPage phase="F4" />} />
