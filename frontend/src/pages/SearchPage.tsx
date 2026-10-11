@@ -31,7 +31,7 @@ export default function SearchPage() {
 
   if (query === "") {
     return (
-      <main className="container-page pb-16 pt-6 lg:pb-20">
+      <div className="container-page pb-16 pt-6 lg:pb-20">
         <header className="border-b border-line pb-6">
           <h1 className="font-heading text-heading">{t("search.title")}</h1>
           <div className="mt-6 max-w-xl">
@@ -55,7 +55,7 @@ export default function SearchPage() {
             ))}
           </ul>
         </section>
-      </main>
+      </div>
     );
   }
 

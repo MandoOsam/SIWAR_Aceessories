@@ -85,7 +85,7 @@ export function ProductListLayout({
   }, [documentTitle, metaDescription]);
 
   return (
-    <main className="container-page pb-16 pt-6 lg:pb-20">
+    <div className="container-page pb-16 pt-6 lg:pb-20">
       {headerSlot}
 
       <div className="mt-8 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-10">
@@ -134,7 +134,7 @@ export function ProductListLayout({
           ) : null}
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

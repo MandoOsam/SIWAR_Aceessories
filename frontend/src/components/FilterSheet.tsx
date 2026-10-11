@@ -22,14 +22,25 @@ export function FilterSheet({ category, showCategory }: FilterPanelProps) {
   const { t } = useTranslation();
   const { filters, clearFilters } = useProductFilters();
   const [isOpen, setIsOpen] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
   const controls = useDragControls();
   const shouldReduceMotion = useReducedMotion() === true;
 
   useLockBodyScroll(isOpen);
 
-  const close = useCallback(() => setIsOpen(false), []);
-  const open = useCallback(() => setIsOpen(true), []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    // Return focus to whatever opened the sheet (the trigger) so keyboard users are not dropped.
+    restoreFocusRef.current?.focus();
+    restoreFocusRef.current = null;
+  }, []);
+  const open = useCallback(() => {
+    restoreFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setIsOpen(true);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) {
@@ -38,6 +49,33 @@ export function FilterSheet({ category, showCategory }: FilterPanelProps) {
     const onKeyDown = (event: KeyboardEvent): void => {
       if (event.key === "Escape") {
         close();
+        return;
+      }
+      if (event.key !== "Tab") {
+        return;
+      }
+      const sheet = sheetRef.current;
+      if (sheet === null) {
+        return;
+      }
+      const focusable = sheet.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) {
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (first === undefined || last === undefined) {
+        return;
+      }
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !sheet.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !sheet.contains(active))) {
+        event.preventDefault();
+        first.focus();
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -105,6 +143,7 @@ export function FilterSheet({ category, showCategory }: FilterPanelProps) {
             <motion.div
               key="filter-sheet"
               id={SHEET_ID}
+              ref={sheetRef}
               role="dialog"
               aria-modal="true"
               aria-label={t("shop.filters.title")}
