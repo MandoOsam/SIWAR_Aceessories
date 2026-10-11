@@ -104,9 +104,9 @@ export function Navbar() {
             className="hidden sm:inline-flex"
           />
           <div className="relative">
-            <IconLink
-              to={ROUTES.cart}
+            <IconButton
               label={t("nav.cart")}
+              onClick={() => openOverlay("cart")}
               icon={<ShoppingBag aria-hidden="true" className="size-5" />}
             />
             <CartBadge count={cartCount} />

@@ -236,6 +236,59 @@
       }
     }
   },
+  "cart": {
+    "title": "سلة التسوق",
+    "meta": {
+      "title": "السلة | SIWAR",
+      "description": "راجعي سلة SIWAR، وطبّقي كود الخصم ثم أكملي الشراء."
+    },
+    "breadcrumb": {
+      "label": "مسار التنقل",
+      "home": "الرئيسية"
+    },
+    "itemCount_one": "قطعة واحدة",
+    "itemCount_other": "{{count}} قطع",
+    "drawerLabel": "سلة التسوق",
+    "closeLabel": "إغلاق السلة",
+    "empty": {
+      "title": "سلتك فارغة",
+      "body": "تصفّحي قطع الاستانلس ستيل وأضيفي اللي يعجبك.",
+      "action": "تصفّح المنتجات"
+    },
+    "saved": {
+      "title": "محفوظ للاحقاً"
+    },
+    "item": {
+      "size": "مقاس {{size}}",
+      "quantity": "الكمية: {{qty}}",
+      "save": "احفظ للاحقاً",
+      "moveToCart": "انقل إلى السلة",
+      "removeLabel": "إزالة {{name}} من السلة"
+    },
+    "summary": {
+      "title": "ملخص الطلب",
+      "subtotal": "الإجمالي الفرعي",
+      "shipping": "الشحن",
+      "shippingFree": "مجاني",
+      "shippingCalculated": "يُحسب عند الشراء",
+      "discount": "الخصم",
+      "total": "الإجمالي"
+    },
+    "coupon": {
+      "label": "كود الخصم",
+      "placeholder": "أدخلي الكود",
+      "apply": "تطبيق",
+      "applying": "جارٍ التطبيق…",
+      "applied": "تم تطبيق كود {{code}}",
+      "remove": "إزالة الكود",
+      "errors": {
+        "invalid": "كود الخصم غير صحيح.",
+        "min-order": "هذا الكود يحتاج إجمالي طلب أعلى."
+      }
+    },
+    "checkout": "إتمام الشراء",
+    "continueShopping": "متابعة التسوق"
+  },
   "shop": {
     "sortLabel": "ترتيب حسب",
     "sort": {

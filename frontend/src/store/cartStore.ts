@@ -41,15 +41,22 @@ export type Coupon = {
   type: "percent" | "fixed";
   value: number;
   maxDiscount?: number;
+  /** Frees the shipping fee (coupon `FREESHIP`); shipping is only charged at checkout. */
+  freeShipping?: boolean;
 };
 
 type CartState = {
   items: CartItem[];
+  /** Lines set aside with "Save for later"; kept in the same store so one persist key covers both. */
+  saved: CartItem[];
   coupon: Coupon | null;
   addItem: (item: Omit<CartItem, "key">) => void;
   removeItem: (key: string) => void;
   setQty: (key: string, qty: number) => void;
   clear: () => void;
+  saveForLater: (key: string) => void;
+  moveToCart: (key: string) => void;
+  removeSaved: (key: string) => void;
   applyCoupon: (coupon: Coupon) => void;
   removeCoupon: () => void;
 };
@@ -58,6 +65,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       items: [],
+      saved: [],
       coupon: null,
 
       addItem: (item) =>
@@ -88,12 +96,53 @@ export const useCartStore = create<CartState>()(
 
       clear: () => set({ items: [], coupon: null }),
 
+      saveForLater: (key) =>
+        set((state) => {
+          const item = state.items.find((line) => line.key === key);
+          if (item === undefined) {
+            return {};
+          }
+          return {
+            items: state.items.filter((line) => line.key !== key),
+            saved: state.saved.some((line) => line.key === key)
+              ? state.saved
+              : [...state.saved, item],
+          };
+        }),
+
+      moveToCart: (key) =>
+        set((state) => {
+          const item = state.saved.find((line) => line.key === key);
+          if (item === undefined) {
+            return {};
+          }
+          const existing = state.items.find((line) => line.key === key);
+          return {
+            saved: state.saved.filter((line) => line.key !== key),
+            items:
+              existing === undefined
+                ? [...state.items, item]
+                : state.items.map((line) =>
+                    line.key === key
+                      ? { ...line, qty: Math.min(line.qty + item.qty, line.maxQty) }
+                      : line,
+                  ),
+          };
+        }),
+
+      removeSaved: (key) =>
+        set((state) => ({ saved: state.saved.filter((line) => line.key !== key) })),
+
       applyCoupon: (coupon) => set({ coupon }),
       removeCoupon: () => set({ coupon: null }),
     }),
     {
       name: STORAGE_KEYS.cart,
-      partialize: (state) => ({ items: state.items, coupon: state.coupon }),
+      partialize: (state) => ({
+        items: state.items,
+        saved: state.saved,
+        coupon: state.coupon,
+      }),
     },
   ),
 );
@@ -106,6 +155,28 @@ export function selectCartCount(state: CartState): number {
 /** Merchandise total only. Shipping, discount and grand total are computed server-side. */
 export function selectSubtotal(state: CartState): number {
   return state.items.reduce((total, line) => total + line.price * line.qty, 0);
+}
+
+/** Number of distinct "save for later" lines, used to label the section. */
+export function selectSavedCount(state: CartState): number {
+  return state.saved.length;
+}
+
+/** Discount the applied coupon yields for the current subtotal (capped, never below zero). */
+export function selectDiscount(state: CartState): number {
+  const { coupon } = state;
+  if (coupon === null) {
+    return 0;
+  }
+  const subtotal = selectSubtotal(state);
+  const raw = coupon.type === "percent" ? (subtotal * coupon.value) / 100 : coupon.value;
+  const capped = coupon.maxDiscount === undefined ? raw : Math.min(raw, coupon.maxDiscount);
+  return Math.round(Math.min(capped, subtotal) * 100) / 100;
+}
+
+/** Grand total the customer sees before shipping; the server recomputes it at checkout. */
+export function selectTotal(state: CartState): number {
+  return Math.round((selectSubtotal(state) - selectDiscount(state)) * 100) / 100;
 }
 
 export const CART_PAGE_ROUTE = ROUTES.cart;

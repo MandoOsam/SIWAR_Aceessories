@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-11 (F4 — Product page done; F4.4 assembly & polish complete).
+> Last updated: 2026-10-11 (F5 — Cart, Checkout, Order success, Track order; F5.1 cart page & drawer complete).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F4 — Product page: done.** (branch `feature/f4-product-page`) |
+| **Current phase** | **F5 — Cart, Checkout, Order success, Track order.** F5.1 done (branch `feature/f5-cart-and-checkout`) |
 
-| Last completed phase | F4 — Product page (sub-phases F4.1–F4.4) |
+| Last completed phase | F5.1 — Cart page & drawer (sub-phases F5.1–F5.4) |
 
-| Next phase | F5 — Cart, Checkout, Order success, Track order |
+| Next phase | F5.2 — Checkout flow |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 + F4 **done**. Next: F5 (cart/checkout). F4 built on branch `feature/f4-product-page`. |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 **done**; F5 in progress (F5.1 done). Next: F5.2 (checkout). Built on branch `feature/f5-cart-and-checkout` (F4 merged into `main`). |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -134,7 +134,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F4** Product page ———————————?? **F4.1 (foundation: detail reuse, review endpoints, hooks, gallery, route) + F4.2 (info, variants, quantity, material, actions, accordion, sticky bar, toast) + F4.3 (review summary, review form, reviews section, matching/related/recently-viewed rails) + F4.4 (page assembly, SEO, a11y, code-split) done**
 
-- [ ] **F5** Cart, Checkout, Order success, Track order
+- [~] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring) done**; F5.2 (checkout flow) next
 
 - [ ] **F6** Auth + Account (orders, wishlist, addresses)
 
@@ -274,6 +274,10 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-040 | 2026-10-11 | **Per-page SEO (title + `meta[name=description]` + Open Graph) is applied by a single cleanup-safe effect in `ProductPage`** — no `react-helmet` (no new libraries). JSON-LD Product schema is deferred to F7. The page-local variant selection stays as D-030. | default |
 
+| D-041 | 2026-10-11 | **F5.1 cart drawer, "save for later" and coupon validation.** The cart drawer opens from the Navbar cart icon by adding `"cart"` to the `uiStore` `Overlay` union (F1 file, one-line change) rather than a new store/context; `CartDrawer` is mounted once in `RootLayout` beside `SearchOverlay` (the established home for global overlays, cf. D-019). "Save for later" is a persisted `saved` array in the **same** `cartStore` (D-026), not a second store. `Coupon` gains an optional `freeShipping` flag for `FREESHIP`. `validateCoupon(code, subtotal)` is added to `catalogService.ts` (`POST /coupons/validate`, `02-architecture.md` §7) with mock codes `SIWAR10` (10%), `WELCOME50` (EGP 50 off when subtotal ≥ 300) and `FREESHIP`; totals stay display-only (server recomputes at checkout). The Navbar cart link is now an `IconButton` (F1 edit, owner-approved scope exception for wiring the icon). | default |
+
+| D-042 | 2026-10-11 | **`/checkout` route placeholder added.** `ROUTES.checkout = "/checkout"` and a `PlaceholderPage phase="F5"` route in `app/AppRoutes.tsx`, so the cart's "Proceed to Checkout" button (F5.1) never 404s before F5.2 builds the real page (same placeholder pattern as the F5 `/order/success` and `/track-order` routes). Repointing `ProductActions` "Buy now" from `ROUTES.cart` to `ROUTES.checkout` (D-033) is left to F5.2 when checkout exists. | default |
+
 
 
 ## 5. Open questions for the owner
@@ -380,6 +384,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | **F4 — Product page (complete)** | 2026-10-11 | Whole-phase summary. Reused the existing `getProductBySlug` and `cartStore`; added only the review endpoints + `useProduct`/`useRelatedProducts`/`useProductReviews`. Detail page: gallery (zoom/swipe/keyboard/RTL), info (stars/price/discount/stock), colour + rings-only sizes + quantity, material block, disclosures, add-to-cart/short buy-now/wishlist/share + mobile sticky bar + toasts, review summary/form/list (moderation-aware), and matching/related/recently-viewed rails. Page-local selection state, below-the-fold code-splitting, per-page SEO (title/description/OG), full loading/empty/error/404 states, RTL + both themes, i18n parity 254/254. 77 tests green. | Branch `feature/f4-product-page`. Commits: `ae37010` (F4.1), `d9a9713` (F4.2), `735f389` (F4.3), F4.4 (assembly). Flags: performance below target (F1 assets); F2 token-hygiene in `ReviewCard`/`CategoryTile`. |
 
+| F5.1 — Cart page & drawer | 2026-10-11 | Cart surface for `/cart`: `CartItem` (snapshot image, bilingual name, variant, unit/line price, reused `QuantityStepper`, save-for-later, remove), `CartSummary` (subtotal / shipping "Calculated at checkout" / discount / total, coupon field validated on Apply via `validateCoupon`, checkout + continue-shopping), `CartDrawer` (slide-over from the inline end, focus trap + focus restore, backdrop/Escape close, `prefers-reduced-motion`). `cartStore` gained a persisted `saved` array (`saveForLater`/`moveToCart`/`removeSaved`), `Coupon.freeShipping`, and `selectDiscount`/`selectTotal`/`selectSavedCount`. `uiStore` `Overlay` gained `"cart"`; the Navbar cart icon is now an `IconButton` opening the drawer; `CartDrawer` mounted in `RootLayout`. Lazy `CartPage` replaces the `/cart` placeholder; `ROUTES.checkout` + `/checkout` placeholder route added (D-042). New `cart.*` i18n keys (AR/EN parity 289/289). `CartPage` chunk 2.84 kB. `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f5-cart-and-checkout`. Decisions D-041–D-042. Deviations from the F5.1 spec text: real filenames (`cartStore.ts`/`uiStore.ts`/`app/AppRoutes.tsx`/`layout/Navbar.tsx` — spec said `cart.ts`/`ui.ts`/`App.tsx`); `RootLayout` (not just Navbar) hosts the drawer. |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -421,3 +427,4 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F4.3**: Reviews & related products — `ReviewSummary`, `ReviewForm` (Zod + controlled state, D-035), `ProductReviews`, `MatchingProducts`, `RelatedProducts`, `RecentlyViewedProducts`; `product.reviews.*` + section heading keys (parity 248/248) — done.
 - **F4.4**: Page assembly & polish — assembled `ProductPage` (breadcrumb, 2-col grid, all sections + sticky bar + toast viewport), page-local selection state (D-030), below-the-fold code-split (D-039), SEO effect (D-040), `ProductInfo` a11y fix, `product.details.*` keys (parity 254/254), README section; Lighthouse a11y 100 / BP 100 / Perf ~61–65 (F1 fonts+logo ceiling) — done.
 - **F4 (whole)**: Product page complete — gallery, info/variants/quantity, actions+sticky+toast, reviews (summary/form/list), matching/related/recently-viewed rails; lazy `/products/:slug`; 77 tests green; parity 254/254 — done.
+- **F5.1**: Cart page & drawer — `CartItem`, `CartSummary`, `CartDrawer`, lazy `CartPage`; `cartStore` `saved` array + `Coupon.freeShipping` + `selectDiscount`/`selectTotal`; `validateCoupon` (mock `SIWAR10`/`WELCOME50`/`FREESHIP`); `uiStore` `"cart"` overlay; Navbar cart icon opens the drawer (mounted in `RootLayout`); `/checkout` placeholder (D-042); `cart.*` keys parity 289/289 — done.

@@ -236,6 +236,59 @@
       }
     }
   },
+  "cart": {
+    "title": "Shopping cart",
+    "meta": {
+      "title": "Cart | SIWAR",
+      "description": "Review your SIWAR cart, apply a coupon and continue to checkout."
+    },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Home"
+    },
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "drawerLabel": "Shopping cart",
+    "closeLabel": "Close cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "body": "Browse our stainless steel pieces and add something you love.",
+      "action": "Browse products"
+    },
+    "saved": {
+      "title": "Saved for later"
+    },
+    "item": {
+      "size": "Size {{size}}",
+      "quantity": "Quantity: {{qty}}",
+      "save": "Save for later",
+      "moveToCart": "Move to cart",
+      "removeLabel": "Remove {{name}} from cart"
+    },
+    "summary": {
+      "title": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shippingFree": "Free",
+      "shippingCalculated": "Calculated at checkout",
+      "discount": "Discount",
+      "total": "Total"
+    },
+    "coupon": {
+      "label": "Coupon code",
+      "placeholder": "Enter code",
+      "apply": "Apply",
+      "applying": "Applying…",
+      "applied": "Coupon {{code}} applied",
+      "remove": "Remove coupon",
+      "errors": {
+        "invalid": "This coupon code is not valid.",
+        "min-order": "This coupon needs a higher order subtotal."
+      }
+    },
+    "checkout": "Proceed to checkout",
+    "continueShopping": "Continue shopping"
+  },
   "shop": {
     "sortLabel": "Sort by",
     "sort": {

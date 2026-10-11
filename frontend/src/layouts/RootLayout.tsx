@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
+import { CartDrawer } from "@/components/CartDrawer";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SearchOverlay } from "@/components/layout/SearchOverlay";
@@ -35,6 +36,7 @@ export function RootLayout({ children }: RootLayoutProps) {
 
       <Footer />
       <SearchOverlay />
+      <CartDrawer />
     </div>
   );
 }

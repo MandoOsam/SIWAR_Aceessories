@@ -14,7 +14,9 @@ export {
   listCategories,
   listProducts,
   searchSuggest,
+  validateCoupon,
 } from "./catalogService";
+export type { CouponError, CouponValidation } from "./catalogService";
 export {
   getHomeContent,
   getProductReviews,

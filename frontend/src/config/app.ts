@@ -40,6 +40,7 @@ export const ROUTES = {
   product: (slug: string) => `/products/${slug}`,
   search: "/search",
   cart: "/cart",
+  checkout: "/checkout",
   wishlist: "/wishlist",
   account: "/account",
   login: "/login",
