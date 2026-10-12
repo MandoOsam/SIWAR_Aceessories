@@ -18,6 +18,14 @@ export {
 } from "./catalogService";
 export type { CouponError, CouponValidation } from "./catalogService";
 export {
+  createOrder,
+  getPaymentMethods,
+  getShippingOptions,
+  listGovernorates,
+  OrderError,
+} from "./checkoutService";
+export type { OrderErrorCode } from "./checkoutService";
+export {
   getHomeContent,
   getProductReviews,
   getPublicSettings,

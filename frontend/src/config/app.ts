@@ -41,6 +41,7 @@ export const ROUTES = {
   search: "/search",
   cart: "/cart",
   checkout: "/checkout",
+  orderSuccess: (id: string) => `/order/success/${id}`,
   wishlist: "/wishlist",
   account: "/account",
   login: "/login",

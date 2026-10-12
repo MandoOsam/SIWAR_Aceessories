@@ -1,4 +1,4 @@
-import type { HomeContent, StaticPage, StoreSettings } from "@/services/types";
+import type { HomeContent, ShippingOption, StaticPage, StoreSettings } from "@/services/types";
 
 const PLACEHOLDER = "/assets/placeholder";
 
@@ -76,6 +76,30 @@ export const storeSettings: StoreSettings = {
     whatsapp: "https://wa.me/201041921899",
   },
 };
+
+/**
+ * Mock delivery options for checkout. Source: `GET /shipping/options`.
+ *
+ * `standard` reuses the confirmed shipping fee / free-above rule so the two never drift.
+ * TODO(Mando): confirm the express surcharge (open question O-003).
+ */
+export const shippingOptions: ShippingOption[] = [
+  {
+    id: "standard",
+    name: { ar: "التوصيل العادي", en: "Standard delivery" },
+    fee: storeSettings.shipping.defaultFee,
+    minDays: 3,
+    maxDays: 5,
+    freeAbove: storeSettings.shipping.freeAbove,
+  },
+  {
+    id: "express",
+    name: { ar: "التوصيل السريع", en: "Express delivery" },
+    fee: 120,
+    minDays: 1,
+    maxDays: 2,
+  },
+];
 
 /**
  * Mock editable home content — the `content_blocks` rows the admin will manage in A6.

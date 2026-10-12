@@ -140,6 +140,66 @@ export type StoreSettings = {
   contact: { phone: string; email: string; whatsapp?: string };
 };
 
+/** A delivery service the customer picks at checkout. Source: `GET /shipping/options`. */
+export type ShippingOption = {
+  id: string;
+  name: L10n;
+  /** Base fee in EGP, before any "free above" rule. */
+  fee: number;
+  /** Estimated delivery window in days. */
+  minDays: number;
+  maxDays: number;
+  /** Order subtotal at or above which this option is free. */
+  freeAbove?: number;
+};
+
+/** Egyptian governorate for the address step. Source: `GET /shipping/governorates`. */
+export type Governorate = {
+  value: string;
+  name: L10n;
+};
+
+/** Customer details captured at checkout (`POST /orders`, 02-architecture.md §7). */
+export type OrderCustomer = {
+  name: string;
+  phone: string;
+  email?: string;
+};
+
+export type OrderAddress = {
+  governorate: string;
+  city: string;
+  street: string;
+  building?: string;
+  apartment?: string;
+  notes?: string;
+};
+
+export type OrderLineInput = {
+  productId: string;
+  variant: { color?: string; size?: string };
+  qty: number;
+};
+
+/** Body of `POST /orders`. */
+export type OrderInput = {
+  customer: OrderCustomer;
+  address: OrderAddress;
+  deliveryOptionId: string;
+  paymentMethod: PaymentMethodId;
+  /** Screenshot URL for a transfer method; real uploads arrive in F6. */
+  paymentProofUrl?: string;
+  items: OrderLineInput[];
+  couponCode?: string;
+};
+
+export type OrderResult = {
+  id: string;
+  number: string;
+  /** Grand total the server computed; the client never decides the price (02-architecture.md §10). */
+  total: number;
+};
+
 export type HeroContent = {
   headline: L10n;
   /** One word is styled italic for the dark-feminine look. */

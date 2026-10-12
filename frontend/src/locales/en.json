@@ -289,6 +289,84 @@
     "checkout": "Proceed to checkout",
     "continueShopping": "Continue shopping"
   },
+  "checkout": {
+    "title": "Checkout",
+    "meta": {
+      "title": "Checkout | SIWAR",
+      "description": "Complete your SIWAR order: your details, address, delivery and payment."
+    },
+    "stepperLabel": "Checkout progress",
+    "stepOf": "Step {{current}} of {{total}}",
+    "back": "Back",
+    "next": "Continue",
+    "placeOrder": "Place order",
+    "placing": "Placing order…",
+    "optional": "optional",
+    "steps": {
+      "customer": "Your details",
+      "address": "Address",
+      "delivery": "Delivery",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "customer": {
+      "title": "Your details",
+      "body": "We'll use these to reach you about your order. No account needed.",
+      "name": "Full name",
+      "phone": "Mobile number",
+      "phoneHint": "11 digits starting with 01, like 01012345678.",
+      "email": "Email",
+      "errors": {
+        "name": "Please enter your full name.",
+        "phone": "Enter a valid Egyptian mobile number (01xxxxxxxxx).",
+        "email": "Enter a valid email address or leave it empty."
+      }
+    },
+    "address": {
+      "title": "Delivery address",
+      "body": "Where should we deliver your order?",
+      "governorate": "Governorate",
+      "governoratePlaceholder": "Select a governorate",
+      "city": "City / area",
+      "street": "Street",
+      "building": "Building",
+      "apartment": "Apartment",
+      "notes": "Notes for the courier",
+      "errors": {
+        "governorate": "Please select a governorate.",
+        "city": "Please enter your city or area.",
+        "street": "Please enter the street.",
+        "building": "Please enter the building.",
+        "apartment": "Please enter the apartment.",
+        "notes": "Please shorten the note."
+      }
+    },
+    "delivery": {
+      "title": "Delivery method",
+      "body": "Choose how fast you'd like your order.",
+      "days": "{{min}}–{{max}} days",
+      "free": "Free"
+    },
+    "payment": {
+      "title": "Payment method",
+      "body": "Choose how you'd like to pay.",
+      "account": "Account",
+      "proof": "Transfer screenshot link",
+      "proofHint": "Paste a link to your transfer screenshot. File upload arrives soon.",
+      "proofError": "Enter a valid link starting with http."
+    },
+    "review": {
+      "title": "Review your order",
+      "body": "Please check everything before placing the order.",
+      "edit": "Edit"
+    },
+    "errors": {
+      "empty-cart": "Your cart is empty.",
+      "product-not-found": "One of the items is no longer available.",
+      "out-of-stock": "Sorry, one of the items just went out of stock.",
+      "generic": "We couldn't place your order. Please try again."
+    }
+  },
   "shop": {
     "sortLabel": "Sort by",
     "sort": {

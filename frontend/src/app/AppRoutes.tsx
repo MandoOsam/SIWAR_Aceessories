@@ -13,6 +13,7 @@ const CategoryPage = lazy(async () => import("@/pages/CategoryPage"));
 const SearchPage = lazy(async () => import("@/pages/SearchPage"));
 const ProductPage = lazy(async () => import("@/pages/ProductPage"));
 const CartPage = lazy(async () => import("@/pages/CartPage"));
+const CheckoutPage = lazy(async () => import("@/pages/CheckoutPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -30,7 +31,7 @@ export function AppRoutes() {
         <Route path={ROUTES.search} element={<SearchPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
         <Route path={ROUTES.cart} element={<CartPage />} />
-        <Route path={ROUTES.checkout} element={<PlaceholderPage phase="F5" />} />
+        <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path="/order/success/:id" element={<PlaceholderPage phase="F5" />} />
         <Route path="/track-order" element={<PlaceholderPage phase="F5" />} />
         <Route path="/login" element={<PlaceholderPage phase="F6" />} />
