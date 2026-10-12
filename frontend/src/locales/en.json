@@ -367,6 +367,69 @@
       "generic": "We couldn't place your order. Please try again."
     }
   },
+  "order": {
+    "timeline": {
+      "label": "Order progress"
+    },
+    "status": {
+      "pending": "Order received",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "out_for_delivery": "Out for delivery",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "returned": "Returned",
+      "refunded": "Refunded"
+    },
+    "success": {
+      "meta": {
+        "title": "Order confirmed | SIWAR",
+        "description": "Your SIWAR order has been placed. Track it any time with your order number."
+      },
+      "title": "Thank you for your order!",
+      "subtitle": "We've received your order and will start preparing it shortly.",
+      "orderNumberLabel": "Order number",
+      "totalLabel": "Total",
+      "estimatedDeliveryLabel": "Estimated delivery",
+      "timelineTitle": "Order status",
+      "trackCta": "Track order",
+      "continueCta": "Continue shopping",
+      "error": {
+        "title": "We couldn't load your order"
+      },
+      "notFound": {
+        "title": "Order not found",
+        "body": "We couldn't find this order. If you just placed it, try refreshing, or contact us with your order number."
+      }
+    },
+    "track": {
+      "meta": {
+        "title": "Track your order | SIWAR",
+        "description": "Track your SIWAR order with your order number and mobile number."
+      },
+      "title": "Track your order",
+      "body": "Enter your order number and the mobile number you used at checkout.",
+      "number": "Order number",
+      "numberPlaceholder": "SW-10025",
+      "phone": "Mobile number",
+      "phonePlaceholder": "01012345678",
+      "submit": "Track order",
+      "searching": "Searching…",
+      "resultTitle": "Order {{number}}",
+      "totalLabel": "Total: {{total}}",
+      "estimatedDeliveryLabel": "Estimated delivery: {{date}}",
+      "errors": {
+        "number": "Please enter your order number.",
+        "phone": "Enter a valid Egyptian mobile number (01xxxxxxxxx).",
+        "generic": "Something went wrong while looking up your order. Please try again."
+      },
+      "notFound": {
+        "title": "Order not found",
+        "body": "We couldn't find an order with that number and mobile number. Please check both and try again."
+      }
+    }
+  },
   "shop": {
     "sortLabel": "Sort by",
     "sort": {

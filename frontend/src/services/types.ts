@@ -200,6 +200,44 @@ export type OrderResult = {
   total: number;
 };
 
+/** Linear fulfilment path shown by the order timeline. */
+export const ORDER_STATUSES = ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "delivered"] as const;
+/** Terminal states that stop the linear path (shown differently on the timeline). */
+export const ORDER_TERMINAL_STATUSES = ["cancelled", "returned", "refunded"] as const;
+
+export type OrderStatus = (typeof ORDER_STATUSES)[number];
+export type OrderTerminalStatus = (typeof ORDER_TERMINAL_STATUSES)[number];
+export type OrderState = OrderStatus | OrderTerminalStatus;
+
+export type OrderItem = {
+  productId: string;
+  name: L10n;
+  imageUrl?: string;
+  variant?: { color?: string; size?: string };
+  qty: number;
+  unitPrice: number;
+  lineTotal: number;
+};
+
+export type Order = {
+  id: string;
+  number: string;
+  status: OrderState;
+  customer: OrderCustomer;
+  address: OrderAddress;
+  deliveryOptionId: string;
+  paymentMethod: PaymentMethodId;
+  paymentProofUrl?: string;
+  items: OrderItem[];
+  subtotal: number;
+  shippingFee: number;
+  discount: number;
+  total: number;
+  couponCode?: string;
+  createdAt: string;
+  estimatedDelivery?: string;
+};
+
 export type HeroContent = {
   headline: L10n;
   /** One word is styled italic for the dark-feminine look. */

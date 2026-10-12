@@ -367,6 +367,69 @@
       "generic": "مقدرناش نأكد طلبك. حاولي تاني."
     }
   },
+  "order": {
+    "timeline": {
+      "label": "تتبع الطلب"
+    },
+    "status": {
+      "pending": "تم استلام الطلب",
+      "confirmed": "تم التأكيد",
+      "processing": "قيد التجهيز",
+      "shipped": "تم الشحن",
+      "out_for_delivery": "مع مندوب التوصيل",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغي",
+      "returned": "مرتجع",
+      "refunded": "تم استرداد المبلغ"
+    },
+    "success": {
+      "meta": {
+        "title": "تم تأكيد طلبك | SIWAR",
+        "description": "تم إتمام طلبك من SIWAR. تابعي طلبك في أي وقت برقم الطلب."
+      },
+      "title": "شكرًا لطلبك!",
+      "subtitle": "استلمنا طلبك وسنبدأ في تجهيزه قريبًا.",
+      "orderNumberLabel": "رقم الطلب",
+      "totalLabel": "الإجمالي",
+      "estimatedDeliveryLabel": "التوصيل المتوقع",
+      "timelineTitle": "حالة الطلب",
+      "trackCta": "تتبّع الطلب",
+      "continueCta": "مواصلة التسوق",
+      "error": {
+        "title": "تعذّر تحميل طلبك"
+      },
+      "notFound": {
+        "title": "لم نجد الطلب",
+        "body": "لم نتمكن من العثور على هذا الطلب. لو أرسلتيه للتو، جرّبي تحديث الصفحة أو تواصلي معنا برقم الطلب."
+      }
+    },
+    "track": {
+      "meta": {
+        "title": "تتبّع طلبك | SIWAR",
+        "description": "تابعي طلبك من SIWAR برقم الطلب ورقم الموبايل."
+      },
+      "title": "تتبّع طلبك",
+      "body": "أدخلي رقم الطلب ورقم الموبايل الذي استخدمتيه عند الطلب.",
+      "number": "رقم الطلب",
+      "numberPlaceholder": "SW-10025",
+      "phone": "رقم الموبايل",
+      "phonePlaceholder": "01012345678",
+      "submit": "تتبّع الطلب",
+      "searching": "جارٍ البحث…",
+      "resultTitle": "الطلب {{number}}",
+      "totalLabel": "الإجمالي: {{total}}",
+      "estimatedDeliveryLabel": "التوصيل المتوقع: {{date}}",
+      "errors": {
+        "number": "من فضلك أدخلي رقم الطلب.",
+        "phone": "أدخلي رقم موبايل مصري صحيح (01xxxxxxxxx).",
+        "generic": "حدث خطأ أثناء البحث عن طلبك. حاولي مرة أخرى."
+      },
+      "notFound": {
+        "title": "لم نجد الطلب",
+        "body": "لم نجد طلبًا بهذا الرقم ورقم الموبايل. تأكدي من الاثنين وحاولي مرة أخرى."
+      }
+    }
+  },
   "shop": {
     "sortLabel": "ترتيب حسب",
     "sort": {

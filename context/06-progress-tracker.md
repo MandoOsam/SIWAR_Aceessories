@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-12 (F5 — Cart, Checkout, Order success, Track order; F5.1 cart page & drawer and F5.2 checkout flow complete).
+> Last updated: 2026-10-12 (F5 — Cart, Checkout, Order success, Track order; F5.1 cart page & drawer, F5.2 checkout flow and F5.3 order success & track order complete).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F5 — Cart, Checkout, Order success, Track order.** F5.1 and F5.2 done (branch `feature/f5-cart-and-checkout`) |
+| **Current phase** | **F5 — Cart, Checkout, Order success, Track order.** F5.1, F5.2 and F5.3 done (branch `feature/f5-cart-and-checkout`) |
 
-| Last completed phase | F5.2 — Checkout flow |
+| Last completed phase | F5.3 — Order success & track order |
 
-| Next phase | F5.3 — Order success & track order |
+| Next phase | F5.4 — Assembly & polish |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 + F4 **done**; F5 in progress (F5.1 + F5.2 done). Next: F5.3 (order success + tracking). Built on branch `feature/f5-cart-and-checkout` (F4 merged into `main`). |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 **done**; F5 in progress (F5.1 + F5.2 + F5.3 done). Next: F5.4 (assembly + polish). Built on branch `feature/f5-cart-and-checkout` (F4 merged into `main`). |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -134,7 +134,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F4** Product page ———————————?? **F4.1 (foundation: detail reuse, review endpoints, hooks, gallery, route) + F4.2 (info, variants, quantity, material, actions, accordion, sticky bar, toast) + F4.3 (review summary, review form, reviews section, matching/related/recently-viewed rails) + F4.4 (page assembly, SEO, a11y, code-split) done**
 
-- [~] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring) done; F5.2 (checkout flow) done**; F5.3 (order success + track order) next
+- [~] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring) done; F5.2 (checkout flow) done; F5.3 (order success + track order) done**; F5.4 (assembly + polish) next
 
 - [ ] **F6** Auth + Account (orders, wishlist, addresses)
 
@@ -282,6 +282,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-044 | 2026-10-12 | **F5.2 mock order + success redirect.** `createOrder` (mock) rejects empty carts / unknown products / over-stock, recomputes subtotal + shipping (honouring `freeAbove`/`FREESHIP`) + coupon via the existing `validateCoupon`, and returns `{ id, number: SW-10025+, total }`; the server stays the source of truth for the total (`02-architecture.md` §10). On success `CheckoutPage` calls `cartStore.clear()` then navigates to the new `ROUTES.orderSuccess(id)`. The transfer proof is a plain URL input (real upload = F6); card payment stays out of scope (D-007). **Deviation from the F5.2 spec:** checkout keeps the standard Navbar/Footer chrome instead of a stripped minimal header — `RootLayout` owns the shell (D-023). `prefers-reduced-motion` disables the step fade; `getPaymentMethods` filters disabled methods. | default |
 
+| D-045 | 2026-10-12 | **F5.3 order reads live in `checkoutService.ts`, not `catalogService.ts`** — same 300-line-cap reason as D-043 (`catalogService.ts` is 259 lines, and the orders store must sit beside `createOrder`). `createOrder` was **extended (an F5.2 file)** to build and record a full `Order` (items, status `pending`, `estimatedDelivery`) in a mock store mirrored to `localStorage` (`STORAGE_KEYS.mockOrders = "siwar.mock.orders"`, guarded with `try`/`catch` + `typeof localStorage`), so `getOrderById`/`getOrderByNumberAndPhone` survive a refresh and sequence numbers are derived from the persisted list (never reusing `SW-10025`). The timeline shows terminal states (cancelled/returned/refunded) as a distinct `accent-2` banner with the six linear steps greyed beneath it, because a mock order carries no status history. Routes stay in `app/AppRoutes.tsx` (D-029), **not** `src/App.tsx`. | default |
+
 
 
 ## 5. Open questions for the owner
@@ -392,6 +394,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F5.2 — Checkout flow | 2026-10-12 | Five-step guest checkout at `/checkout` (lazy `CheckoutPage` replaces the D-042 placeholder): `CheckoutStepper` (RTL-safe, completed steps re-clickable, `aria-current`), step forms `CustomerStep` (name / Egyptian mobile `01XXXXXXXXX` / optional email), `AddressStep` (governorate select from the new `data/governorates.ts`, city, street, optional building/apartment/notes), `DeliveryStep` (standard/express from `shippingOptions`, fee + estimated days, free-above rule), `PaymentStep` (COD / InstaPay / Vodafone Cash from `storeSettings.paymentMethods`, instructions + account when present, optional transfer-proof URL; no card), and read-only `ReviewStep` with per-section edit links + totals. Validation is Zod + controlled state (`checkoutSchemas.ts`), "Continue" is gated on the current step, errors appear on blur, focus moves to each step, and `prefers-reduced-motion` disables the fade. New `services/checkoutService.ts` (`getShippingOptions`/`getPaymentMethods`/`listGovernorates`/`createOrder` + typed `OrderError`), re-exported from `api.ts`; new `ShippingOption`/`Governorate`/order types in `services/types.ts`; `ROUTES.orderSuccess` added. On success the cart is cleared and the customer is routed to `/order/success/:id` (F5.3 builds that page). Empty cart redirects to `/cart`; query failure shows a retry. New `checkout.*` i18n keys (AR/EN parity **345/345**). `CheckoutPage` chunk 23.4 kB. `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f5-cart-and-checkout`. Decisions D-043–D-044. Deviations from the F5.2 spec text: services in `checkoutService.ts` (not `catalogService.ts`, 300-line cap); standard site chrome kept (no stripped header); `git` commit list filenames corrected (`store/cartStore.ts`, `app/AppRoutes.tsx`). |
 
+| F5.3 — Order success & tracking | 2026-10-12 | Order confirmation + guest tracking. New `components/OrderTimeline.tsx` (vertical, RTL-safe `<ol>`; past = checkmark, current `aria-current="step"`, future = muted; terminal states as a distinct `accent-2` banner with the linear steps greyed beneath), `pages/OrderSuccessPage.tsx` (`/order/success/:id`: reads `getOrderById`, re-clears the cart on mount, big order number + total + estimated delivery + timeline, "Track order" → `/track-order?number=…`, "Continue shopping" → `/shop`, `prefers-reduced-motion`-aware celebration), `pages/TrackOrderPage.tsx` (`/track-order`: order-number + mobile form via Zod + controlled state, `?number=` prefill, `getOrderByNumberAndPhone`, friendly not-found). `checkoutService.ts` gained `getOrderById`/`getOrderByNumberAndPhone` + a `localStorage`-backed mock order store, and **`createOrder` now records the full order**; new `Order`/`OrderItem`/`OrderStatus`/`OrderTerminalStatus`/`OrderState` in `services/types.ts`; `STORAGE_KEYS.mockOrders`; routes swapped in `app/AppRoutes.tsx`; `order.*` i18n keys (AR/EN parity **386/386**). `OrderSuccessPage` 3.58 kB, `TrackOrderPage` 3.42 kB, `OrderTimeline` 2.04 kB. `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f5-cart-and-checkout`. Decision D-045. Deviations from the F5.3 spec text: read functions in `checkoutService.ts` (not `catalogService.ts`, 300-line cap); `createOrder` extended to persist the order (the spec's own "populated by createOrder" contract); routes wired in `app/AppRoutes.tsx` (not `App.tsx`). |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -435,3 +439,4 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F4 (whole)**: Product page complete — gallery, info/variants/quantity, actions+sticky+toast, reviews (summary/form/list), matching/related/recently-viewed rails; lazy `/products/:slug`; 77 tests green; parity 254/254 — done.
 - **F5.1**: Cart page & drawer — `CartItem`, `CartSummary`, `CartDrawer`, lazy `CartPage`; `cartStore` `saved` array + `Coupon.freeShipping` + `selectDiscount`/`selectTotal`; `validateCoupon` (mock `SIWAR10`/`WELCOME50`/`FREESHIP`); `uiStore` `"cart"` overlay; Navbar cart icon opens the drawer (mounted in `RootLayout`); `/checkout` placeholder (D-042); `cart.*` keys parity 289/289 — done.
 - **F5.2**: Checkout flow — `CheckoutStepper`, `CustomerStep`, `AddressStep`, `DeliveryStep`, `PaymentStep`, `ReviewStep`, `CheckoutStepView`, `CheckoutFooter`, `checkoutSchemas`, `checkoutUtils`, `fields`, lazy `CheckoutPage`; new `services/checkoutService.ts` (`createOrder` mock + `getShippingOptions`/`getPaymentMethods`/`listGovernorates` + `OrderError`), checkout types in `services/types.ts`, `data/governorates.ts` (27), `shippingOptions` in `data/content.ts`, `ROUTES.orderSuccess`, `hooks/useDocumentMeta.ts`; Zod + controlled state (D-035); cart cleared after success → `/order/success/:id`; `checkout.*` keys parity 345/345 — done.
+- **F5.3**: Order success & tracking — `OrderTimeline` (RTL-safe `<ol>`, terminal states as a distinct banner), lazy `OrderSuccessPage` (`/order/success/:id`, reads `getOrderById`, re-clears cart, number/total/ETA/timeline, track + continue CTAs), lazy `TrackOrderPage` (`/track-order`, Zod + controlled form, `?number=` prefill, `getOrderByNumberAndPhone`, not-found state); `checkoutService` `getOrderById`/`getOrderByNumberAndPhone` + `localStorage` mock order store, `createOrder` records the full `Order`; `Order` types + `STORAGE_KEYS.mockOrders`; `order.*` keys parity 386/386 — done.

@@ -14,6 +14,8 @@ const SearchPage = lazy(async () => import("@/pages/SearchPage"));
 const ProductPage = lazy(async () => import("@/pages/ProductPage"));
 const CartPage = lazy(async () => import("@/pages/CartPage"));
 const CheckoutPage = lazy(async () => import("@/pages/CheckoutPage"));
+const OrderSuccessPage = lazy(async () => import("@/pages/OrderSuccessPage"));
+const TrackOrderPage = lazy(async () => import("@/pages/TrackOrderPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -32,8 +34,8 @@ export function AppRoutes() {
         <Route path="/products/:slug" element={<ProductPage />} />
         <Route path={ROUTES.cart} element={<CartPage />} />
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
-        <Route path="/order/success/:id" element={<PlaceholderPage phase="F5" />} />
-        <Route path="/track-order" element={<PlaceholderPage phase="F5" />} />
+        <Route path="/order/success/:id" element={<OrderSuccessPage />} />
+        <Route path="/track-order" element={<TrackOrderPage />} />
         <Route path="/login" element={<PlaceholderPage phase="F6" />} />
         <Route path="/register" element={<PlaceholderPage phase="F6" />} />
         <Route path="/forgot-password" element={<PlaceholderPage phase="F6" />} />

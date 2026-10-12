@@ -25,6 +25,8 @@ export const STORAGE_KEYS = {
   theme: "siwar-theme",
   locale: "siwar-locale",
   cart: "siwar-cart",
+  /** Mock-only: keeps placed orders readable after a page refresh until the real API exists. */
+  mockOrders: "siwar.mock.orders",
 } as const;
 
 /** `GET /products` defaults (02-architecture.md section 7). */

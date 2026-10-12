@@ -19,6 +19,8 @@ export {
 export type { CouponError, CouponValidation } from "./catalogService";
 export {
   createOrder,
+  getOrderById,
+  getOrderByNumberAndPhone,
   getPaymentMethods,
   getShippingOptions,
   listGovernorates,
