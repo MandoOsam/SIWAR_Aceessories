@@ -7,7 +7,7 @@
 
 import { create } from "zustand";
 
-export type Overlay = "menu" | "search" | null;
+export type Overlay = "menu" | "search" | "cart" | null;
 
 type UiState = {
   overlay: Overlay;

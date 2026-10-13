@@ -14,7 +14,19 @@ export {
   listCategories,
   listProducts,
   searchSuggest,
+  validateCoupon,
 } from "./catalogService";
+export type { CouponError, CouponValidation } from "./catalogService";
+export {
+  createOrder,
+  getOrderById,
+  getOrderByNumberAndPhone,
+  getPaymentMethods,
+  getShippingOptions,
+  listGovernorates,
+  OrderError,
+} from "./checkoutService";
+export type { OrderErrorCode } from "./checkoutService";
 export {
   getHomeContent,
   getProductReviews,

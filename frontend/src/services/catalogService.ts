@@ -12,7 +12,7 @@ import { popularSearches } from "@/data/search";
 import { DEFAULT_PAGE_LIMIT } from "@/config/app";
 import { IS_MOCK_MODE } from "@/config/env";
 
-import { getList, getOne } from "./http";
+import { getList, getOne, post } from "./http";
 import { paginate, simulateLatency } from "./mockAdapter";
 import type {
   Category,
@@ -198,4 +198,62 @@ export async function searchSuggest(
   ];
 
   return { suggestions, popularSearches };
+}
+
+/** Coupon rejection reasons the cart UI maps to translated messages. */
+export type CouponError = "invalid" | "min-order";
+
+/** Result of `POST /coupons/validate` (02-architecture.md §7): a coupon applied to a cart subtotal. */
+export type CouponValidation =
+  | {
+      valid: true;
+      code: string;
+      type: "percent" | "fixed";
+      value: number;
+      maxDiscount?: number;
+      /** Frees shipping without changing the merchandise total (`FREESHIP`). */
+      freeShipping?: boolean;
+      /** Discount in EGP for the given subtotal (0 when the coupon only frees shipping). */
+      discount: number;
+    }
+  | { valid: false; error: CouponError };
+
+/** Mock coupon table; mirror of the `coupons` rows until the backend serves them (B5). */
+const MOCK_COUPONS: Record<
+  string,
+  { type: "percent" | "fixed"; value: number; minOrder?: number; freeShipping?: boolean }
+> = {
+  SIWAR10: { type: "percent", value: 10 },
+  WELCOME50: { type: "fixed", value: 50, minOrder: 300 },
+  FREESHIP: { type: "fixed", value: 0, freeShipping: true },
+};
+
+/** `POST /coupons/validate` — validates a code against the current cart subtotal. */
+export async function validateCoupon(
+  code: string,
+  subtotal: number,
+  signal?: AbortSignal,
+): Promise<CouponValidation> {
+  if (!IS_MOCK_MODE) {
+    return post<CouponValidation>("/coupons/validate", { code, subtotal }, signal);
+  }
+  await simulateLatency(signal);
+  const normalized = code.trim().toUpperCase();
+  const rule = MOCK_COUPONS[normalized];
+  if (rule === undefined) {
+    return { valid: false, error: "invalid" };
+  }
+  if (rule.minOrder !== undefined && subtotal < rule.minOrder) {
+    return { valid: false, error: "min-order" };
+  }
+  const raw = rule.type === "percent" ? (subtotal * rule.value) / 100 : rule.value;
+  return {
+    valid: true,
+    code: normalized,
+    type: rule.type,
+    value: rule.value,
+    freeShipping: rule.freeShipping,
+    discount:
+      rule.freeShipping === true ? 0 : Math.round(Math.min(raw, subtotal) * 100) / 100,
+  };
 }

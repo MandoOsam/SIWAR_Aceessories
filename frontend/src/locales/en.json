@@ -236,6 +236,200 @@
       }
     }
   },
+  "cart": {
+    "title": "Shopping cart",
+    "meta": {
+      "title": "Cart | SIWAR",
+      "description": "Review your SIWAR cart, apply a coupon and continue to checkout."
+    },
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Home"
+    },
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "drawerLabel": "Shopping cart",
+    "closeLabel": "Close cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "body": "Browse our stainless steel pieces and add something you love.",
+      "action": "Browse products"
+    },
+    "saved": {
+      "title": "Saved for later"
+    },
+    "item": {
+      "size": "Size {{size}}",
+      "quantity": "Quantity: {{qty}}",
+      "save": "Save for later",
+      "moveToCart": "Move to cart",
+      "removeLabel": "Remove {{name}} from cart"
+    },
+    "summary": {
+      "title": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shippingFree": "Free",
+      "shippingCalculated": "Calculated at checkout",
+      "discount": "Discount",
+      "total": "Total"
+    },
+    "coupon": {
+      "label": "Coupon code",
+      "placeholder": "Enter code",
+      "apply": "Apply",
+      "applying": "Applying…",
+      "applied": "Coupon {{code}} applied",
+      "remove": "Remove coupon",
+      "errors": {
+        "invalid": "This coupon code is not valid.",
+        "min-order": "This coupon needs a higher order subtotal."
+      }
+    },
+    "checkout": "Proceed to checkout",
+    "continueShopping": "Continue shopping"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "meta": {
+      "title": "Checkout | SIWAR",
+      "description": "Complete your SIWAR order: your details, address, delivery and payment."
+    },
+    "stepperLabel": "Checkout progress",
+    "stepOf": "Step {{current}} of {{total}}",
+    "back": "Back",
+    "next": "Continue",
+    "placeOrder": "Place order",
+    "placing": "Placing order…",
+    "optional": "optional",
+    "steps": {
+      "customer": "Your details",
+      "address": "Address",
+      "delivery": "Delivery",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "customer": {
+      "title": "Your details",
+      "body": "We'll use these to reach you about your order. No account needed.",
+      "name": "Full name",
+      "phone": "Mobile number",
+      "phoneHint": "11 digits starting with 01, like 01012345678.",
+      "email": "Email",
+      "errors": {
+        "name": "Please enter your full name.",
+        "phone": "Enter a valid Egyptian mobile number (01xxxxxxxxx).",
+        "email": "Enter a valid email address or leave it empty."
+      }
+    },
+    "address": {
+      "title": "Delivery address",
+      "body": "Where should we deliver your order?",
+      "governorate": "Governorate",
+      "governoratePlaceholder": "Select a governorate",
+      "city": "City / area",
+      "street": "Street",
+      "building": "Building",
+      "apartment": "Apartment",
+      "notes": "Notes for the courier",
+      "errors": {
+        "governorate": "Please select a governorate.",
+        "city": "Please enter your city or area.",
+        "street": "Please enter the street.",
+        "building": "Please enter the building.",
+        "apartment": "Please enter the apartment.",
+        "notes": "Please shorten the note."
+      }
+    },
+    "delivery": {
+      "title": "Delivery method",
+      "body": "Choose how fast you'd like your order.",
+      "days": "{{min}}–{{max}} days",
+      "free": "Free"
+    },
+    "payment": {
+      "title": "Payment method",
+      "body": "Choose how you'd like to pay.",
+      "account": "Account",
+      "proof": "Transfer screenshot link",
+      "proofHint": "Paste a link to your transfer screenshot. File upload arrives soon.",
+      "proofError": "Enter a valid link starting with http."
+    },
+    "review": {
+      "title": "Review your order",
+      "body": "Please check everything before placing the order.",
+      "edit": "Edit"
+    },
+    "errors": {
+      "empty-cart": "Your cart is empty.",
+      "product-not-found": "One of the items is no longer available.",
+      "out-of-stock": "Sorry, one of the items just went out of stock.",
+      "generic": "We couldn't place your order. Please try again."
+    }
+  },
+  "order": {
+    "timeline": {
+      "label": "Order progress"
+    },
+    "status": {
+      "pending": "Order received",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "out_for_delivery": "Out for delivery",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "returned": "Returned",
+      "refunded": "Refunded"
+    },
+    "success": {
+      "meta": {
+        "title": "Order confirmed | SIWAR",
+        "description": "Your SIWAR order has been placed. Track it any time with your order number."
+      },
+      "title": "Thank you for your order!",
+      "subtitle": "We've received your order and will start preparing it shortly.",
+      "orderNumberLabel": "Order number",
+      "totalLabel": "Total",
+      "estimatedDeliveryLabel": "Estimated delivery",
+      "timelineTitle": "Order status",
+      "trackCta": "Track order",
+      "continueCta": "Continue shopping",
+      "error": {
+        "title": "We couldn't load your order"
+      },
+      "notFound": {
+        "title": "Order not found",
+        "body": "We couldn't find this order. If you just placed it, try refreshing, or contact us with your order number."
+      }
+    },
+    "track": {
+      "meta": {
+        "title": "Track your order | SIWAR",
+        "description": "Track your SIWAR order with your order number and mobile number."
+      },
+      "title": "Track your order",
+      "body": "Enter your order number and the mobile number you used at checkout.",
+      "number": "Order number",
+      "numberPlaceholder": "SW-10025",
+      "phone": "Mobile number",
+      "phonePlaceholder": "01012345678",
+      "submit": "Track order",
+      "searching": "Searching…",
+      "resultTitle": "Order {{number}}",
+      "totalLabel": "Total: {{total}}",
+      "estimatedDeliveryLabel": "Estimated delivery: {{date}}",
+      "errors": {
+        "number": "Please enter your order number.",
+        "phone": "Enter a valid Egyptian mobile number (01xxxxxxxxx).",
+        "generic": "Something went wrong while looking up your order. Please try again."
+      },
+      "notFound": {
+        "title": "Order not found",
+        "body": "We couldn't find an order with that number and mobile number. Please check both and try again."
+      }
+    }
+  },
   "shop": {
     "sortLabel": "Sort by",
     "sort": {
