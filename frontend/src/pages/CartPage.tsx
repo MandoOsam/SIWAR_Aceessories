@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -7,6 +6,7 @@ import { CartItem } from "@/components/CartItem";
 import { CartSummary } from "@/components/CartSummary";
 import { ButtonLink } from "@/components/ui/Button";
 import { ROUTES } from "@/config/app";
+import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { selectCartCount, selectSavedCount, useCartStore } from "@/store/cartStore";
 
 /**
@@ -30,26 +30,7 @@ export default function CartPage() {
   const removeSaved = useCartStore((state) => state.removeSaved);
 
   // Minimal per-page SEO until the F7 pass: document title + meta description from i18n (D-040).
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = t("cart.meta.title");
-    const existing = document.querySelector('meta[name="description"]');
-    const previousDescription = existing?.getAttribute("content") ?? "";
-    let created: HTMLMetaElement | null = null;
-    if (existing === null) {
-      created = document.createElement("meta");
-      created.name = "description";
-      created.content = t("cart.meta.description");
-      document.head.appendChild(created);
-    } else {
-      existing.setAttribute("content", t("cart.meta.description"));
-    }
-    return () => {
-      document.title = previousTitle;
-      existing?.setAttribute("content", previousDescription);
-      created?.remove();
-    };
-  }, [t]);
+  useDocumentMeta(t("cart.meta.title"), t("cart.meta.description"));
 
   return (
     <div className="container-page pb-16 pt-6 lg:pb-20">

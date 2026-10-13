@@ -86,7 +86,8 @@ export default function CheckoutPage() {
   const governorates = useMemo(() => governoratesQuery.data ?? [], [governoratesQuery.data]);
   const shippingOptions = useMemo(() => shippingQuery.data ?? [], [shippingQuery.data]);
   const paymentMethods = useMemo(() => paymentQuery.data ?? [], [paymentQuery.data]);
-  const isLoading = governoratesQuery.isLoading || shippingQuery.isLoading || paymentQuery.isLoading;
+  const isLoading =
+    governoratesQuery.isLoading || shippingQuery.isLoading || paymentQuery.isLoading;
   const hasError = governoratesQuery.isError || shippingQuery.isError || paymentQuery.isError;
 
   useEffect(() => {
@@ -111,13 +112,15 @@ export default function CheckoutPage() {
   const selectedPayment = paymentMethods.find((method) => method.id === paymentId);
   const shippingFee = (() => {
     if (coupon?.freeShipping === true || selectedDelivery === undefined) return 0;
-    if (selectedDelivery.freeAbove !== undefined && subtotal >= selectedDelivery.freeAbove) return 0;
+    if (selectedDelivery.freeAbove !== undefined && subtotal >= selectedDelivery.freeAbove)
+      return 0;
     return selectedDelivery.fee;
   })();
   const total = Math.round((subtotal + shippingFee - discount) * 100) / 100;
 
   const governorate = governorates.find((item) => item.value === address.governorate);
-  const governorateLabel = governorate === undefined ? address.governorate : localize(governorate.name, locale);
+  const governorateLabel =
+    governorate === undefined ? address.governorate : localize(governorate.name, locale);
 
   const customerErrors = collectTouchedErrors(
     customerSchema,
@@ -173,7 +176,9 @@ export default function CheckoutPage() {
       navigate(ROUTES.orderSuccess(order.id), { replace: true });
     } catch (error) {
       setPlaceError(
-        error instanceof OrderError ? t(`checkout.errors.${error.code}`) : t("checkout.errors.generic"),
+        error instanceof OrderError
+          ? t(`checkout.errors.${error.code}`)
+          : t("checkout.errors.generic"),
       );
       setIsPlacing(false);
     }

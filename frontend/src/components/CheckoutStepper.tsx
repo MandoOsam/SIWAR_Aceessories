@@ -27,7 +27,13 @@ const CIRCLE_BASE =
  * A logical-order flex row keeps it correct in RTL. Completed steps are real buttons so keyboard
  * users can step back without scrolling; future steps are inert.
  */
-export function CheckoutStepper({ steps, current, label, onSelect, className }: CheckoutStepperProps) {
+export function CheckoutStepper({
+  steps,
+  current,
+  label,
+  onSelect,
+  className,
+}: CheckoutStepperProps) {
   return (
     <nav aria-label={label} className={className}>
       <ol className="flex items-center">

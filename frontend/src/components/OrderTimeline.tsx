@@ -82,11 +82,17 @@ export function OrderTimeline({ status, className }: OrderTimelineProps) {
                 {isPast ? (
                   <Check aria-hidden="true" className="size-4" />
                 ) : (
-                  <span className={cn("size-2 rounded-pill", isCurrent ? "bg-accent" : "bg-fg-muted")} />
+                  <span
+                    className={cn("size-2 rounded-pill", isCurrent ? "bg-accent" : "bg-fg-muted")}
+                  />
                 )}
               </span>
               <span
-                className={cn("pt-1.5 text-sm", isFuture ? "text-fg-muted" : "text-fg", isCurrent && "font-medium")}
+                className={cn(
+                  "pt-1.5 text-sm",
+                  isFuture ? "text-fg-muted" : "text-fg",
+                  isCurrent && "font-medium",
+                )}
               >
                 {t(`order.status.${step}`)}
               </span>

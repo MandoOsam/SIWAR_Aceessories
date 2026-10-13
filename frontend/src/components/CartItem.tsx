@@ -51,12 +51,7 @@ export function CartItem({
 
   return (
     <article className={cn("flex gap-4 border-b border-line py-4", className)}>
-      <Link
-        to={ROUTES.product(item.slug)}
-        tabIndex={-1}
-        aria-hidden="true"
-        className="shrink-0"
-      >
+      <Link to={ROUTES.product(item.slug)} tabIndex={-1} aria-hidden="true" className="shrink-0">
         <img
           src={item.imageUrl}
           alt=""
@@ -96,7 +91,9 @@ export function CartItem({
               max={item.maxQty}
             />
           ) : (
-            <span className="text-sm text-fg-muted">{t("cart.item.quantity", { qty: item.qty })}</span>
+            <span className="text-sm text-fg-muted">
+              {t("cart.item.quantity", { qty: item.qty })}
+            </span>
           )}
 
           <div className="flex items-center gap-1">

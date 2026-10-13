@@ -5,12 +5,7 @@ import { PaymentStep } from "@/components/checkout/PaymentStep";
 import { ReviewStep } from "@/components/checkout/ReviewStep";
 import type { AddressData, CustomerData } from "@/components/checkout/checkoutSchemas";
 import type { CartItem } from "@/store/cartStore";
-import type {
-  Governorate,
-  PaymentMethod,
-  PaymentMethodId,
-  ShippingOption,
-} from "@/services/types";
+import type { Governorate, PaymentMethod, PaymentMethodId, ShippingOption } from "@/services/types";
 
 export interface CheckoutStepViewProps {
   step: number;

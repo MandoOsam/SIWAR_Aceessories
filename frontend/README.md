@@ -5,12 +5,12 @@ See the repo-root `AGENTS.md` and the `context/` folder for the full project rul
 
 ## Commands
 
-| Task | Command |
-|---|---|
-| Dev server | `npm run dev` |
+| Task             | Command         |
+| ---------------- | --------------- |
+| Dev server       | `npm run dev`   |
 | Production build | `npm run build` |
-| Lint | `npm run lint` |
-| Tests | `npm test` |
+| Lint             | `npm run lint`  |
+| Tests            | `npm test`      |
 
 ## Catalogue pages (F3)
 
@@ -29,8 +29,17 @@ filters and the browser back button restores the previous view. The single entry
 `useProductFilters` hook (`src/hooks/useProductFilters.ts`):
 
 ```ts
-const { filters, query, setFilter, toggleFilter, setSort, setPage, setSearch, removeFilter, clearFilters } =
-  useProductFilters();
+const {
+  filters,
+  query,
+  setFilter,
+  toggleFilter,
+  setSort,
+  setPage,
+  setSearch,
+  removeFilter,
+  clearFilters,
+} = useProductFilters();
 const products = useProducts(query); // query is ready for the service layer
 ```
 
@@ -64,7 +73,7 @@ Work through the layers in this order (change the contract first):
    - read it in `parseProductFilters` (validate, drop invalid) and write it in
      `serializeProductFilters` (omit the default);
    - pass it through in `toProductQuery`.
-   Add unit tests to `useProductFilters.test.ts`.
+     Add unit tests to `useProductFilters.test.ts`.
 4. **UI** — render the control in `src/components/FilterPanel.tsx` (reuse the `components/filters/`
    helpers). It is shared by the desktop sidebar and the mobile `FilterSheet`, so a single edit
    covers both.
@@ -94,6 +103,26 @@ Below-the-fold sections (`Accordion`, `ProductReviews`, `MatchingProducts`, `Rel
 `RecentlyViewedProducts`) are code-split with `React.lazy` + `Suspense` (D-039), keeping
 framer-motion and zod off the critical path. The page sets its own `<title>`, meta description and
 Open Graph tags in a cleanup-safe effect (D-040); JSON-LD is deferred to F7.
+
+## Cart and Checkout (F5)
+
+- `/cart` — cart page (`src/pages/CartPage.tsx`) plus a slide-over drawer
+  (`src/components/CartDrawer.tsx`). The drawer mounts once in `RootLayout`, opens from the navbar
+  cart button (`uiStore` overlay `"cart"`), traps focus, restores it on close, and closes on
+  Escape / backdrop. Lines can be moved to a persisted "save for later" list in the same
+  `src/store/cartStore.ts`.
+- `/checkout` — five-step guest flow (customer, address, delivery, payment, review) in
+  `src/pages/CheckoutPage.tsx`. The form state is controlled there; each step validates with Zod
+  (`components/checkout/checkoutSchemas.ts`). Only enabled payment methods are shown, and the
+  transfer proof is a plain URL input for now (real upload lands in F6).
+- `/order/success/:id` — order number, total, estimated delivery and the fulfilment timeline
+  (`src/components/OrderTimeline.tsx`); the cart is cleared on mount. `/track-order` looks an order
+  up by number + phone and is prefilled from `?number=`.
+- Mock orders persist to `localStorage` (`siwar.mock.orders`) so success and tracking survive a
+  refresh before the real API exists. `createOrder` in `src/services/checkoutService.ts` recomputes
+  subtotal, shipping and coupon discount on the service side — the server is the source of truth.
+- Empty, loading and error states exist throughout; the currency is always EGP with locale-aware
+  formatting. RTL, dark/light and `prefers-reduced-motion` are respected.
 
 ## Conventions
 

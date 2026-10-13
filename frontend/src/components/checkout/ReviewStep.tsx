@@ -110,9 +110,7 @@ export function ReviewStep({
           <>
             <p className="text-sm text-fg">{localize(delivery.name, locale)}</p>
             <p className="text-sm text-fg-muted">
-              {shippingFee === 0
-                ? t("checkout.delivery.free")
-                : formatPrice(shippingFee, locale)}
+              {shippingFee === 0 ? t("checkout.delivery.free") : formatPrice(shippingFee, locale)}
             </p>
           </>
         ) : null,
