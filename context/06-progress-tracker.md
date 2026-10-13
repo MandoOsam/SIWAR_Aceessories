@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-13 (F6.1 auth pages + session complete — F6 in progress. Next: F6.2 Account dashboard & profile).
+> Last updated: 2026-10-13 (F6.2 account dashboard & profile complete — F6 in progress. Next: F6.3 Orders, wishlist, addresses & notifications).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F6 — Auth + Account: in progress.** F6.1 (auth pages + session) done; F6.2–F6.4 pending (branch `feature/f6-auth-and-account`) |
+| **Current phase** | **F6 — Auth + Account: in progress.** F6.1 (auth pages + session) and F6.2 (account dashboard + profile) done; F6.3–F6.4 pending (branch `feature/f6-auth-and-account`) |
 
-| Last completed phase | F6.1 — Auth pages & session |
+| Last completed phase | F6.2 — Account dashboard & profile |
 
-| Next phase | F6.2 — Account dashboard & profile |
+| Next phase | F6.3 — Orders, wishlist, addresses & notifications |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 **done**. F6 in progress (F6.1 done). Built on branch `feature/f6-auth-and-account`. |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 **done**. F6 in progress (F6.1 + F6.2 done). Built on branch `feature/f6-auth-and-account`. |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -136,7 +136,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring), F5.2 (checkout flow), F5.3 (order success + track order) and F5.4 (assembly + polish) all done**
 
-- [~] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) done**; F6.2 (account dashboard + profile), F6.3 (orders, wishlist, addresses, notifications), F6.4 (assembly + polish) pending
+- [~] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) + F6.2 (account dashboard + profile) done**; F6.3 (orders, wishlist, addresses, notifications), F6.4 (assembly + polish) pending
 
 - [ ] **F7** Static pages, 404/empty states, SEO tags, performance + accessibility pass
 
@@ -286,6 +286,10 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-046 | 2026-10-13 | **F6.1 mock session persists in `localStorage` (owner-confirmed).** 02-arch §10 / 03-standards §5 forbid personal data in `localStorage`, so this is the same **mock-only** exception already accepted in D-045: the mock auth service persists the account **profiles** (`STORAGE_KEYS.mockUsers = "siwar.mock.users"`, no password field) and the signed-in **user id** (`STORAGE_KEYS.mockSession = "siwar.mock.auth"`, guarded with `try`/`catch` + `typeof localStorage`) so a refresh keeps the customer signed in. Passwords are **never** persisted: the demo account's password lives in `src/data/auth.ts` (bundle) and runtime-created ones live in an in-memory `Map` for the session only. Real mode uses the httpOnly cookie exclusively (`getCurrentUser` → `GET /auth/me`, 401 → `null`). Both mock keys disappear once `VITE_API_URL` is set. | owner |
 
+| D-047 | 2026-10-13 | **F6.2 saved profile overrides the seed (mock).** `updateProfile` persists the editable fields to the same mock store (`STORAGE_KEYS.mockUsers`, no password) and `findProfile`/`findProfileById` resolve the stored copy ahead of `seedAccounts`, so a profile edit survives a refresh (owner-approved, together with the `displayName` `L10n` field on `AuthUser` and the contract additions `PATCH /account/profile` + `POST /account/change-password` in 02-arch §7). Password changes stay in memory only (D-046) and `changePassword` verifies the current one first (`invalid-current-password`). | owner |
+
+| D-048 | 2026-10-13 | **F6.2 split `authService.ts` and `services/types.ts` to honour the 300-line cap (`03-code-standards.md` §2).** Adding `updateProfile`/`changePassword` pushed `authService.ts` to 316 lines and (after F6.1) `types.ts` to 362, both over the cap. New `services/accountService.ts` (profile + password calls) and `services/mockAuthStore.ts` (shared mock persistence) hold the account layer; the auth/account and order contract types move to `services/authTypes.ts` and `services/orderTypes.ts`, both **re-exported from `types.ts`** so every existing `@/services/types` import still resolves. Same cap reason and pattern as D-043/D-045. Final sizes: `authService.ts` 165, `types.ts` 219, `accountService.ts` 79, `mockAuthStore.ts` 111, `authTypes.ts` 69, `orderTypes.ts` 95. | owner |
+
 
 
 ## 5. Open questions for the owner
@@ -404,6 +408,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | F6.1 — Auth pages & session | 2026-10-13 | Auth foundation. New `services/authService.ts` (`register`/`login`/`logout`/`getCurrentUser`/`forgotPassword`/`resetPassword` + typed `AuthError`; contract `POST /auth/*` + `GET /auth/me`) with the mock account seed in `src/data/auth.ts` (demo `demo@siwar.eg` / `Siwar1234`). New `store/auth.ts` (owner-named; `user`/`status`/`isAuthenticated` + `hydrate`/`setUser`/`clearUser`) bootstrapped by `hooks/useAuthBootstrap.ts` mounted in `AppProviders`. New `components/ProtectedRoute.tsx` (`/login?redirect=<path>`, skeleton while hydrating) + `utils/redirect.ts` (`safeInternalPath`/`loginRedirectPath`). New `components/auth/AuthLayout.tsx`, `PasswordInput.tsx` (show/hide + strength meter) and `authSchemas.ts` (Zod + controlled state per **D-035**; messages are i18n keys). New `pages/auth/{LoginPage,RegisterPage,ForgotPasswordPage,ResetPasswordPage}.tsx` wired as lazy routes in `app/AppRoutes.tsx` per **D-029** (replacing the F6 placeholders, adding `/reset-password/:token`). New `utils/password.ts` + tests. Navbar account icon now points to `/login` or `/account` by session. New `auth.*` i18n keys (AR/EN parity **451/451**). `npm run build`, `npm run lint` and `npm test` pass (82 tests). | Branch `feature/f6-auth-and-account`. Decision D-046. Deviations/notes: routes in `app/AppRoutes.tsx` (D-029, not `src/App.tsx`); Zod + controlled state (D-035, not RHF — not installed); store file `src/store/auth.ts` as the owner named it (not the `*Store.ts` convention); the auth forms reuse the F5 `components/checkout/fields` (`Field`/`CONTROL_CLASSES`) instead of duplicating; `services/http.ts` gained an additive `postVoid` for the 204 endpoints (logout/forgot/reset). `changePassword`/`updateProfile` deferred to F6.2 — `changePassword` needs a new contract endpoint first (02-arch §7 has no change-password route). |
 
+| F6.2 — Account dashboard & profile | 2026-10-13 | Account area behind `ProtectedRoute`: new `pages/account/{AccountLayout,AccountDashboardPage,ProfilePage,PasswordPage}.tsx` (sidebar/tabs layout with a logout action, dashboard with orders/wishlist/address/notification empty cards + "edit profile", editable profile — name / phone / bilingual `displayName`, read-only email — and a change-password form with strength meter + `invalid-current-password` inline error), mounted as a nested protected route group in `app/AppRoutes.tsx` (`ROUTES.account*`); new `utils/initials.ts`; `ToastViewport` now mounted in `AccountLayout`. New `services/accountService.ts` (`updateProfile`/`changePassword`; mock persists the profile, keeps passwords in memory) + `services/mockAuthStore.ts` (shared mock persistence); `AuthUser.displayName` + `UpdateProfileInput`/`ChangePasswordInput` added; contract §7 gains `PATCH /account/profile` + `POST /account/change-password`. Split `authService.ts`/`types.ts` for the 300-line cap (D-048). New `account.*` i18n keys (AR/EN parity **505/505**). `npm run build`, `npm run lint` and `npm test` pass (82 tests). | Branch `feature/f6-auth-and-account`. Decisions D-047–D-048. Deviations: profile/password go through the new 02-arch §7 endpoints (contract changed first); F6.3 pages (orders/wishlist/addresses/notifications) remain `PlaceholderPage phase="F6.3"`; form error keys are translated at render via a `fieldError()` helper. |
+
 Suggested commit message for the F2 hotfix:
 
 ```
@@ -448,3 +454,5 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F5.1**: Cart page & drawer — `CartItem`, `CartSummary`, `CartDrawer`, lazy `CartPage`; `cartStore` `saved` array + `Coupon.freeShipping` + `selectDiscount`/`selectTotal`; `validateCoupon` (mock `SIWAR10`/`WELCOME50`/`FREESHIP`); `uiStore` `"cart"` overlay; Navbar cart icon opens the drawer (mounted in `RootLayout`); `/checkout` placeholder (D-042); `cart.*` keys parity 289/289 — done.
 - **F5.2**: Checkout flow — `CheckoutStepper`, `CustomerStep`, `AddressStep`, `DeliveryStep`, `PaymentStep`, `ReviewStep`, `CheckoutStepView`, `CheckoutFooter`, `checkoutSchemas`, `checkoutUtils`, `fields`, lazy `CheckoutPage`; new `services/checkoutService.ts` (`createOrder` mock + `getShippingOptions`/`getPaymentMethods`/`listGovernorates` + `OrderError`), checkout types in `services/types.ts`, `data/governorates.ts` (27), `shippingOptions` in `data/content.ts`, `ROUTES.orderSuccess`, `hooks/useDocumentMeta.ts`; Zod + controlled state (D-035); cart cleared after success → `/order/success/:id`; `checkout.*` keys parity 345/345 — done.
 - **F5.3**: Order success & tracking — `OrderTimeline` (RTL-safe `<ol>`, terminal states as a distinct banner), lazy `OrderSuccessPage` (`/order/success/:id`, reads `getOrderById`, re-clears cart, number/total/ETA/timeline, track + continue CTAs), lazy `TrackOrderPage` (`/track-order`, Zod + controlled form, `?number=` prefill, `getOrderByNumberAndPhone`, not-found state); `checkoutService` `getOrderById`/`getOrderByNumberAndPhone` + `localStorage` mock order store, `createOrder` records the full `Order`; `Order` types + `STORAGE_KEYS.mockOrders`; `order.*` keys parity 386/386 — done.
+- **F6.1**: Auth pages & session — `authService` + `data/auth.ts` seed, `store/auth.ts` + `useAuthBootstrap`, `ProtectedRoute` + `utils/redirect.ts`, `AuthLayout`/`PasswordInput`/`authSchemas`, `pages/auth/*`, `utils/password.ts` (+tests), lazy routes (replacing the F6 placeholders, adding `/reset-password/:token`), Navbar account link (D-046); `auth.*` keys parity 451/451; 82 tests — done.
+- **F6.2**: Account dashboard & profile — `pages/account/{AccountLayout,AccountDashboardPage,ProfilePage,PasswordPage}`, nested protected routes (`ROUTES.account*`), `utils/initials.ts`, `services/accountService.ts` + `services/mockAuthStore.ts`, `AuthUser.displayName` + `UpdateProfileInput`/`ChangePasswordInput`, 02-arch §7 `PATCH /account/profile` + `POST /account/change-password`, `ToastViewport` in `AccountLayout`, `authService`/`types.ts` 300-line split (D-047–D-048), `account.*` keys parity 505/505; 82 tests — done.

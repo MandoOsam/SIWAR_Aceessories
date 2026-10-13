@@ -70,7 +70,7 @@ All tables have `id uuid pk`, `created_at`, `updated_at` unless noted. Use snake
 
 | Table | Key columns |
 |---|---|
-| `users` | email (unique), phone, password_hash, name, role, is_active, last_login_at |
+| `users` | email (unique), phone, password_hash, name, display_name jsonb (bilingual display name), role, is_active, last_login_at |
 | `sessions` | id, user_id, kind (`customer`/`admin`), expires_at, ip, user_agent |
 | `categories` | slug (unique), name jsonb, description jsonb, image_url, parent_id, sort_order, is_active, seo jsonb |
 | `products` | slug (unique), sku (unique), name jsonb, description jsonb, category_id, price, old_price, discount_percent, stock, low_stock_threshold, status (`draft`/`active`/`archived`), is_new, is_best_seller, is_featured, colors text[], sizes text[], material, plating, water_resistant, hypoallergenic, seo jsonb |
@@ -118,7 +118,7 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 
 ### Auth & account
 `GET /auth/csrf`, `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`, `POST /auth/forgot-password`, `POST /auth/reset-password`;
-`GET|PATCH /account/profile`, `GET /account/orders`, `GET /account/orders/:id`, `GET|POST|PATCH|DELETE /account/addresses`, `GET|POST|DELETE /account/wishlist`, `GET /account/notifications`.
+`GET|PATCH /account/profile` (PATCH body: `name`, `phone?`, `displayName?: { ar, en }`), `POST /account/change-password` (`{ currentPassword, newPassword }`), `GET /account/orders`, `GET /account/orders/:id`, `GET|POST|PATCH|DELETE /account/addresses`, `GET|POST|DELETE /account/wishlist`, `GET /account/notifications`.
 
 ### Admin (`/admin/...`, role-checked)
 `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`;

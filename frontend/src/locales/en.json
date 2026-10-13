@@ -639,5 +639,73 @@
       "forgotTitle": "Forgot password — SIWAR",
       "resetTitle": "Reset password — SIWAR"
     }
+  },
+  "account": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "wishlist": "Wishlist",
+      "addresses": "Addresses",
+      "notifications": "Notifications",
+      "profile": "Profile",
+      "password": "Password",
+      "logout": "Log out",
+      "loggingOut": "Logging out…",
+      "menu": "Account menu"
+    },
+    "dashboard": {
+      "welcome": "Welcome, {{name}}",
+      "subtitle": "Manage your orders, details and preferences.",
+      "ordersTitle": "Recent orders",
+      "ordersEmpty": "You have no orders yet.",
+      "ordersLink": "View all orders",
+      "wishlistTitle": "Wishlist",
+      "wishlistEmpty": "Your wishlist is empty.",
+      "wishlistLink": "View wishlist",
+      "addressTitle": "Default address",
+      "addressEmpty": "No address saved yet.",
+      "addressLink": "Manage addresses",
+      "notificationsTitle": "Notifications",
+      "notificationsEmpty": "No unread notifications.",
+      "notificationsLink": "View notifications",
+      "editProfile": "Edit profile"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Update your personal details",
+      "identity": "Personal details",
+      "name": "Full name",
+      "nameHint": "Shown on your orders and reviews",
+      "displayNameAr": "Display name (Arabic)",
+      "displayNameEn": "Display name (English)",
+      "email": "Email",
+      "emailHint": "Changing your email requires contacting support",
+      "phone": "Mobile number",
+      "phoneHint": "Egyptian mobile, e.g. 01012345678",
+      "avatarHint": "Your initials are shown for now",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Your profile has been updated"
+    },
+    "password": {
+      "title": "Password",
+      "subtitle": "Change the password for your account",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "save": "Update password",
+      "saving": "Updating…",
+      "saved": "Your password has been updated",
+      "incorrect": "Current password is incorrect"
+    },
+    "errors": {
+      "nameMin": "Name must be at least 2 characters",
+      "phone": "Enter a valid Egyptian mobile number"
+    },
+    "meta": {
+      "dashboardTitle": "My account — SIWAR",
+      "profileTitle": "Profile — SIWAR",
+      "passwordTitle": "Password — SIWAR"
+    }
   }
 }

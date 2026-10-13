@@ -47,6 +47,7 @@ export {
   resetPassword,
 } from "./authService";
 export type { AuthErrorCode } from "./authService";
+export { changePassword, updateProfile } from "./accountService";
 
 
 export async function subscribeNewsletter(email: string): Promise<{ ok: boolean }> {

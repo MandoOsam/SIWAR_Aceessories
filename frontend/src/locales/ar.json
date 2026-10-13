@@ -639,5 +639,73 @@
       "forgotTitle": "نسيتي كلمة المرور — SIWAR",
       "resetTitle": "إعادة تعيين كلمة المرور — SIWAR"
     }
+  },
+  "account": {
+    "nav": {
+      "dashboard": "لوحة الحساب",
+      "orders": "طلباتي",
+      "wishlist": "المفضلة",
+      "addresses": "العناوين",
+      "notifications": "الإشعارات",
+      "profile": "الملف الشخصي",
+      "password": "كلمة المرور",
+      "logout": "تسجيل الخروج",
+      "loggingOut": "جاري تسجيل الخروج…",
+      "menu": "قائمة الحساب"
+    },
+    "dashboard": {
+      "welcome": "أهلاً، {{name}}",
+      "subtitle": "أديري طلباتكِ وبياناتكِ وتفضيلاتكِ.",
+      "ordersTitle": "أحدث الطلبات",
+      "ordersEmpty": "لا توجد طلبات بعد.",
+      "ordersLink": "عرض كل الطلبات",
+      "wishlistTitle": "المفضلة",
+      "wishlistEmpty": "قائمة المفضلة فارغة.",
+      "wishlistLink": "عرض المفضلة",
+      "addressTitle": "العنوان الافتراضي",
+      "addressEmpty": "لا يوجد عنوان محفوظ بعد.",
+      "addressLink": "إدارة العناوين",
+      "notificationsTitle": "الإشعارات",
+      "notificationsEmpty": "لا توجد إشعارات غير مقروءة.",
+      "notificationsLink": "عرض الإشعارات",
+      "editProfile": "تعديل الملف الشخصي"
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "subtitle": "حدّثي بياناتكِ الشخصية",
+      "identity": "البيانات الشخصية",
+      "name": "الاسم الكامل",
+      "nameHint": "يظهر في طلباتكِ وتقييماتكِ",
+      "displayNameAr": "الاسم المعروض (بالعربية)",
+      "displayNameEn": "الاسم المعروض (بالإنجليزية)",
+      "email": "البريد الإلكتروني",
+      "emailHint": "لتغيير البريد الإلكتروني تواصلي مع الدعم",
+      "phone": "رقم الموبايل",
+      "phoneHint": "موبايل مصري، مثال 01012345678",
+      "avatarHint": "يُعرض الحرف الأول من اسمكِ حالياً",
+      "save": "حفظ التغييرات",
+      "saving": "جاري الحفظ…",
+      "saved": "تم تحديث ملفكِ الشخصي"
+    },
+    "password": {
+      "title": "كلمة المرور",
+      "subtitle": "غيّري كلمة مرور حسابكِ",
+      "current": "كلمة المرور الحالية",
+      "new": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور الجديدة",
+      "save": "تحديث كلمة المرور",
+      "saving": "جاري التحديث…",
+      "saved": "تم تحديث كلمة المرور",
+      "incorrect": "كلمة المرور الحالية غير صحيحة"
+    },
+    "errors": {
+      "nameMin": "الاسم لازم يكون حرفين على الأقل",
+      "phone": "اكتبي رقم موبايل مصري صحيح"
+    },
+    "meta": {
+      "dashboardTitle": "حسابي — SIWAR",
+      "profileTitle": "الملف الشخصي — SIWAR",
+      "passwordTitle": "كلمة المرور — SIWAR"
+    }
   }
 }
