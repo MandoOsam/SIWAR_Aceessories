@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-13 (F5.4 assembly & polish complete — F5 whole is done. Next: F6 Auth + Account).
+> Last updated: 2026-10-13 (F6.1 auth pages + session complete — F6 in progress. Next: F6.2 Account dashboard & profile).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F5 — Cart, Checkout, Order success, Track order: complete.** F5.1–F5.4 done (branch `feature/f5-cart-and-checkout`) |
+| **Current phase** | **F6 — Auth + Account: in progress.** F6.1 (auth pages + session) done; F6.2–F6.4 pending (branch `feature/f6-auth-and-account`) |
 
-| Last completed phase | F5.4 — Assembly & polish |
+| Last completed phase | F6.1 — Auth pages & session |
 
-| Next phase | F6 — Auth + Account |
+| Next phase | F6.2 — Account dashboard & profile |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 **done**. Next: F6 (Auth + Account). Built on branch `feature/f5-cart-and-checkout`. |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 **done**. F6 in progress (F6.1 done). Built on branch `feature/f6-auth-and-account`. |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -136,7 +136,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring), F5.2 (checkout flow), F5.3 (order success + track order) and F5.4 (assembly + polish) all done**
 
-- [ ] **F6** Auth + Account (orders, wishlist, addresses)
+- [~] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) done**; F6.2 (account dashboard + profile), F6.3 (orders, wishlist, addresses, notifications), F6.4 (assembly + polish) pending
 
 - [ ] **F7** Static pages, 404/empty states, SEO tags, performance + accessibility pass
 
@@ -284,6 +284,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 | D-045 | 2026-10-12 | **F5.3 order reads live in `checkoutService.ts`, not `catalogService.ts`** — same 300-line-cap reason as D-043 (`catalogService.ts` is 259 lines, and the orders store must sit beside `createOrder`). `createOrder` was **extended (an F5.2 file)** to build and record a full `Order` (items, status `pending`, `estimatedDelivery`) in a mock store mirrored to `localStorage` (`STORAGE_KEYS.mockOrders = "siwar.mock.orders"`, guarded with `try`/`catch` + `typeof localStorage`), so `getOrderById`/`getOrderByNumberAndPhone` survive a refresh and sequence numbers are derived from the persisted list (never reusing `SW-10025`). The timeline shows terminal states (cancelled/returned/refunded) as a distinct `accent-2` banner with the six linear steps greyed beneath it, because a mock order carries no status history. Routes stay in `app/AppRoutes.tsx` (D-029), **not** `src/App.tsx`. | default |
 
+| D-046 | 2026-10-13 | **F6.1 mock session persists in `localStorage` (owner-confirmed).** 02-arch §10 / 03-standards §5 forbid personal data in `localStorage`, so this is the same **mock-only** exception already accepted in D-045: the mock auth service persists the account **profiles** (`STORAGE_KEYS.mockUsers = "siwar.mock.users"`, no password field) and the signed-in **user id** (`STORAGE_KEYS.mockSession = "siwar.mock.auth"`, guarded with `try`/`catch` + `typeof localStorage`) so a refresh keeps the customer signed in. Passwords are **never** persisted: the demo account's password lives in `src/data/auth.ts` (bundle) and runtime-created ones live in an in-memory `Map` for the session only. Real mode uses the httpOnly cookie exclusively (`getCurrentUser` → `GET /auth/me`, 401 → `null`). Both mock keys disappear once `VITE_API_URL` is set. | owner |
+
 
 
 ## 5. Open questions for the owner
@@ -399,6 +401,8 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 | F5.4 — Assembly & polish | 2026-10-13 | Whole-F5 verification and tidy-up. Confirmed every F5 route is wired in `app/AppRoutes.tsx` (lazy `CartPage`/`CheckoutPage`/`OrderSuccessPage`/`TrackOrderPage`, no placeholders left), the `CartDrawer` is mounted once in `RootLayout`, and the navbar cart `IconButton` opens the `uiStore` `"cart"` overlay. `CartPage` now uses the F5.2 `useDocumentMeta` hook instead of a duplicated inline `<title>`/meta effect (D-043). Formatted the F5 files (`CartItem`, `CheckoutStepper`, `OrderTimeline`, `CheckoutStepView`, `ReviewStep`, `CheckoutPage`) and rewrote the `frontend/README.md` F5 section to match the F3/F4 sections. Verified: AR/EN i18n parity 386/386, all F5 files ≤ 300 lines (`CheckoutPage` 293), no `any`/console logs/TODOs added, all money via `formatPrice` (EGP), reduced-motion respected. `npm run build`, `npm run lint` and `npm test` pass (77 tests). | Branch `feature/f5-cart-and-checkout`. No new decisions (uses D-041–D-045). Pre-existing repo flag: `npm run format:check` still fails on ~45 F1–F4 files that predate F5 (e.g. `CategoryTile.tsx`) — not touched here (out of scope); the F5 files pass Prettier. |
 
 | **F5 — Cart, Checkout, Order success, Track order (complete)** | 2026-10-13 | Whole-phase summary. Cart page + slide-over drawer (focus trap/restore, Escape/backdrop close, save-for-later in the persisted `cartStore`), five-step guest checkout (Zod-validated, enabled payment methods only, transfer-proof URL for now), order success (number/total/ETA/timeline, cart cleared) and guest tracking by number + phone (`?number=` prefill). Mock orders persist to `localStorage` (`siwar.mock.orders`); `createOrder` recomputes subtotal/shipping/discount server-side. Empty/loading/error states throughout, EGP formatting, RTL + dark/light + reduced motion. i18n parity 386/386; 77 tests green; lazy chunks (`CartPage` 2.46 kB, `CheckoutPage` 18.75 kB, `OrderSuccessPage` 3.63 kB, `TrackOrderPage` 3.46 kB). | Branch `feature/f5-cart-and-checkout`. Decisions D-041–D-045. Next: F6 — Auth + Account. |
+
+| F6.1 — Auth pages & session | 2026-10-13 | Auth foundation. New `services/authService.ts` (`register`/`login`/`logout`/`getCurrentUser`/`forgotPassword`/`resetPassword` + typed `AuthError`; contract `POST /auth/*` + `GET /auth/me`) with the mock account seed in `src/data/auth.ts` (demo `demo@siwar.eg` / `Siwar1234`). New `store/auth.ts` (owner-named; `user`/`status`/`isAuthenticated` + `hydrate`/`setUser`/`clearUser`) bootstrapped by `hooks/useAuthBootstrap.ts` mounted in `AppProviders`. New `components/ProtectedRoute.tsx` (`/login?redirect=<path>`, skeleton while hydrating) + `utils/redirect.ts` (`safeInternalPath`/`loginRedirectPath`). New `components/auth/AuthLayout.tsx`, `PasswordInput.tsx` (show/hide + strength meter) and `authSchemas.ts` (Zod + controlled state per **D-035**; messages are i18n keys). New `pages/auth/{LoginPage,RegisterPage,ForgotPasswordPage,ResetPasswordPage}.tsx` wired as lazy routes in `app/AppRoutes.tsx` per **D-029** (replacing the F6 placeholders, adding `/reset-password/:token`). New `utils/password.ts` + tests. Navbar account icon now points to `/login` or `/account` by session. New `auth.*` i18n keys (AR/EN parity **451/451**). `npm run build`, `npm run lint` and `npm test` pass (82 tests). | Branch `feature/f6-auth-and-account`. Decision D-046. Deviations/notes: routes in `app/AppRoutes.tsx` (D-029, not `src/App.tsx`); Zod + controlled state (D-035, not RHF — not installed); store file `src/store/auth.ts` as the owner named it (not the `*Store.ts` convention); the auth forms reuse the F5 `components/checkout/fields` (`Field`/`CONTROL_CLASSES`) instead of duplicating; `services/http.ts` gained an additive `postVoid` for the 204 endpoints (logout/forgot/reset). `changePassword`/`updateProfile` deferred to F6.2 — `changePassword` needs a new contract endpoint first (02-arch §7 has no change-password route). |
 
 Suggested commit message for the F2 hotfix:
 

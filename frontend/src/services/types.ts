@@ -201,7 +201,14 @@ export type OrderResult = {
 };
 
 /** Linear fulfilment path shown by the order timeline. */
-export const ORDER_STATUSES = ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "delivered"] as const;
+export const ORDER_STATUSES = [
+  "pending",
+  "confirmed",
+  "processing",
+  "shipped",
+  "out_for_delivery",
+  "delivered",
+] as const;
 /** Terminal states that stop the linear path (shown differently on the timeline). */
 export const ORDER_TERMINAL_STATUSES = ["cancelled", "returned", "refunded"] as const;
 
@@ -292,3 +299,47 @@ export type ProductDetail = {
   related: Product[];
   matching: Product[];
 };
+
+/**
+ * Signed-in customer (`GET /auth/me`, `PATCH /account/profile`).
+ *
+ * The storefront only ever sees `role: "customer"`; staff roles exist in the admin app
+ * (02-architecture.md §5). The session itself is an httpOnly cookie, never a client value.
+ */
+export type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  role: "customer";
+  createdAt: string;
+};
+
+/** Body of `POST /auth/login`. */
+export type LoginInput = {
+  email: string;
+  password: string;
+};
+
+/** Body of `POST /auth/register`. */
+export type RegisterInput = {
+  name: string;
+  email: string;
+  phone?: string;
+  password: string;
+};
+
+/** Body of `POST /auth/forgot-password`. */
+export type ForgotPasswordInput = {
+  email: string;
+};
+
+/** Body of `POST /auth/reset-password`. */
+export type ResetPasswordInput = {
+  token: string;
+  password: string;
+};
+
+export const PASSWORD_STRENGTHS = ["weak", "medium", "strong"] as const;
+
+export type PasswordStrength = (typeof PASSWORD_STRENGTHS)[number];

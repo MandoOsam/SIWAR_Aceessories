@@ -16,6 +16,10 @@ const CartPage = lazy(async () => import("@/pages/CartPage"));
 const CheckoutPage = lazy(async () => import("@/pages/CheckoutPage"));
 const OrderSuccessPage = lazy(async () => import("@/pages/OrderSuccessPage"));
 const TrackOrderPage = lazy(async () => import("@/pages/TrackOrderPage"));
+const LoginPage = lazy(async () => import("@/pages/auth/LoginPage"));
+const RegisterPage = lazy(async () => import("@/pages/auth/RegisterPage"));
+const ForgotPasswordPage = lazy(async () => import("@/pages/auth/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(async () => import("@/pages/auth/ResetPasswordPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -36,10 +40,14 @@ export function AppRoutes() {
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path="/order/success/:id" element={<OrderSuccessPage />} />
         <Route path="/track-order" element={<TrackOrderPage />} />
-        <Route path="/login" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/register" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/forgot-password" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/account" element={<PlaceholderPage phase="F6" />} />
+
+        {/* Auth (F6.1). The account pages below are F6.2 and stay placeholders for now. */}
+        <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route path={ROUTES.register} element={<RegisterPage />} />
+        <Route path={ROUTES.forgotPassword} element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+
+        <Route path={ROUTES.account} element={<PlaceholderPage phase="F6" />} />
         <Route path="/account/orders" element={<PlaceholderPage phase="F6" />} />
         <Route path="/wishlist" element={<PlaceholderPage phase="F6" />} />
         <Route path="/about" element={<PlaceholderPage phase="F7" />} />

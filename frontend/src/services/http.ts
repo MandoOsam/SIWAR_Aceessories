@@ -124,3 +124,8 @@ export async function patch<T>(path: string, body: unknown, signal?: AbortSignal
   const response = await request<{ data: T }>(path, { method: "PATCH", body, signal });
   return response.data;
 }
+
+/** `POST` for endpoints that answer `204 No Content` (logout, forgot/reset password). */
+export async function postVoid(path: string, body?: unknown, signal?: AbortSignal): Promise<void> {
+  await request<void>(path, { method: "POST", body, signal });
+}

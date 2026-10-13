@@ -27,6 +27,13 @@ export const STORAGE_KEYS = {
   cart: "siwar-cart",
   /** Mock-only: keeps placed orders readable after a page refresh until the real API exists. */
   mockOrders: "siwar.mock.orders",
+  /**
+   * Mock-only: the mock account profiles the auth service reads. Never contains a password —
+   * passwords stay in memory. Removed once `VITE_API_URL` points at the real API (D-046).
+   */
+  mockUsers: "siwar.mock.users",
+  /** Mock-only: which mock user is signed in; the real app uses an httpOnly cookie (D-046). */
+  mockSession: "siwar.mock.auth",
 } as const;
 
 /** `GET /products` defaults (02-architecture.md section 7). */
@@ -47,5 +54,8 @@ export const ROUTES = {
   wishlist: "/wishlist",
   account: "/account",
   login: "/login",
+  register: "/register",
+  forgotPassword: "/forgot-password",
+  resetPassword: (token: string) => `/reset-password/${token}`,
   trackOrder: "/track-order",
 } as const;

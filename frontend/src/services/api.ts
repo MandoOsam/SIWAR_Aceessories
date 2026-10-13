@@ -36,6 +36,17 @@ export {
   listStaticPages,
   submitProductReview,
 } from "./contentService";
+export {
+  AuthError,
+  forgotPassword,
+  getCurrentUser,
+  getDemoCredentials,
+  login,
+  logout,
+  register,
+  resetPassword,
+} from "./authService";
+export type { AuthErrorCode } from "./authService";
 
 
 export async function subscribeNewsletter(email: string): Promise<{ ok: boolean }> {

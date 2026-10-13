@@ -556,5 +556,88 @@
     "subscribe": "Subscribe",
     "success": "Subscribed successfully",
     "error": "Invalid email"
+  },
+  "auth": {
+    "optional": "optional",
+    "brand": {
+      "title": "Welcome to SIWAR",
+      "body": "Elegant stainless steel jewelry that lasts — no tarnish, no rust.",
+      "benefit1": "Rust-resistant stainless steel",
+      "benefit2": "Gentle on sensitive skin",
+      "benefit3": "Fast delivery across Egypt"
+    },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password",
+      "strengthLabel": "Password strength",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "hint": "At least 8 characters, with a letter and a number"
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Welcome back to SIWAR",
+      "email": "Email",
+      "password": "Password",
+      "forgot": "Forgot your password?",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "New to SIWAR?",
+      "createAccount": "Create an account",
+      "demoHint": "Demo account — email {{email}} · password {{password}}"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Join SIWAR for a faster checkout",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Mobile number",
+      "phoneHint": "Egyptian mobile, e.g. 01012345678",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "subtitle": "We'll email you a link to reset it",
+      "email": "Email",
+      "submit": "Send reset link",
+      "submitting": "Sending…",
+      "success": "If an account exists for that email, a reset link is on its way.",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password for your account",
+      "password": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "success": "Your password has been updated. You can sign in now.",
+      "backToLogin": "Back to sign in"
+    },
+    "errors": {
+      "required": "This field is required",
+      "email": "Enter a valid email address",
+      "nameMin": "Name must be at least 2 characters",
+      "phone": "Enter a valid Egyptian mobile number",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordPattern": "Use at least one letter and one number",
+      "passwordMatch": "Passwords do not match",
+      "invalidCredentials": "Email or password is incorrect",
+      "emailTaken": "An account already exists for this email",
+      "invalidToken": "This reset link is invalid or has expired",
+      "generic": "Something went wrong. Please try again."
+    },
+    "meta": {
+      "loginTitle": "Sign in — SIWAR",
+      "registerTitle": "Create account — SIWAR",
+      "forgotTitle": "Forgot password — SIWAR",
+      "resetTitle": "Reset password — SIWAR"
+    }
   }
 }

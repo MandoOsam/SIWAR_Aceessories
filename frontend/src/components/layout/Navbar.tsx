@@ -10,6 +10,7 @@ import { MobileDrawer } from "@/components/layout/MobileDrawer";
 import { IconButton, IconLink } from "@/components/ui/IconButton";
 import { PRIMARY_NAV } from "@/config/navigation";
 import { ROUTES } from "@/config/app";
+import { useAuthStore } from "@/store/auth";
 import { useCartStore, selectCartCount } from "@/store/cartStore";
 import { useUiStore } from "@/store/uiStore";
 import { useScrollTracking } from "@/hooks/useScrollTracking";
@@ -38,6 +39,7 @@ export function Navbar() {
   const openOverlay = useUiStore((state) => state.openOverlay);
 
   const cartCount = useCartStore(selectCartCount);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const isHomeRoute = location.pathname === ROUTES.home;
   const isTransparent = isHomeRoute && !isScrolled && overlay === null;
@@ -118,8 +120,8 @@ export function Navbar() {
             <LanguageSwitch />
           </div>
           <IconLink
-            to={ROUTES.account}
-            label={t("nav.account")}
+            to={isAuthenticated ? ROUTES.account : ROUTES.login}
+            label={isAuthenticated ? t("nav.account") : t("nav.login")}
             icon={<User aria-hidden="true" className="size-5" />}
             className="hidden md:inline-flex"
           />
