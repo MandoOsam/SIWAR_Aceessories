@@ -187,7 +187,9 @@
       "shareCopied": "Link copied"
     },
     "toast": {
-      "added": "Added to cart"
+      "added": "Added to cart",
+      "wishlistAdded": "Added to wishlist",
+      "wishlistRemoved": "Removed from wishlist"
     },
     "matching": "Matching products",
     "related": "You may also like",
@@ -556,5 +558,269 @@
     "subscribe": "Subscribe",
     "success": "Subscribed successfully",
     "error": "Invalid email"
+  },
+  "auth": {
+    "optional": "optional",
+    "brand": {
+      "title": "Welcome to SIWAR",
+      "body": "Elegant stainless steel jewelry that lasts — no tarnish, no rust.",
+      "benefit1": "Rust-resistant stainless steel",
+      "benefit2": "Gentle on sensitive skin",
+      "benefit3": "Fast delivery across Egypt"
+    },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password",
+      "strengthLabel": "Password strength",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "hint": "At least 8 characters, with a letter and a number"
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Welcome back to SIWAR",
+      "email": "Email",
+      "password": "Password",
+      "forgot": "Forgot your password?",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "New to SIWAR?",
+      "createAccount": "Create an account",
+      "demoHint": "Demo account — email {{email}} · password {{password}}"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Join SIWAR for a faster checkout",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Mobile number",
+      "phoneHint": "Egyptian mobile, e.g. 01012345678",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "subtitle": "We'll email you a link to reset it",
+      "email": "Email",
+      "submit": "Send reset link",
+      "submitting": "Sending…",
+      "success": "If an account exists for that email, a reset link is on its way.",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password for your account",
+      "password": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "success": "Your password has been updated. You can sign in now.",
+      "backToLogin": "Back to sign in"
+    },
+    "errors": {
+      "required": "This field is required",
+      "email": "Enter a valid email address",
+      "nameMin": "Name must be at least 2 characters",
+      "phone": "Enter a valid Egyptian mobile number",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordPattern": "Use at least one letter and one number",
+      "passwordMatch": "Passwords do not match",
+      "invalidCredentials": "Email or password is incorrect",
+      "emailTaken": "An account already exists for this email",
+      "invalidToken": "This reset link is invalid or has expired",
+      "generic": "Something went wrong. Please try again."
+    },
+    "meta": {
+      "loginTitle": "Sign in — SIWAR",
+      "registerTitle": "Create account — SIWAR",
+      "forgotTitle": "Forgot password — SIWAR",
+      "resetTitle": "Reset password — SIWAR"
+    }
+  },
+  "account": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "wishlist": "Wishlist",
+      "addresses": "Addresses",
+      "notifications": "Notifications",
+      "profile": "Profile",
+      "password": "Password",
+      "logout": "Log out",
+      "loggingOut": "Logging out…",
+      "menu": "Account menu"
+    },
+    "dashboard": {
+      "welcome": "Welcome, {{name}}",
+      "subtitle": "Manage your orders, details and preferences.",
+      "ordersTitle": "Recent orders",
+      "ordersEmpty": "You have no orders yet.",
+      "ordersLink": "View all orders",
+      "wishlistTitle": "Wishlist",
+      "wishlistEmpty": "Your wishlist is empty.",
+      "wishlistLink": "View wishlist",
+      "addressTitle": "Default address",
+      "addressEmpty": "No address saved yet.",
+      "addressLink": "Manage addresses",
+      "notificationsTitle": "Notifications",
+      "notificationsEmpty": "No unread notifications.",
+      "notificationsLink": "View notifications",
+      "editProfile": "Edit profile"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Update your personal details",
+      "identity": "Personal details",
+      "name": "Full name",
+      "nameHint": "Shown on your orders and reviews",
+      "displayNameAr": "Display name (Arabic)",
+      "displayNameEn": "Display name (English)",
+      "email": "Email",
+      "emailHint": "Changing your email requires contacting support",
+      "phone": "Mobile number",
+      "phoneHint": "Egyptian mobile, e.g. 01012345678",
+      "avatarHint": "Your initials are shown for now",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Your profile has been updated"
+    },
+    "password": {
+      "title": "Password",
+      "subtitle": "Change the password for your account",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "save": "Update password",
+      "saving": "Updating…",
+      "saved": "Your password has been updated",
+      "incorrect": "Current password is incorrect"
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Track and review your orders",
+      "number": "Order number",
+      "date": "Date",
+      "items": "Items",
+      "itemCount_one": "{{count}} item",
+      "itemCount_other": "{{count}} items",
+      "total": "Total",
+      "view": "View details",
+      "count_one": "{{count}} order",
+      "count_other": "{{count}} orders",
+      "filterLabel": "Filter orders",
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      },
+      "noneInTab": "No orders in this section.",
+      "emptyTitle": "No orders yet",
+      "emptyBody": "When you place an order it will appear here.",
+      "emptyCta": "Start shopping"
+    },
+    "orderDetails": {
+      "title": "Order details",
+      "subtitle": "Review your order",
+      "back": "Back to orders",
+      "timeline": "Order status",
+      "items": "Items",
+      "address": "Delivery address",
+      "payment": "Payment method",
+      "delivery": "Standard delivery",
+      "methods": {
+        "cod": "Cash on delivery",
+        "instapay": "InstaPay transfer",
+        "vodafone-cash": "Vodafone Cash transfer"
+      },
+      "summary": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "discount": "Discount",
+      "total": "Total",
+      "reorder": "Reorder",
+      "cancel": "Cancel order",
+      "return": "Request return",
+      "invoice": "Print invoice",
+      "cancelled": "Your order has been cancelled",
+      "returned": "Your return request has been submitted",
+      "reordered": "The items were added to your cart",
+      "notFoundTitle": "Order not found",
+      "notFoundBody": "We couldn't find this order."
+    },
+    "wishlist": {
+      "title": "Wishlist",
+      "subtitle": "Your saved products",
+      "moveAll": "Move all to cart",
+      "movedAll": "All wishlist items were added to your cart",
+      "unavailable": "Some saved products are no longer available.",
+      "emptyTitle": "Your wishlist is empty",
+      "emptyBody": "Save your favourite pieces to find them here.",
+      "emptyCta": "Browse the shop"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "subtitle": "Manage your delivery addresses",
+      "add": "Add address",
+      "addTitle": "New address",
+      "editTitle": "Edit address",
+      "save": "Save address",
+      "cancel": "Cancel",
+      "default": "Default",
+      "edit": "Edit",
+      "delete": "Delete",
+      "setDefault": "Set as default",
+      "deleteConfirm": "Delete this address?",
+      "saved": "Your address has been saved",
+      "removed": "The address was deleted",
+      "defaultUpdated": "Default address updated",
+      "checkoutHint": "Ready to order?",
+      "checkoutLink": "Go to checkout",
+      "emptyTitle": "No addresses yet",
+      "emptyBody": "Add a delivery address to check out faster.",
+      "fields": {
+        "governorate": "Governorate",
+        "governoratePlaceholder": "Select a governorate",
+        "city": "City",
+        "street": "Street",
+        "building": "Building",
+        "apartment": "Apartment",
+        "phone": "Mobile number"
+      },
+      "errors": {
+        "governorate": "Select a governorate",
+        "city": "Enter a city",
+        "street": "Enter a street"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Updates about your orders and offers",
+      "markAll": "Mark all as read",
+      "markRead": "Mark as read",
+      "unreadCount_one": "{{count}} unread notification",
+      "unreadCount_other": "{{count}} unread notifications",
+      "emptyTitle": "No notifications",
+      "emptyBody": "You're all caught up."
+    },
+    "errors": {
+      "nameMin": "Name must be at least 2 characters",
+      "phone": "Enter a valid Egyptian mobile number"
+    },
+    "meta": {
+      "dashboardTitle": "My account — SIWAR",
+      "profileTitle": "Profile — SIWAR",
+      "passwordTitle": "Password — SIWAR",
+      "ordersTitle": "Orders — SIWAR",
+      "orderDetailsTitle": "Order details — SIWAR",
+      "wishlistTitle": "Wishlist — SIWAR",
+      "addressesTitle": "Addresses — SIWAR",
+      "notificationsTitle": "Notifications — SIWAR"
+    }
   }
 }

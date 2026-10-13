@@ -187,7 +187,9 @@
       "shareCopied": "تم نسخ الرابط"
     },
     "toast": {
-      "added": "تمت الإضافة إلى السلة"
+      "added": "تمت الإضافة إلى السلة",
+      "wishlistAdded": "تمت الإضافة إلى المفضلة",
+      "wishlistRemoved": "تمت الإزالة من المفضلة"
     },
     "matching": "منتجات مطابقة",
     "related": "قد يعجبك أيضًا",
@@ -556,5 +558,269 @@
     "subscribe": "Subscribe",
     "success": "Subscribed successfully",
     "error": "Invalid email"
+  },
+  "auth": {
+    "optional": "اختياري",
+    "brand": {
+      "title": "أهلاً بيكي في SIWAR",
+      "body": "إكسسوارات ستانلس ستيل أنيقة تدوم معاكي — من غير بهتان ولا صدأ.",
+      "benefit1": "ستانلس ستيل مقاوم للصدأ",
+      "benefit2": "آمن على البشرة الحساسة",
+      "benefit3": "شحن سريع لكل محافظات مصر"
+    },
+    "password": {
+      "show": "إظهار كلمة المرور",
+      "hide": "إخفاء كلمة المرور",
+      "strengthLabel": "قوة كلمة المرور",
+      "weak": "ضعيفة",
+      "medium": "متوسطة",
+      "strong": "قوية",
+      "hint": "8 أحرف على الأقل، مع حرف ورقم"
+    },
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "أهلاً بيكي تاني في SIWAR",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "forgot": "نسيتي كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول…",
+      "noAccount": "لسه جديدة على SIWAR؟",
+      "createAccount": "اعملي حساب",
+      "demoHint": "حساب تجريبي — البريد {{email}} · كلمة المرور {{password}}"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "سجّلي في SIWAR لشراء أسرع",
+      "name": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الموبايل",
+      "phoneHint": "رقم مصري، مثال 01012345678",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "submit": "إنشاء الحساب",
+      "submitting": "جاري إنشاء الحساب…",
+      "haveAccount": "عندك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول"
+    },
+    "forgot": {
+      "title": "نسيتي كلمة المرور",
+      "subtitle": "هنبعتلك رابط لإعادة التعيين على بريدك",
+      "email": "البريد الإلكتروني",
+      "submit": "أرسلي رابط التعيين",
+      "submitting": "جاري الإرسال…",
+      "success": "لو فيه حساب بالبريد ده، هيوصلك رابط إعادة التعيين.",
+      "backToLogin": "رجوع لتسجيل الدخول"
+    },
+    "reset": {
+      "title": "تعيين كلمة مرور جديدة",
+      "subtitle": "اختاري كلمة مرور جديدة لحسابك",
+      "password": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "submit": "تحديث كلمة المرور",
+      "submitting": "جاري التحديث…",
+      "success": "تم تحديث كلمة المرور. تقدري تسجّلي دخولك الآن.",
+      "backToLogin": "رجوع لتسجيل الدخول"
+    },
+    "errors": {
+      "required": "الحقل مطلوب",
+      "email": "اكتبي بريد إلكتروني صحيح",
+      "nameMin": "الاسم لازم يكون حرفين على الأقل",
+      "phone": "اكتبي رقم موبايل مصري صحيح",
+      "passwordMin": "كلمة المرور لازم 8 أحرف على الأقل",
+      "passwordPattern": "لازم تحتوي على حرف ورقم على الأقل",
+      "passwordMatch": "كلمتا المرور غير متطابقتين",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      "emailTaken": "يوجد حساب مسجّل بهذا البريد بالفعل",
+      "invalidToken": "رابط إعادة التعيين غير صالح أو منتهي",
+      "generic": "حدث خطأ ما. حاولي مرة أخرى."
+    },
+    "meta": {
+      "loginTitle": "تسجيل الدخول — SIWAR",
+      "registerTitle": "إنشاء حساب — SIWAR",
+      "forgotTitle": "نسيتي كلمة المرور — SIWAR",
+      "resetTitle": "إعادة تعيين كلمة المرور — SIWAR"
+    }
+  },
+  "account": {
+    "nav": {
+      "dashboard": "لوحة الحساب",
+      "orders": "طلباتي",
+      "wishlist": "المفضلة",
+      "addresses": "العناوين",
+      "notifications": "الإشعارات",
+      "profile": "الملف الشخصي",
+      "password": "كلمة المرور",
+      "logout": "تسجيل الخروج",
+      "loggingOut": "جاري تسجيل الخروج…",
+      "menu": "قائمة الحساب"
+    },
+    "dashboard": {
+      "welcome": "أهلاً، {{name}}",
+      "subtitle": "أديري طلباتكِ وبياناتكِ وتفضيلاتكِ.",
+      "ordersTitle": "أحدث الطلبات",
+      "ordersEmpty": "لا توجد طلبات بعد.",
+      "ordersLink": "عرض كل الطلبات",
+      "wishlistTitle": "المفضلة",
+      "wishlistEmpty": "قائمة المفضلة فارغة.",
+      "wishlistLink": "عرض المفضلة",
+      "addressTitle": "العنوان الافتراضي",
+      "addressEmpty": "لا يوجد عنوان محفوظ بعد.",
+      "addressLink": "إدارة العناوين",
+      "notificationsTitle": "الإشعارات",
+      "notificationsEmpty": "لا توجد إشعارات غير مقروءة.",
+      "notificationsLink": "عرض الإشعارات",
+      "editProfile": "تعديل الملف الشخصي"
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "subtitle": "حدّثي بياناتكِ الشخصية",
+      "identity": "البيانات الشخصية",
+      "name": "الاسم الكامل",
+      "nameHint": "يظهر في طلباتكِ وتقييماتكِ",
+      "displayNameAr": "الاسم المعروض (بالعربية)",
+      "displayNameEn": "الاسم المعروض (بالإنجليزية)",
+      "email": "البريد الإلكتروني",
+      "emailHint": "لتغيير البريد الإلكتروني تواصلي مع الدعم",
+      "phone": "رقم الموبايل",
+      "phoneHint": "موبايل مصري، مثال 01012345678",
+      "avatarHint": "يُعرض الحرف الأول من اسمكِ حالياً",
+      "save": "حفظ التغييرات",
+      "saving": "جاري الحفظ…",
+      "saved": "تم تحديث ملفكِ الشخصي"
+    },
+    "password": {
+      "title": "كلمة المرور",
+      "subtitle": "غيّري كلمة مرور حسابكِ",
+      "current": "كلمة المرور الحالية",
+      "new": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور الجديدة",
+      "save": "تحديث كلمة المرور",
+      "saving": "جاري التحديث…",
+      "saved": "تم تحديث كلمة المرور",
+      "incorrect": "كلمة المرور الحالية غير صحيحة"
+    },
+    "orders": {
+      "title": "طلباتي",
+      "subtitle": "تابعي طلباتكِ وراجعيها",
+      "number": "رقم الطلب",
+      "date": "التاريخ",
+      "items": "المنتجات",
+      "itemCount_one": "منتج واحد",
+      "itemCount_other": "{{count}} منتجات",
+      "total": "الإجمالي",
+      "view": "عرض التفاصيل",
+      "count_one": "طلب واحد",
+      "count_other": "{{count}} طلبات",
+      "filterLabel": "تصفية الطلبات",
+      "tabs": {
+        "all": "الكل",
+        "active": "قيد التنفيذ",
+        "delivered": "تم التوصيل",
+        "cancelled": "ملغاة"
+      },
+      "noneInTab": "لا توجد طلبات في هذا القسم.",
+      "emptyTitle": "لا توجد طلبات بعد",
+      "emptyBody": "عند إتمام أي طلب سيظهر هنا.",
+      "emptyCta": "ابدئي التسوق"
+    },
+    "orderDetails": {
+      "title": "تفاصيل الطلب",
+      "subtitle": "راجعي تفاصيل طلبكِ",
+      "back": "العودة إلى الطلبات",
+      "timeline": "حالة الطلب",
+      "items": "المنتجات",
+      "address": "عنوان التوصيل",
+      "payment": "طريقة الدفع",
+      "delivery": "توصيل عادي",
+      "methods": {
+        "cod": "الدفع عند الاستلام",
+        "instapay": "تحويل إنستاباي",
+        "vodafone-cash": "تحويل فودافون كاش"
+      },
+      "summary": "ملخص الطلب",
+      "subtotal": "المجموع الفرعي",
+      "shipping": "الشحن",
+      "discount": "الخصم",
+      "total": "الإجمالي",
+      "reorder": "إعادة الطلب",
+      "cancel": "إلغاء الطلب",
+      "return": "طلب إرجاع",
+      "invoice": "طباعة الفاتورة",
+      "cancelled": "تم إلغاء طلبكِ",
+      "returned": "تم إرسال طلب الإرجاع",
+      "reordered": "تمت إضافة المنتجات إلى سلة التسوق",
+      "notFoundTitle": "الطلب غير موجود",
+      "notFoundBody": "لم نتمكن من العثور على هذا الطلب."
+    },
+    "wishlist": {
+      "title": "المفضلة",
+      "subtitle": "منتجاتكِ المحفوظة",
+      "moveAll": "نقل الكل إلى السلة",
+      "movedAll": "تمت إضافة كل منتجات المفضلة إلى سلة التسوق",
+      "unavailable": "بعض المنتجات المحفوظة لم تعد متاحة.",
+      "emptyTitle": "قائمة المفضلة فارغة",
+      "emptyBody": "احفظي القطع المفضلة لديكِ لتجديها هنا.",
+      "emptyCta": "تصفحي المتجر"
+    },
+    "addresses": {
+      "title": "العناوين",
+      "subtitle": "إدارة عناوين التوصيل",
+      "add": "إضافة عنوان",
+      "addTitle": "عنوان جديد",
+      "editTitle": "تعديل العنوان",
+      "save": "حفظ العنوان",
+      "cancel": "إلغاء",
+      "default": "افتراضي",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "setDefault": "تعيين كافتراضي",
+      "deleteConfirm": "حذف هذا العنوان؟",
+      "saved": "تم حفظ العنوان",
+      "removed": "تم حذف العنوان",
+      "defaultUpdated": "تم تحديث العنوان الافتراضي",
+      "checkoutHint": "جاهزة لإتمام الطلب؟",
+      "checkoutLink": "الذهاب إلى الدفع",
+      "emptyTitle": "لا توجد عناوين بعد",
+      "emptyBody": "أضيفي عنوان توصيل لإتمام الطلب بسرعة.",
+      "fields": {
+        "governorate": "المحافظة",
+        "governoratePlaceholder": "اختاري المحافظة",
+        "city": "المدينة",
+        "street": "الشارع",
+        "building": "المبنى",
+        "apartment": "الشقة",
+        "phone": "رقم الموبايل"
+      },
+      "errors": {
+        "governorate": "اختاري المحافظة",
+        "city": "اكتبي اسم المدينة",
+        "street": "اكتبي اسم الشارع"
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "subtitle": "تحديثات حول طلباتكِ والعروض",
+      "markAll": "تعليم الكل كمقروء",
+      "markRead": "تعليم كمقروء",
+      "unreadCount_one": "إشعار غير مقروء",
+      "unreadCount_other": "{{count}} إشعارات غير مقروءة",
+      "emptyTitle": "لا توجد إشعارات",
+      "emptyBody": "ليس لديكِ أي إشعارات جديدة."
+    },
+    "errors": {
+      "nameMin": "الاسم لازم يكون حرفين على الأقل",
+      "phone": "اكتبي رقم موبايل مصري صحيح"
+    },
+    "meta": {
+      "dashboardTitle": "حسابي — SIWAR",
+      "profileTitle": "الملف الشخصي — SIWAR",
+      "passwordTitle": "كلمة المرور — SIWAR",
+      "ordersTitle": "الطلبات — SIWAR",
+      "orderDetailsTitle": "تفاصيل الطلب — SIWAR",
+      "wishlistTitle": "المفضلة — SIWAR",
+      "addressesTitle": "العناوين — SIWAR",
+      "notificationsTitle": "الإشعارات — SIWAR"
+    }
   }
 }

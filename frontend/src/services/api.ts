@@ -18,13 +18,16 @@ export {
 } from "./catalogService";
 export type { CouponError, CouponValidation } from "./catalogService";
 export {
+  cancelOrder,
   createOrder,
   getOrderById,
   getOrderByNumberAndPhone,
   getPaymentMethods,
   getShippingOptions,
   listGovernorates,
+  listOrders,
   OrderError,
+  requestReturn,
 } from "./checkoutService";
 export type { OrderErrorCode } from "./checkoutService";
 export {
@@ -36,6 +39,29 @@ export {
   listStaticPages,
   submitProductReview,
 } from "./contentService";
+export {
+  AuthError,
+  forgotPassword,
+  getCurrentUser,
+  getDemoCredentials,
+  login,
+  logout,
+  register,
+  resetPassword,
+} from "./authService";
+export type { AuthErrorCode } from "./authService";
+export {
+  changePassword,
+  createAddress,
+  deleteAddress,
+  getMyAddresses,
+  getMyNotifications,
+  getMyOrder,
+  getMyOrders,
+  setDefaultAddress,
+  updateAddress,
+  updateProfile,
+} from "./accountService";
 
 
 export async function subscribeNewsletter(email: string): Promise<{ ok: boolean }> {

@@ -1,7 +1,9 @@
 import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { RootLayout } from "@/layouts/RootLayout";
+import { AccountLayout } from "@/pages/account/AccountLayout";
 import { ROUTES } from "@/config/app";
 
 // Pages are code-split so the first paint only ships the shell and the home page
@@ -16,6 +18,18 @@ const CartPage = lazy(async () => import("@/pages/CartPage"));
 const CheckoutPage = lazy(async () => import("@/pages/CheckoutPage"));
 const OrderSuccessPage = lazy(async () => import("@/pages/OrderSuccessPage"));
 const TrackOrderPage = lazy(async () => import("@/pages/TrackOrderPage"));
+const LoginPage = lazy(async () => import("@/pages/auth/LoginPage"));
+const RegisterPage = lazy(async () => import("@/pages/auth/RegisterPage"));
+const ForgotPasswordPage = lazy(async () => import("@/pages/auth/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(async () => import("@/pages/auth/ResetPasswordPage"));
+const AccountDashboardPage = lazy(async () => import("@/pages/account/AccountDashboardPage"));
+const ProfilePage = lazy(async () => import("@/pages/account/ProfilePage"));
+const PasswordPage = lazy(async () => import("@/pages/account/PasswordPage"));
+const OrdersPage = lazy(async () => import("@/pages/account/OrdersPage"));
+const OrderDetailsPage = lazy(async () => import("@/pages/account/OrderDetailsPage"));
+const WishlistPage = lazy(async () => import("@/pages/account/WishlistPage"));
+const AddressesPage = lazy(async () => import("@/pages/account/AddressesPage"));
+const NotificationsPage = lazy(async () => import("@/pages/account/NotificationsPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -36,12 +50,36 @@ export function AppRoutes() {
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path="/order/success/:id" element={<OrderSuccessPage />} />
         <Route path="/track-order" element={<TrackOrderPage />} />
-        <Route path="/login" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/register" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/forgot-password" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/account" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/account/orders" element={<PlaceholderPage phase="F6" />} />
-        <Route path="/wishlist" element={<PlaceholderPage phase="F6" />} />
+
+        {/* Auth (F6.1). */}
+        <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route path={ROUTES.register} element={<RegisterPage />} />
+        <Route path={ROUTES.forgotPassword} element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+
+        {/*
+          Account (F6.2, extended in F6.3). The layout renders the sidebar and `<Outlet/>`; every
+          child is behind `ProtectedRoute`. `/wishlist` is an alias of the account wishlist so the
+          navbar heart keeps working.
+        */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <AccountLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path={ROUTES.account} element={<AccountDashboardPage />} />
+          <Route path={ROUTES.accountProfile} element={<ProfilePage />} />
+          <Route path={ROUTES.accountPassword} element={<PasswordPage />} />
+          <Route path={ROUTES.accountOrders} element={<OrdersPage />} />
+          <Route path={ROUTES.accountOrderDetails(":id")} element={<OrderDetailsPage />} />
+          <Route path={ROUTES.accountWishlist} element={<WishlistPage />} />
+          <Route path={ROUTES.accountAddresses} element={<AddressesPage />} />
+          <Route path={ROUTES.accountNotifications} element={<NotificationsPage />} />
+          <Route path={ROUTES.wishlist} element={<WishlistPage />} />
+        </Route>
+
         <Route path="/about" element={<PlaceholderPage phase="F7" />} />
         <Route path="/contact" element={<PlaceholderPage phase="F7" />} />
         <Route path="/faq" element={<PlaceholderPage phase="F7" />} />
