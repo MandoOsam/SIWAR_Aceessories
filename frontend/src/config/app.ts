@@ -34,6 +34,12 @@ export const STORAGE_KEYS = {
   mockUsers: "siwar.mock.users",
   /** Mock-only: which mock user is signed in; the real app uses an httpOnly cookie (D-046). */
   mockSession: "siwar.mock.auth",
+  /** Client wishlist of product ids; allowed client storage (03-code-standards.md §5). */
+  wishlist: "siwar.wishlist",
+  /** Mock notifications, shown until the real API exists (`GET /account/notifications`). */
+  notifications: "siwar.notifications",
+  /** Mock-only: saved delivery addresses (`/account/addresses`). */
+  mockAddresses: "siwar.mock.addresses",
 } as const;
 
 /** `GET /products` defaults (02-architecture.md section 7). */
@@ -56,6 +62,7 @@ export const ROUTES = {
   accountProfile: "/account/profile",
   accountPassword: "/account/password",
   accountOrders: "/account/orders",
+  accountOrderDetails: (id: string) => `/account/orders/${id}`,
   accountWishlist: "/account/wishlist",
   accountAddresses: "/account/addresses",
   accountNotifications: "/account/notifications",

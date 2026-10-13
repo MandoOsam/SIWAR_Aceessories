@@ -118,7 +118,7 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 
 ### Auth & account
 `GET /auth/csrf`, `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`, `POST /auth/forgot-password`, `POST /auth/reset-password`;
-`GET|PATCH /account/profile` (PATCH body: `name`, `phone?`, `displayName?: { ar, en }`), `POST /account/change-password` (`{ currentPassword, newPassword }`), `GET /account/orders`, `GET /account/orders/:id`, `GET|POST|PATCH|DELETE /account/addresses`, `GET|POST|DELETE /account/wishlist`, `GET /account/notifications`.
+`GET|PATCH /account/profile` (PATCH body: `name`, `phone?`, `displayName?: { ar, en }`), `POST /account/change-password` (`{ currentPassword, newPassword }`), `GET /account/orders`, `GET /account/orders/:id`, `POST /orders/:id/cancel`, `POST /orders/:id/return`, `GET /account/addresses`, `POST /account/addresses`, `PATCH /account/addresses/:id`, `DELETE /account/addresses/:id`, `PATCH /account/addresses/:id/default`, `GET /account/wishlist`, `POST /account/wishlist`, `DELETE /account/wishlist/:productId`, `GET /account/notifications`.
 
 ### Admin (`/admin/...`, role-checked)
 `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`;

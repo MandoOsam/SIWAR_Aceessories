@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Heart, Share2, ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,7 @@ import { ROUTES } from "@/config/app";
 import type { Product } from "@/services/types";
 import { useCartStore } from "@/store/cartStore";
 import { toast } from "@/store/toastStore";
+import { useWishlistStore } from "@/store/wishlist";
 import { cn } from "@/utils/cn";
 import { buildCartItem } from "@/utils/product";
 
@@ -24,8 +24,8 @@ export interface ProductActionsProps {
 
 /**
  * Purchase actions (05-ui-context.md §7.5). "Buy now" adds the line and routes to the cart for now;
- * F5 repoints it at checkout once that route exists. Wishlist is local state — F6 wires the real
- * store. Share uses the Web Share API when present and falls back to copying the URL.
+ * F5 repoints it at checkout once that route exists. Wishlist reads and writes the shared
+ * `useWishlistStore`. Share uses the Web Share API when present and falls back to copying the URL.
  */
 export function ProductActions({
   product,
@@ -38,7 +38,8 @@ export function ProductActions({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const addItem = useCartStore((state) => state.addItem);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = useWishlistStore((state) => state.items.includes(product.id));
+  const toggleWishlist = useWishlistStore((state) => state.toggle);
 
   const addToCart = (): void => {
     addItem(buildCartItem(product, { color: selectedColor, size: selectedSize }, quantity));
@@ -95,7 +96,9 @@ export function ProductActions({
 
       <div className="flex items-center gap-1">
         <IconButton
-          label={isWishlisted ? t("product.actions.wishlistRemove") : t("product.actions.wishlistAdd")}
+          label={
+            isWishlisted ? t("product.actions.wishlistRemove") : t("product.actions.wishlistAdd")
+          }
           icon={
             <Heart
               className={cn("h-5 w-5", isWishlisted && "fill-accent text-accent")}
@@ -103,7 +106,12 @@ export function ProductActions({
             />
           }
           aria-pressed={isWishlisted}
-          onClick={() => setIsWishlisted((current) => !current)}
+          onClick={() => {
+            toggleWishlist(product.id);
+            toast(
+              isWishlisted ? t("product.toast.wishlistRemoved") : t("product.toast.wishlistAdded"),
+            );
+          }}
         />
         <IconButton
           label={t("product.actions.share")}

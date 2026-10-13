@@ -129,3 +129,8 @@ export async function patch<T>(path: string, body: unknown, signal?: AbortSignal
 export async function postVoid(path: string, body?: unknown, signal?: AbortSignal): Promise<void> {
   await request<void>(path, { method: "POST", body, signal });
 }
+
+/** `DELETE` for endpoints that answer `204 No Content` (delete address). */
+export async function deleteVoid(path: string, signal?: AbortSignal): Promise<void> {
+  await request<void>(path, { method: "DELETE", signal });
+}

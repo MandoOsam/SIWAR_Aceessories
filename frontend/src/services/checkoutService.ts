@@ -14,7 +14,7 @@ import { products } from "@/data/products";
 import { shippingOptions, storeSettings } from "@/data/content";
 
 import { validateCoupon } from "./catalogService";
-import { getList, getOne, post } from "./http";
+import { getList, getOne, post, postVoid } from "./http";
 import { simulateLatency } from "./mockAdapter";
 import type {
   Governorate,
@@ -22,12 +22,23 @@ import type {
   OrderInput,
   OrderItem,
   OrderResult,
+  OrderState,
   PaymentMethod,
   ShippingOption,
 } from "./types";
 
-/** Reasons `createOrder` can fail; the checkout UI maps each to a translated message. */
-export type OrderErrorCode = "empty-cart" | "product-not-found" | "out-of-stock";
+/** Reasons the order calls can fail; the UI maps each to a translated message. */
+export type OrderErrorCode =
+  | "empty-cart"
+  | "product-not-found"
+  | "out-of-stock"
+  | "order-not-found"
+  | "not-cancelable"
+  | "not-returnable";
+
+/** Statuses a customer may cancel from, and the only status a return may start from. */
+const CANCELABLE_STATUSES: readonly OrderState[] = ["pending", "confirmed"];
+const RETURNABLE_STATUSES: readonly OrderState[] = ["delivered"];
 
 /** Typed failure thrown by `createOrder`. */
 export class OrderError extends Error {
@@ -238,4 +249,54 @@ export async function getOrderByNumberAndPhone(
         order.customer.phone.replace(/\D/g, "") === wantedPhone,
     ) ?? null
   );
+}
+
+/** `GET /account/orders` — the signed-in customer's orders, newest first. */
+export async function listOrders(signal?: AbortSignal): Promise<Order[]> {
+  if (!IS_MOCK_MODE) {
+    const response = await getList<Order>("/account/orders", signal);
+    return response.data;
+  }
+  await simulateLatency(signal);
+  return readOrders();
+}
+
+/** Moves a stored order to a new status after checking the transition is allowed. */
+function transitionOrder(
+  id: string,
+  next: OrderState,
+  allowed: readonly OrderState[],
+  failure: OrderErrorCode,
+): Order {
+  const orders = readOrders();
+  const current = orders.find((order) => order.id === id);
+  if (current === undefined) {
+    throw new OrderError("order-not-found");
+  }
+  if (!allowed.includes(current.status)) {
+    throw new OrderError(failure);
+  }
+  const updated: Order = { ...current, status: next };
+  writeOrders(orders.map((order) => (order.id === id ? updated : order)));
+  return updated;
+}
+
+/** `POST /orders/:id/cancel` — allowed while the order is still `pending` or `confirmed`. */
+export async function cancelOrder(id: string, signal?: AbortSignal): Promise<void> {
+  if (!IS_MOCK_MODE) {
+    await postVoid(`/orders/${encodeURIComponent(id)}/cancel`, {}, signal);
+    return;
+  }
+  await simulateLatency(signal);
+  transitionOrder(id, "cancelled", CANCELABLE_STATUSES, "not-cancelable");
+}
+
+/** `POST /orders/:id/return` — allowed once the order has been `delivered`. */
+export async function requestReturn(id: string, signal?: AbortSignal): Promise<void> {
+  if (!IS_MOCK_MODE) {
+    await postVoid(`/orders/${encodeURIComponent(id)}/return`, {}, signal);
+    return;
+  }
+  await simulateLatency(signal);
+  transitionOrder(id, "returned", RETURNABLE_STATUSES, "not-returnable");
 }

@@ -214,5 +214,43 @@ export type ProductDetail = {
   matching: Product[];
 };
 
+/** A saved delivery address (`/account/addresses`, `02-architecture.md` §7). */
+export type Address = {
+  id: string;
+  governorate: string;
+  city: string;
+  street: string;
+  building?: string;
+  apartment?: string;
+  phone: string;
+  isDefault: boolean;
+};
+
+/** Body of the create/update address calls; the id and default flag are managed server-side. */
+export type AddressInput = {
+  governorate: string;
+  city: string;
+  street: string;
+  building?: string;
+  apartment?: string;
+  phone: string;
+};
+
+export const NOTIFICATION_TYPES = ["order", "promo", "system"] as const;
+
+export type NotificationType = (typeof NOTIFICATION_TYPES)[number];
+
+/** A customer notification (`GET /account/notifications`, `02-architecture.md` §7). */
+export type Notification = {
+  id: string;
+  type: NotificationType;
+  title: L10n;
+  body: L10n;
+  isRead: boolean;
+  createdAt: string;
+  /** Optional in-app destination, e.g. an order detail page. */
+  href?: string;
+};
+
 export * from "./authTypes";
 export * from "./orderTypes";

@@ -187,7 +187,9 @@
       "shareCopied": "تم نسخ الرابط"
     },
     "toast": {
-      "added": "تمت الإضافة إلى السلة"
+      "added": "تمت الإضافة إلى السلة",
+      "wishlistAdded": "تمت الإضافة إلى المفضلة",
+      "wishlistRemoved": "تمت الإزالة من المفضلة"
     },
     "matching": "منتجات مطابقة",
     "related": "قد يعجبك أيضًا",
@@ -698,6 +700,114 @@
       "saved": "تم تحديث كلمة المرور",
       "incorrect": "كلمة المرور الحالية غير صحيحة"
     },
+    "orders": {
+      "title": "طلباتي",
+      "subtitle": "تابعي طلباتكِ وراجعيها",
+      "number": "رقم الطلب",
+      "date": "التاريخ",
+      "items": "المنتجات",
+      "itemCount_one": "منتج واحد",
+      "itemCount_other": "{{count}} منتجات",
+      "total": "الإجمالي",
+      "view": "عرض التفاصيل",
+      "count_one": "طلب واحد",
+      "count_other": "{{count}} طلبات",
+      "filterLabel": "تصفية الطلبات",
+      "tabs": {
+        "all": "الكل",
+        "active": "قيد التنفيذ",
+        "delivered": "تم التوصيل",
+        "cancelled": "ملغاة"
+      },
+      "noneInTab": "لا توجد طلبات في هذا القسم.",
+      "emptyTitle": "لا توجد طلبات بعد",
+      "emptyBody": "عند إتمام أي طلب سيظهر هنا.",
+      "emptyCta": "ابدئي التسوق"
+    },
+    "orderDetails": {
+      "title": "تفاصيل الطلب",
+      "subtitle": "راجعي تفاصيل طلبكِ",
+      "back": "العودة إلى الطلبات",
+      "timeline": "حالة الطلب",
+      "items": "المنتجات",
+      "address": "عنوان التوصيل",
+      "payment": "طريقة الدفع",
+      "delivery": "توصيل عادي",
+      "methods": {
+        "cod": "الدفع عند الاستلام",
+        "instapay": "تحويل إنستاباي",
+        "vodafone-cash": "تحويل فودافون كاش"
+      },
+      "summary": "ملخص الطلب",
+      "subtotal": "المجموع الفرعي",
+      "shipping": "الشحن",
+      "discount": "الخصم",
+      "total": "الإجمالي",
+      "reorder": "إعادة الطلب",
+      "cancel": "إلغاء الطلب",
+      "return": "طلب إرجاع",
+      "invoice": "طباعة الفاتورة",
+      "cancelled": "تم إلغاء طلبكِ",
+      "returned": "تم إرسال طلب الإرجاع",
+      "reordered": "تمت إضافة المنتجات إلى سلة التسوق",
+      "notFoundTitle": "الطلب غير موجود",
+      "notFoundBody": "لم نتمكن من العثور على هذا الطلب."
+    },
+    "wishlist": {
+      "title": "المفضلة",
+      "subtitle": "منتجاتكِ المحفوظة",
+      "moveAll": "نقل الكل إلى السلة",
+      "movedAll": "تمت إضافة كل منتجات المفضلة إلى سلة التسوق",
+      "unavailable": "بعض المنتجات المحفوظة لم تعد متاحة.",
+      "emptyTitle": "قائمة المفضلة فارغة",
+      "emptyBody": "احفظي القطع المفضلة لديكِ لتجديها هنا.",
+      "emptyCta": "تصفحي المتجر"
+    },
+    "addresses": {
+      "title": "العناوين",
+      "subtitle": "إدارة عناوين التوصيل",
+      "add": "إضافة عنوان",
+      "addTitle": "عنوان جديد",
+      "editTitle": "تعديل العنوان",
+      "save": "حفظ العنوان",
+      "cancel": "إلغاء",
+      "default": "افتراضي",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "setDefault": "تعيين كافتراضي",
+      "deleteConfirm": "حذف هذا العنوان؟",
+      "saved": "تم حفظ العنوان",
+      "removed": "تم حذف العنوان",
+      "defaultUpdated": "تم تحديث العنوان الافتراضي",
+      "checkoutHint": "جاهزة لإتمام الطلب؟",
+      "checkoutLink": "الذهاب إلى الدفع",
+      "emptyTitle": "لا توجد عناوين بعد",
+      "emptyBody": "أضيفي عنوان توصيل لإتمام الطلب بسرعة.",
+      "fields": {
+        "governorate": "المحافظة",
+        "governoratePlaceholder": "اختاري المحافظة",
+        "city": "المدينة",
+        "street": "الشارع",
+        "building": "المبنى",
+        "apartment": "الشقة",
+        "phone": "رقم الموبايل"
+      },
+      "errors": {
+        "governorate": "اختاري المحافظة",
+        "city": "اكتبي اسم المدينة",
+        "street": "اكتبي اسم الشارع"
+      }
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "subtitle": "تحديثات حول طلباتكِ والعروض",
+      "markAll": "تعليم الكل كمقروء",
+      "markRead": "تعليم كمقروء",
+      "unreadCount_one": "إشعار غير مقروء",
+      "unreadCount_other": "{{count}} إشعارات غير مقروءة",
+      "emptyTitle": "لا توجد إشعارات",
+      "emptyBody": "ليس لديكِ أي إشعارات جديدة."
+    },
     "errors": {
       "nameMin": "الاسم لازم يكون حرفين على الأقل",
       "phone": "اكتبي رقم موبايل مصري صحيح"
@@ -705,7 +815,12 @@
     "meta": {
       "dashboardTitle": "حسابي — SIWAR",
       "profileTitle": "الملف الشخصي — SIWAR",
-      "passwordTitle": "كلمة المرور — SIWAR"
+      "passwordTitle": "كلمة المرور — SIWAR",
+      "ordersTitle": "الطلبات — SIWAR",
+      "orderDetailsTitle": "تفاصيل الطلب — SIWAR",
+      "wishlistTitle": "المفضلة — SIWAR",
+      "addressesTitle": "العناوين — SIWAR",
+      "notificationsTitle": "الإشعارات — SIWAR"
     }
   }
 }

@@ -8,6 +8,10 @@ import { formatPrice, localize } from "@/utils/format";
 import type { Product } from "@/services/types";
 import { useLocale } from "@/hooks/useLocale";
 import { IconButton } from "@/components/ui/IconButton";
+import { useCartStore } from "@/store/cartStore";
+import { toast } from "@/store/toastStore";
+import { useWishlistStore } from "@/store/wishlist";
+import { buildCartItem } from "@/utils/product";
 
 export interface ProductCardProps {
   product: Product;
@@ -20,25 +24,35 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  const addItem = useCartStore((state) => state.addItem);
+  const toggleWishlist = useWishlistStore((state) => state.toggle);
+  const isWishlisted = useWishlistStore((state) => state.items.includes(product.id));
+
   const primaryImage = product.images.find((img) => img.isPrimary) || product.images[0];
   const secondaryImage = product.images.find((img) => !img.isPrimary) || primaryImage;
   const displayImage = isHovered && product.images.length > 1 ? secondaryImage : primaryImage;
 
   const isOutOfStock = product.stock <= 0;
-  const discount = product.discountPercent ?? (product.oldPrice && product.oldPrice > product.price ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : undefined);
+  const discount =
+    product.discountPercent ??
+    (product.oldPrice && product.oldPrice > product.price
+      ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
+      : undefined);
   const showDiscountBadge = discount !== undefined && discount > 0;
   const showNewBadge = product.isNew;
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: integrate with wishlist store in future phases
+    toggleWishlist(product.id);
+    toast(isWishlisted ? t("product.toast.wishlistRemoved") : t("product.toast.wishlistAdded"));
   };
 
   const handleQuickAddClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: integrate with cart store in future phases
+    addItem(buildCartItem(product, {}, 1));
+    toast(t("product.toast.added"));
   };
 
   return (
@@ -89,8 +103,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
             <IconButton
               onClick={handleWishlistClick}
               label={t("nav.wishlist")}
+              aria-pressed={isWishlisted}
               className="bg-surface/80 backdrop-blur-sm hover:bg-surface"
-              icon={<Heart className="h-5 w-5" />}
+              icon={<Heart className={cn("h-5 w-5", isWishlisted && "fill-accent text-accent")} />}
             />
             {!isOutOfStock && (
               <IconButton
@@ -118,7 +133,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {localize(product.name, locale)}
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-fg">{formatPrice(product.price, locale)}</span>
+            <span className="text-sm font-semibold text-fg">
+              {formatPrice(product.price, locale)}
+            </span>
             {product.oldPrice && product.oldPrice > product.price && (
               <span className="text-xs text-fg-muted line-through">
                 {formatPrice(product.oldPrice, locale)}

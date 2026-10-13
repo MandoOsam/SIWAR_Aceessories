@@ -25,6 +25,11 @@ const ResetPasswordPage = lazy(async () => import("@/pages/auth/ResetPasswordPag
 const AccountDashboardPage = lazy(async () => import("@/pages/account/AccountDashboardPage"));
 const ProfilePage = lazy(async () => import("@/pages/account/ProfilePage"));
 const PasswordPage = lazy(async () => import("@/pages/account/PasswordPage"));
+const OrdersPage = lazy(async () => import("@/pages/account/OrdersPage"));
+const OrderDetailsPage = lazy(async () => import("@/pages/account/OrderDetailsPage"));
+const WishlistPage = lazy(async () => import("@/pages/account/WishlistPage"));
+const AddressesPage = lazy(async () => import("@/pages/account/AddressesPage"));
+const NotificationsPage = lazy(async () => import("@/pages/account/NotificationsPage"));
 const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
 
 export function AppRoutes() {
@@ -53,9 +58,9 @@ export function AppRoutes() {
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         {/*
-          Account (F6.2). The layout renders the sidebar and `<Outlet/>`; every child is behind
-          `ProtectedRoute`. Orders, wishlist, addresses and notifications are built in F6.3, so those
-          children stay placeholders while the sidebar links already work.
+          Account (F6.2, extended in F6.3). The layout renders the sidebar and `<Outlet/>`; every
+          child is behind `ProtectedRoute`. `/wishlist` is an alias of the account wishlist so the
+          navbar heart keeps working.
         */}
         <Route
           element={
@@ -67,13 +72,14 @@ export function AppRoutes() {
           <Route path={ROUTES.account} element={<AccountDashboardPage />} />
           <Route path={ROUTES.accountProfile} element={<ProfilePage />} />
           <Route path={ROUTES.accountPassword} element={<PasswordPage />} />
-          <Route path={ROUTES.accountOrders} element={<PlaceholderPage phase="F6.3" />} />
-          <Route path={ROUTES.accountWishlist} element={<PlaceholderPage phase="F6.3" />} />
-          <Route path={ROUTES.accountAddresses} element={<PlaceholderPage phase="F6.3" />} />
-          <Route path={ROUTES.accountNotifications} element={<PlaceholderPage phase="F6.3" />} />
+          <Route path={ROUTES.accountOrders} element={<OrdersPage />} />
+          <Route path={ROUTES.accountOrderDetails(":id")} element={<OrderDetailsPage />} />
+          <Route path={ROUTES.accountWishlist} element={<WishlistPage />} />
+          <Route path={ROUTES.accountAddresses} element={<AddressesPage />} />
+          <Route path={ROUTES.accountNotifications} element={<NotificationsPage />} />
+          <Route path={ROUTES.wishlist} element={<WishlistPage />} />
         </Route>
 
-        <Route path={ROUTES.wishlist} element={<PlaceholderPage phase="F6.3" />} />
         <Route path="/about" element={<PlaceholderPage phase="F7" />} />
         <Route path="/contact" element={<PlaceholderPage phase="F7" />} />
         <Route path="/faq" element={<PlaceholderPage phase="F7" />} />

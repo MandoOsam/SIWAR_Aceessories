@@ -187,7 +187,9 @@
       "shareCopied": "Link copied"
     },
     "toast": {
-      "added": "Added to cart"
+      "added": "Added to cart",
+      "wishlistAdded": "Added to wishlist",
+      "wishlistRemoved": "Removed from wishlist"
     },
     "matching": "Matching products",
     "related": "You may also like",
@@ -698,6 +700,114 @@
       "saved": "Your password has been updated",
       "incorrect": "Current password is incorrect"
     },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Track and review your orders",
+      "number": "Order number",
+      "date": "Date",
+      "items": "Items",
+      "itemCount_one": "{{count}} item",
+      "itemCount_other": "{{count}} items",
+      "total": "Total",
+      "view": "View details",
+      "count_one": "{{count}} order",
+      "count_other": "{{count}} orders",
+      "filterLabel": "Filter orders",
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      },
+      "noneInTab": "No orders in this section.",
+      "emptyTitle": "No orders yet",
+      "emptyBody": "When you place an order it will appear here.",
+      "emptyCta": "Start shopping"
+    },
+    "orderDetails": {
+      "title": "Order details",
+      "subtitle": "Review your order",
+      "back": "Back to orders",
+      "timeline": "Order status",
+      "items": "Items",
+      "address": "Delivery address",
+      "payment": "Payment method",
+      "delivery": "Standard delivery",
+      "methods": {
+        "cod": "Cash on delivery",
+        "instapay": "InstaPay transfer",
+        "vodafone-cash": "Vodafone Cash transfer"
+      },
+      "summary": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "discount": "Discount",
+      "total": "Total",
+      "reorder": "Reorder",
+      "cancel": "Cancel order",
+      "return": "Request return",
+      "invoice": "Print invoice",
+      "cancelled": "Your order has been cancelled",
+      "returned": "Your return request has been submitted",
+      "reordered": "The items were added to your cart",
+      "notFoundTitle": "Order not found",
+      "notFoundBody": "We couldn't find this order."
+    },
+    "wishlist": {
+      "title": "Wishlist",
+      "subtitle": "Your saved products",
+      "moveAll": "Move all to cart",
+      "movedAll": "All wishlist items were added to your cart",
+      "unavailable": "Some saved products are no longer available.",
+      "emptyTitle": "Your wishlist is empty",
+      "emptyBody": "Save your favourite pieces to find them here.",
+      "emptyCta": "Browse the shop"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "subtitle": "Manage your delivery addresses",
+      "add": "Add address",
+      "addTitle": "New address",
+      "editTitle": "Edit address",
+      "save": "Save address",
+      "cancel": "Cancel",
+      "default": "Default",
+      "edit": "Edit",
+      "delete": "Delete",
+      "setDefault": "Set as default",
+      "deleteConfirm": "Delete this address?",
+      "saved": "Your address has been saved",
+      "removed": "The address was deleted",
+      "defaultUpdated": "Default address updated",
+      "checkoutHint": "Ready to order?",
+      "checkoutLink": "Go to checkout",
+      "emptyTitle": "No addresses yet",
+      "emptyBody": "Add a delivery address to check out faster.",
+      "fields": {
+        "governorate": "Governorate",
+        "governoratePlaceholder": "Select a governorate",
+        "city": "City",
+        "street": "Street",
+        "building": "Building",
+        "apartment": "Apartment",
+        "phone": "Mobile number"
+      },
+      "errors": {
+        "governorate": "Select a governorate",
+        "city": "Enter a city",
+        "street": "Enter a street"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Updates about your orders and offers",
+      "markAll": "Mark all as read",
+      "markRead": "Mark as read",
+      "unreadCount_one": "{{count}} unread notification",
+      "unreadCount_other": "{{count}} unread notifications",
+      "emptyTitle": "No notifications",
+      "emptyBody": "You're all caught up."
+    },
     "errors": {
       "nameMin": "Name must be at least 2 characters",
       "phone": "Enter a valid Egyptian mobile number"
@@ -705,7 +815,12 @@
     "meta": {
       "dashboardTitle": "My account — SIWAR",
       "profileTitle": "Profile — SIWAR",
-      "passwordTitle": "Password — SIWAR"
+      "passwordTitle": "Password — SIWAR",
+      "ordersTitle": "Orders — SIWAR",
+      "orderDetailsTitle": "Order details — SIWAR",
+      "wishlistTitle": "Wishlist — SIWAR",
+      "addressesTitle": "Addresses — SIWAR",
+      "notificationsTitle": "Notifications — SIWAR"
     }
   }
 }
