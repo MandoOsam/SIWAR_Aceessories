@@ -14,11 +14,11 @@
 
 |---|---|
 
-| **Current phase** | **F6 — Auth + Account: complete.** F6.1 (auth pages + session), F6.2 (account dashboard + profile), F6.3 (orders, wishlist, addresses, notifications) and F6.4 (assembly + polish) all done (branch `feature/f6-auth-and-account`) |
+| **Current phase** | **F7.1a — About, Contact, FAQ (done)** |
 
-| Last completed phase | F6.4 — Account area assembly & polish |
+| Last completed phase | F7.1a — About, Contact, FAQ |
 
-| Next phase | F7 — Static pages, SEO, 404/empty states, performance + accessibility |
+| Next phase | F7.1b — Shipping, Returns, Privacy, Terms |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -137,6 +137,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 - [x] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring), F5.2 (checkout flow), F5.3 (order success + track order) and F5.4 (assembly + polish) all done**
 
 - [x] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) + F6.2 (account dashboard + profile) + F6.3 (orders, wishlist, addresses, notifications) + F6.4 (assembly + polish) all done**
+- [x] **F7.1a — About, Contact, FAQ (done)**
 
 - [ ] **F7** Static pages, 404/empty states, SEO tags, performance + accessibility pass
 
@@ -461,3 +462,4 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F6.1**: Auth pages & session — `authService` + `data/auth.ts` seed, `store/auth.ts` + `useAuthBootstrap`, `ProtectedRoute` + `utils/redirect.ts`, `AuthLayout`/`PasswordInput`/`authSchemas`, `pages/auth/*`, `utils/password.ts` (+tests), lazy routes (replacing the F6 placeholders, adding `/reset-password/:token`), Navbar account link (D-046); `auth.*` keys parity 451/451; 82 tests — done.
 - **F6.2**: Account dashboard & profile — `pages/account/{AccountLayout,AccountDashboardPage,ProfilePage,PasswordPage}`, nested protected routes (`ROUTES.account*`), `utils/initials.ts`, `services/accountService.ts` + `services/mockAuthStore.ts`, `AuthUser.displayName` + `UpdateProfileInput`/`ChangePasswordInput`, 02-arch §7 `PATCH /account/profile` + `POST /account/change-password`, `ToastViewport` in `AccountLayout`, `authService`/`types.ts` 300-line split (D-047–D-048), `account.*` keys parity 505/505; 82 tests — done.
 - **F6.3**: Orders, wishlist, addresses & notifications — `OrdersPage`/`OrderDetailsPage`/`WishlistPage`/`AddressesPage`/`NotificationsPage` + `components/account/{StatusBadge,AccountEmpty,OrderCard,AddressForm,AddressCard,NotificationItem}`; `store/wishlist.ts` + `store/notifications.ts` + `data/notifications.ts`; additive `listOrders`/`cancelOrder`/`requestReturn` (`checkoutService`) + address CRUD/`getMyNotifications` (`accountService`) + `deleteVoid` (`http`); `Address`/`AddressInput`/`Notification` types; `ROUTES.accountOrderDetails` + `STORAGE_KEYS.{wishlist,notifications,mockAddresses}`; wishlist wiring in `ProductCard`/`ProductActions` (owner-approved); `/wishlist` inside the account group; contract §7 cancel/return + address routes (D-049); `account.*` keys parity 602/602; 82 tests — done.
+| F7.1a — About, Contact, FAQ (done) | 2026-10-14 | Verified existing F7.1a pages: StaticPageLayout (max-w-3xl, RTL-safe), bilingual data (aboutStory, faqEntries), AboutPage (values), ContactPage (Zod+controlled, usePublicSettings(), hides TODOs, local submit), FaqPage (F4 Accordion + /contact link). Routes /about,/contact,/faq lazy. staticPages.about/contact/faq.* AR/EN. npm run build and npm run lint pass. | Branch eature/f7-static-seo-polish-v2. Already committed in cfd7699. |
