@@ -6,6 +6,7 @@ import { AuthLayout } from "@/components/auth/AuthLayout";
 import {
   collectErrors,
   emptyForgot,
+  fieldError,
   forgotSchema,
   type ForgotData,
 } from "@/components/auth/authSchemas";
@@ -64,7 +65,7 @@ export default function ForgotPasswordPage() {
         </p>
       ) : (
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
-          <Field id="forgot-email" label={t("auth.forgot.email")} error={errors.email}>
+          <Field id="forgot-email" label={t("auth.forgot.email")} error={fieldError(t, errors.email)}>
             {({ describedBy, invalid }) => (
               <input
                 id="forgot-email"

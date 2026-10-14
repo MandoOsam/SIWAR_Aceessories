@@ -23,6 +23,7 @@
     "account": "Account",
     "login": "Sign in",
     "trackOrder": "Track order",
+    "notifications": "Notifications",
     "recentSearches": "Recent searches",
     "popularSearches": "Popular searches",
     "noSuggestions": "No matching results"
@@ -670,6 +671,14 @@
       "notificationsTitle": "Notifications",
       "notificationsEmpty": "No unread notifications.",
       "notificationsLink": "View notifications",
+      "ordersCount_one": "{{count}} order",
+      "ordersCount_other": "{{count}} orders",
+      "wishlistCount_one": "{{count}} saved item",
+      "wishlistCount_other": "{{count}} saved items",
+      "addressesCount_one": "{{count}} address",
+      "addressesCount_other": "{{count}} addresses",
+      "notificationsCount_one": "{{count}} unread",
+      "notificationsCount_other": "{{count}} unread",
       "editProfile": "Edit profile"
     },
     "profile": {
@@ -821,6 +830,102 @@
       "wishlistTitle": "Wishlist — SIWAR",
       "addressesTitle": "Addresses — SIWAR",
       "notificationsTitle": "Notifications — SIWAR"
+    }
+  },
+  "staticPages": {
+    "breadcrumb": {
+      "label": "Breadcrumb",
+      "home": "Home"
+    },
+    "updated": "Last updated: {{date}}",
+    "about": {
+      "title": "About SIWAR",
+      "valuesTitle": "Why SIWAR",
+      "meta": {
+        "title": "About SIWAR",
+        "description": "The SIWAR story: quietly designed stainless steel jewelry that resists rust and tarnish and suits sensitive skin."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "lead": "We're happy to help with sizing, orders or anything else.",
+      "formTitle": "Send us a message",
+      "infoTitle": "Reach us directly",
+      "whatsapp": "Chat on WhatsApp",
+      "followUs": "Follow us",
+      "meta": {
+        "title": "Contact SIWAR",
+        "description": "Contact SIWAR for help with your order, sizing or anything else — by WhatsApp, phone or email."
+      },
+      "form": {
+        "name": "Your name",
+        "namePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "message": "Message",
+        "messagePlaceholder": "How can we help?",
+        "submit": "Send message",
+        "sending": "Sending…",
+        "success": "Thanks! We'll get back to you soon.",
+        "errors": {
+          "name": "Please enter your name (at least 2 characters).",
+          "email": "Enter a valid email address.",
+          "message": "Please write at least 10 characters."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "lead": "Answers to the questions we get most.",
+      "contactPrompt": "Still have a question?",
+      "contactCta": "Contact us",
+      "meta": {
+        "title": "FAQ | SIWAR",
+        "description": "Answers about SIWAR materials, sizing, delivery, payment and returns."
+      }
+    },
+    "shipping": {
+      "title": "Shipping",
+      "lead": "How and when your SIWAR order reaches you.",
+      "methodsTitle": "Delivery methods",
+      "policyTitle": "Shipping policy",
+      "table": {
+        "method": "Method",
+        "time": "Delivery time",
+        "fee": "Fee",
+        "days": "{{min}}–{{max}} days",
+        "freeAbove": "Free on orders over {{amount}}"
+      },
+      "meta": {
+        "title": "Shipping | SIWAR",
+        "description": "SIWAR shipping: delivery methods, fees and times across every governorate in Egypt."
+      }
+    },
+    "returns": {
+      "title": "Returns & exchanges",
+      "lead": "Changed your mind? Here's how returns work.",
+      "contactPrompt": "Need to start a return?",
+      "contactCta": "Contact us",
+      "meta": {
+        "title": "Returns & exchanges | SIWAR",
+        "description": "SIWAR return and exchange policy, including the refund timeline."
+      }
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lead": "How we handle your data.",
+      "meta": {
+        "title": "Privacy Policy | SIWAR",
+        "description": "How SIWAR collects, uses and protects your personal data."
+      }
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "lead": "The rules that apply when you use our store.",
+      "meta": {
+        "title": "Terms & Conditions | SIWAR",
+        "description": "The terms and conditions for shopping with SIWAR."
+      }
     }
   }
 }

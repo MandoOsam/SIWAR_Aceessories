@@ -7,6 +7,7 @@ import { PasswordInput } from "@/components/auth/PasswordInput";
 import {
   collectErrors,
   emptyRegister,
+  fieldError,
   registerSchema,
   type RegisterData,
 } from "@/components/auth/authSchemas";
@@ -100,7 +101,7 @@ export default function RegisterPage() {
           </p>
         ) : null}
 
-        <Field id="register-name" label={t("auth.register.name")} error={errors.name}>
+        <Field id="register-name" label={t("auth.register.name")} error={fieldError(t, errors.name)}>
           {({ describedBy, invalid }) => (
             <input
               id="register-name"
@@ -116,7 +117,7 @@ export default function RegisterPage() {
           )}
         </Field>
 
-        <Field id="register-email" label={t("auth.register.email")} error={errors.email}>
+        <Field id="register-email" label={t("auth.register.email")} error={fieldError(t, errors.email)}>
           {({ describedBy, invalid }) => (
             <input
               id="register-email"
@@ -137,7 +138,7 @@ export default function RegisterPage() {
         <Field
           id="register-phone"
           label={t("auth.register.phone")}
-          error={errors.phone}
+          error={fieldError(t, errors.phone)}
           hint={t("auth.register.phoneHint")}
           optionalLabel={t("auth.optional")}
         >
@@ -163,7 +164,7 @@ export default function RegisterPage() {
           label={t("auth.register.password")}
           value={form.password}
           onChange={(value) => update({ password: value })}
-          error={errors.password}
+          error={fieldError(t, errors.password)}
           hint={t("auth.password.hint")}
           autoComplete="new-password"
           showStrength
@@ -174,7 +175,7 @@ export default function RegisterPage() {
           label={t("auth.register.confirmPassword")}
           value={form.confirmPassword}
           onChange={(value) => update({ confirmPassword: value })}
-          error={errors.confirmPassword}
+          error={fieldError(t, errors.confirmPassword)}
           autoComplete="new-password"
         />
 

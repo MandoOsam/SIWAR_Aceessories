@@ -7,6 +7,7 @@ import { PasswordInput } from "@/components/auth/PasswordInput";
 import {
   collectErrors,
   emptyLogin,
+  fieldError,
   loginSchema,
   type LoginData,
 } from "@/components/auth/authSchemas";
@@ -98,7 +99,7 @@ export default function LoginPage() {
           </p>
         ) : null}
 
-        <Field id="login-email" label={t("auth.login.email")} error={errors.email}>
+        <Field id="login-email" label={t("auth.login.email")} error={fieldError(t, errors.email)}>
           {({ describedBy, invalid }) => (
             <input
               id="login-email"
@@ -121,7 +122,7 @@ export default function LoginPage() {
           label={t("auth.login.password")}
           value={form.password}
           onChange={(value) => update({ password: value })}
-          error={errors.password}
+          error={fieldError(t, errors.password)}
           autoComplete="current-password"
         />
 

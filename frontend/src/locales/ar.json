@@ -23,6 +23,7 @@
     "account": "الحساب",
     "login": "تسجيل الدخول",
     "trackOrder": "تتبع الطلب",
+    "notifications": "الإشعارات",
     "recentSearches": "أخر بحث",
     "popularSearches": "الأكثر بحثاً",
     "noSuggestions": "مفيش نتائج مطابقة"
@@ -670,6 +671,14 @@
       "notificationsTitle": "الإشعارات",
       "notificationsEmpty": "لا توجد إشعارات غير مقروءة.",
       "notificationsLink": "عرض الإشعارات",
+      "ordersCount_one": "طلب واحد",
+      "ordersCount_other": "{{count}} طلبات",
+      "wishlistCount_one": "قطعة واحدة محفوظة",
+      "wishlistCount_other": "{{count}} قطع محفوظة",
+      "addressesCount_one": "عنوان واحد",
+      "addressesCount_other": "{{count}} عناوين",
+      "notificationsCount_one": "إشعار واحد غير مقروء",
+      "notificationsCount_other": "{{count}} إشعارات غير مقروءة",
       "editProfile": "تعديل الملف الشخصي"
     },
     "profile": {
@@ -821,6 +830,102 @@
       "wishlistTitle": "المفضلة — SIWAR",
       "addressesTitle": "العناوين — SIWAR",
       "notificationsTitle": "الإشعارات — SIWAR"
+    }
+  },
+  "staticPages": {
+    "breadcrumb": {
+      "label": "مسار التنقل",
+      "home": "الرئيسية"
+    },
+    "updated": "آخر تحديث: {{date}}",
+    "about": {
+      "title": "من نحن",
+      "valuesTitle": "ليه SIWAR",
+      "meta": {
+        "title": "من نحن — SIWAR",
+        "description": "قصة SIWAR: إكسسوار ستانلس ستيل بتصميم هادي، مقاوم للصدأ والاسوداد ومناسب للبشرة الحساسة."
+      }
+    },
+    "contact": {
+      "title": "تواصلي معنا",
+      "lead": "إحنا هنا لمساعدتك في المقاس أو الطلب أو أي حاجة تانية.",
+      "formTitle": "ابعتيلنا رسالة",
+      "infoTitle": "تواصلي معنا مباشرة",
+      "whatsapp": "دردشي على واتساب",
+      "followUs": "تابعينا",
+      "meta": {
+        "title": "تواصلي معنا — SIWAR",
+        "description": "تواصلي مع SIWAR لمساعدتك في طلبك أو المقاس عبر واتساب أو الهاتف أو الإيميل."
+      },
+      "form": {
+        "name": "اسمك",
+        "namePlaceholder": "اسمك",
+        "email": "الإيميل",
+        "emailPlaceholder": "you@example.com",
+        "message": "الرسالة",
+        "messagePlaceholder": "نقدر نساعدك إزاي؟",
+        "submit": "ابعت الرسالة",
+        "sending": "بنبعت…",
+        "success": "شكرًا! هنرجعلك في أقرب وقت.",
+        "errors": {
+          "name": "اكتبي اسمك (على الأقل حرفين).",
+          "email": "اكتبي إيميل صحيح.",
+          "message": "اكتبي على الأقل 10 حروف."
+        }
+      }
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "lead": "إجابات على أكثر الأسئلة اللي بتتكرر.",
+      "contactPrompt": "لسه عندك سؤال؟",
+      "contactCta": "تواصلي معنا",
+      "meta": {
+        "title": "الأسئلة الشائعة — SIWAR",
+        "description": "إجابات عن خامات SIWAR والمقاسات والتوصيل والدفع والاسترجاع."
+      }
+    },
+    "shipping": {
+      "title": "الشحن",
+      "lead": "إزاي وامتى طلبك من SIWAR بيوصلك.",
+      "methodsTitle": "طرق التوصيل",
+      "policyTitle": "سياسة الشحن",
+      "table": {
+        "method": "الطريقة",
+        "time": "مدة التوصيل",
+        "fee": "الرسوم",
+        "days": "{{min}}–{{max}} أيام",
+        "freeAbove": "مجاني للطلبات فوق {{amount}}"
+      },
+      "meta": {
+        "title": "الشحن — SIWAR",
+        "description": "شحن SIWAR: طرق التوصيل والرسوم والمواعيد لكل محافظات مصر."
+      }
+    },
+    "returns": {
+      "title": "الاستبدال والاسترجاع",
+      "lead": "غيّرتي رأيك؟ دي طريقة الاسترجاع.",
+      "contactPrompt": "محتاجة تبدأي مرتجع؟",
+      "contactCta": "تواصلي معنا",
+      "meta": {
+        "title": "الاستبدال والاسترجاع — SIWAR",
+        "description": "سياسة استرجاع واستبدال SIWAR مع مدة استرداد المبلغ."
+      }
+    },
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "lead": "إزاي بنتعامل مع بياناتك.",
+      "meta": {
+        "title": "سياسة الخصوصية — SIWAR",
+        "description": "إزاي SIWAR بتجمع بياناتك الشخصية وتستخدمها وتحميها."
+      }
+    },
+    "terms": {
+      "title": "الشروط والأحكام",
+      "lead": "القواعد اللي بتنطبق لما تستخدمي المتجر.",
+      "meta": {
+        "title": "الشروط والأحكام — SIWAR",
+        "description": "الشروط والأحكام الخاصة بالشراء من SIWAR."
+      }
     }
   }
 }

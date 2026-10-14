@@ -1,4 +1,4 @@
-import { Heart, Menu, Search, ShoppingBag, User } from "lucide-react";
+import { Bell, Heart, Menu, Search, ShoppingBag, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import { PRIMARY_NAV } from "@/config/navigation";
 import { ROUTES } from "@/config/app";
 import { useAuthStore } from "@/store/auth";
 import { useCartStore, selectCartCount } from "@/store/cartStore";
+import { selectUnreadCount, useNotificationsStore } from "@/store/notifications";
 import { useUiStore } from "@/store/uiStore";
 import { useScrollTracking } from "@/hooks/useScrollTracking";
 import { cn } from "@/utils/cn";
@@ -39,6 +40,7 @@ export function Navbar() {
   const openOverlay = useUiStore((state) => state.openOverlay);
 
   const cartCount = useCartStore(selectCartCount);
+  const unreadCount = useNotificationsStore(selectUnreadCount);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const isHomeRoute = location.pathname === ROUTES.home;
@@ -105,13 +107,23 @@ export function Navbar() {
             icon={<Heart aria-hidden="true" className="size-5" />}
             className="hidden sm:inline-flex"
           />
+          {isAuthenticated ? (
+            <div className="relative hidden sm:block">
+              <IconLink
+                to={ROUTES.accountNotifications}
+                label={t("nav.notifications")}
+                icon={<Bell aria-hidden="true" className="size-5" />}
+              />
+              <CountBadge count={unreadCount} label={t("nav.notifications")} />
+            </div>
+          ) : null}
           <div className="relative">
             <IconButton
               label={t("nav.cart")}
               onClick={() => openOverlay("cart")}
               icon={<ShoppingBag aria-hidden="true" className="size-5" />}
             />
-            <CartBadge count={cartCount} />
+            <CountBadge count={cartCount} label={t("nav.cart")} />
           </div>
           <div className="hidden sm:block">
             <ThemeToggle />
@@ -134,13 +146,12 @@ export function Navbar() {
 }
 
 /**
- * Cart counter badge.
+ * Counter badge shared by the cart and notifications links.
  *
- * Sits beside the cart link and uses `aria-live` so screen readers hear the new count after every
- * add or remove without stealing focus.
+ * Sits beside the link and uses `aria-live` so screen readers hear the new count after every change
+ * without stealing focus.
  */
-function CartBadge({ count }: { count: number }) {
-  const { t } = useTranslation();
+function CountBadge({ count, label }: { count: number; label: string }) {
   if (count <= 0) {
     return null;
   }
@@ -149,7 +160,7 @@ function CartBadge({ count }: { count: number }) {
       aria-live="polite"
       className="pointer-events-none absolute -end-0.5 top-0.5 flex min-w-4 items-center justify-center rounded-pill bg-accent-2 px-1 text-[10px] font-semibold leading-4 text-white"
     >
-      <span className="sr-only">{`${t("nav.cart")}: ${count}`}</span>
+      <span className="sr-only">{`${label}: ${count}`}</span>
       <span aria-hidden="true">{count}</span>
     </span>
   );

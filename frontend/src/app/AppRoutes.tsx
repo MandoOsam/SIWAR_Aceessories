@@ -30,7 +30,13 @@ const OrderDetailsPage = lazy(async () => import("@/pages/account/OrderDetailsPa
 const WishlistPage = lazy(async () => import("@/pages/account/WishlistPage"));
 const AddressesPage = lazy(async () => import("@/pages/account/AddressesPage"));
 const NotificationsPage = lazy(async () => import("@/pages/account/NotificationsPage"));
-const PlaceholderPage = lazy(async () => import("@/pages/PlaceholderPage"));
+const AboutPage = lazy(async () => import("@/pages/static/AboutPage"));
+const ContactPage = lazy(async () => import("@/pages/static/ContactPage"));
+const FaqPage = lazy(async () => import("@/pages/static/FaqPage"));
+const ShippingPage = lazy(async () => import("@/pages/static/ShippingPage"));
+const ReturnsPage = lazy(async () => import("@/pages/static/ReturnsPage"));
+const PrivacyPage = lazy(async () => import("@/pages/static/PrivacyPage"));
+const TermsPage = lazy(async () => import("@/pages/static/TermsPage"));
 
 export function AppRoutes() {
   return (
@@ -80,13 +86,14 @@ export function AppRoutes() {
           <Route path={ROUTES.wishlist} element={<WishlistPage />} />
         </Route>
 
-        <Route path="/about" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/contact" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/faq" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/shipping" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/returns" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/privacy" element={<PlaceholderPage phase="F7" />} />
-        <Route path="/terms" element={<PlaceholderPage phase="F7" />} />
+        {/* Static pages (F7.1a + F7.1b). */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/returns" element={<ReturnsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

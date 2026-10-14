@@ -124,6 +124,27 @@ Open Graph tags in a cleanup-safe effect (D-040); JSON-LD is deferred to F7.
 - Empty, loading and error states exist throughout; the currency is always EGP with locale-aware
   formatting. RTL, dark/light and `prefers-reduced-motion` are respected.
 
+## Auth and Account (F6)
+
+- Auth pages live in `src/pages/auth/` (`/login`, `/register`, `/forgot-password`,
+  `/reset-password/:token`). The mock session is owned by `src/services/authService.ts` and the
+  signed-in user is cached in `src/store/auth.ts`, hydrated once per boot by
+  `hooks/useAuthBootstrap.ts`. Nothing personal is persisted (D-046).
+- `/account/*` is a single protected route group. `src/components/ProtectedRoute.tsx` shows a
+  skeleton while the session restores, then redirects to `/login?redirect=<path>` when signed out.
+  `src/pages/account/AccountLayout.tsx` renders the sidebar (desktop) / toggle (mobile), the logout
+  action and the `<Outlet/>`; active links get `aria-current` from `NavLink`.
+- Account areas: dashboard (real order/address counts + store counts), profile, password, orders
+  (`OrdersPage` + `OrderDetailsPage` with timeline, reorder, cancel / return and a print invoice),
+  wishlist, addresses (CRUD with the reusable `AddressForm`) and notifications. `accountService.ts`
+  owns profile, addresses and notifications; the mock order store lives in `services/mockOrderStore.ts`
+  and is re-exported through `accountService`/`api`. `/wishlist` is an alias inside the account group.
+- Client stores: `src/store/wishlist.ts` (product ids) and `src/store/notifications.ts` (seeded from
+  `src/data/notifications.ts`) both persist to `localStorage`; the navbar shows cart and unread
+  notification count badges, and the wishlist/notifications are **not** cleared on logout.
+- Forms use Zod + controlled state (D-035), translate field messages at render via `fieldError`,
+  focus the first invalid field, and announce errors with `role="alert"`.
+
 ## Conventions
 
 - TypeScript strict, no `any`; one React component per file; files stay ≤ 300 lines.

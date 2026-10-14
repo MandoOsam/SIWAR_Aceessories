@@ -7,6 +7,7 @@ import { PasswordInput } from "@/components/auth/PasswordInput";
 import {
   collectErrors,
   emptyReset,
+  fieldError,
   resetSchema,
   type ResetData,
 } from "@/components/auth/authSchemas";
@@ -92,7 +93,7 @@ export default function ResetPasswordPage() {
           label={t("auth.reset.password")}
           value={form.password}
           onChange={(value) => update({ password: value })}
-          error={errors.password}
+          error={fieldError(t, errors.password)}
           hint={t("auth.password.hint")}
           autoComplete="new-password"
           showStrength
@@ -103,7 +104,7 @@ export default function ResetPasswordPage() {
           label={t("auth.reset.confirmPassword")}
           value={form.confirmPassword}
           onChange={(value) => update({ confirmPassword: value })}
-          error={errors.confirmPassword}
+          error={fieldError(t, errors.confirmPassword)}
           autoComplete="new-password"
         />
 

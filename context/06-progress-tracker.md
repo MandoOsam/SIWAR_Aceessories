@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-13 (F6.3 orders, wishlist, addresses & notifications complete — F6 in progress. Next: F6.4 Account area assembly & polish).
+> Last updated: 2026-10-13 (F6 complete — auth + account areas assembled and polished in F6.4. Next: F7 Static pages, SEO, 404/empty states, performance + accessibility pass).
 
 ## 1. Current status
 
@@ -14,15 +14,15 @@
 
 |---|---|
 
-| **Current phase** | **F6 — Auth + Account: in progress.** F6.1 (auth pages + session), F6.2 (account dashboard + profile) and F6.3 (orders, wishlist, addresses, notifications) done; F6.4 pending (branch `feature/f6-auth-and-account`) |
+| **Current phase** | **F6 — Auth + Account: complete.** F6.1 (auth pages + session), F6.2 (account dashboard + profile), F6.3 (orders, wishlist, addresses, notifications) and F6.4 (assembly + polish) all done (branch `feature/f6-auth-and-account`) |
 
-| Last completed phase | F6.3 — Orders, wishlist, addresses & notifications |
+| Last completed phase | F6.4 — Account area assembly & polish |
 
-| Next phase | F6.4 — Account area assembly & polish |
+| Next phase | F7 — Static pages, SEO, 404/empty states, performance + accessibility |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
-| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 **done**. F6 in progress (F6.1 + F6.2 + F6.3 done). Built on branch `feature/f6-auth-and-account`. |
+| Storefront (`frontend/`) | F1 + F2 + F3 + F4 + F5 + F6 **done**. Next: F7 (static pages, SEO, 404/empty states, performance + accessibility). Built on branch `feature/f6-auth-and-account` (F7 on `feature/f7-static-seo-polish`). |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
@@ -136,7 +136,7 @@ Legend: `[ ]` in progress (F2.1) —————— `[~]` in progress ———�
 
 - [x] **F5** Cart, Checkout, Order success, Track order ———————————?? **F5.1 (cart page + drawer + store wiring), F5.2 (checkout flow), F5.3 (order success + track order) and F5.4 (assembly + polish) all done**
 
-- [~] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) + F6.2 (account dashboard + profile) + F6.3 (orders, wishlist, addresses, notifications) done**; F6.4 (assembly + polish) pending
+- [x] **F6** Auth + Account (orders, wishlist, addresses) — **F6.1 (auth pages + session) + F6.2 (account dashboard + profile) + F6.3 (orders, wishlist, addresses, notifications) + F6.4 (assembly + polish) all done**
 
 - [ ] **F7** Static pages, 404/empty states, SEO tags, performance + accessibility pass
 

@@ -6,6 +6,7 @@
  * the input name so the page can look it up while rendering.
  */
 
+import type { TFunction } from "i18next";
 import { z } from "zod";
 
 import { EGYPT_MOBILE_REGEX } from "@/components/checkout/checkoutSchemas";
@@ -81,4 +82,9 @@ export function collectErrors(error: z.ZodError): Record<string, string> {
     messages[field] ??= issue.message;
   }
   return messages;
+}
+
+/** Renders one collected field message (an i18n key) with `t`, or `undefined` while the field is valid. */
+export function fieldError(t: TFunction, messageKey: string | undefined): string | undefined {
+  return messageKey === undefined ? undefined : t(messageKey);
 }
