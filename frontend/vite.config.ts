@@ -22,6 +22,9 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  build: {
+    chunkSizeWarningLimit: 900,
+  },
   test: {
     // Service layer, formatters and preference helpers are pure logic: no DOM is required, so the
     // project does not need jsdom or happy-dom.
