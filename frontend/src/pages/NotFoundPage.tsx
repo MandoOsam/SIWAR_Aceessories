@@ -1,26 +1,50 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 
 import { ButtonLink } from "@/components/ui/Button";
 import { ROUTES } from "@/config/app";
+import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 
-/** Styled 404 for any unmatched route (05-ui-context.md §7.14). */
 export default function NotFoundPage() {
   const { t } = useTranslation();
+
+  useDocumentMeta(t("notFound.meta.title"), t("notFound.meta.description"));
 
   return (
     <div className="container-page flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
       <p className="font-heading text-display-lg leading-none text-accent-2/30">404</p>
-      <h1 className="mt-4 font-heading text-heading">{t("common.notFoundTitle")}</h1>
-      <p className="mt-4 max-w-md text-fg-muted">{t("common.notFoundBody")}</p>
-      <ButtonLink to={ROUTES.home} className="mt-10">
-        {t("common.goHome")}
-      </ButtonLink>
-      <p className="mt-10 text-sm text-fg-muted">
-        <Link to={ROUTES.shop} className="underline underline-offset-4 hover:text-accent">
-          {t("categories.shopAll")}
-        </Link>
-      </p>
+      <h1 className="mt-4 font-heading text-heading">{t("notFound.title")}</h1>
+      <p className="mt-4 max-w-md text-fg-muted">{t("notFound.body")}</p>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <ButtonLink to={ROUTES.home}>{t("notFound.backHome")}</ButtonLink>
+        <ButtonLink to={ROUTES.shop} variant="secondary">
+          {t("notFound.browseShop")}
+        </ButtonLink>
+        <ButtonLink to={ROUTES.search} variant="ghost">
+          <Search className="me-2 h-4 w-4" />
+          {t("notFound.search")}
+        </ButtonLink>
+      </div>
+      <div className="mt-10">
+        <p className="text-sm text-fg-muted">{t("notFound.popularTitle")}</p>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <ButtonLink to={ROUTES.category("necklaces")} size="sm" variant="secondary">
+            {t("categories.necklaces")}
+          </ButtonLink>
+          <ButtonLink to={ROUTES.category("rings")} size="sm" variant="secondary">
+            {t("categories.rings")}
+          </ButtonLink>
+          <ButtonLink to={ROUTES.category("bracelets")} size="sm" variant="secondary">
+            {t("categories.bracelets")}
+          </ButtonLink>
+          <ButtonLink to={ROUTES.category("earrings")} size="sm" variant="secondary">
+            {t("categories.earrings")}
+          </ButtonLink>
+          <ButtonLink to={ROUTES.category("sets")} size="sm" variant="secondary">
+            {t("categories.sets")}
+          </ButtonLink>
+        </div>
+      </div>
     </div>
   );
 }

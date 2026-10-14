@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /account/*
+Disallow: /cart
+Disallow: /checkout
+Sitemap: TODO_MANDO_SITE_URL/sitemap.xml
