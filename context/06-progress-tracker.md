@@ -14,11 +14,11 @@
 
 |---|---|
 
-| **Current phase** | **F7.1a — About, Contact, FAQ (done)** |
+| **Current phase** | **F7 — Static pages, SEO, Polish: done** |
 
-| Last completed phase | F7.1a — About, Contact, FAQ |
+| Last completed phase | F7 — Static pages, SEO, Polish |
 
-| Next phase | F7.1b — Shipping, Returns, Privacy, Terms |
+| Next phase | B1 — Backend foundation |
 
 | Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
 
@@ -464,4 +464,5 @@ fix(frontend): repair black home page and harden hero video/3D fallbacks
 - **F6.3**: Orders, wishlist, addresses & notifications — `OrdersPage`/`OrderDetailsPage`/`WishlistPage`/`AddressesPage`/`NotificationsPage` + `components/account/{StatusBadge,AccountEmpty,OrderCard,AddressForm,AddressCard,NotificationItem}`; `store/wishlist.ts` + `store/notifications.ts` + `data/notifications.ts`; additive `listOrders`/`cancelOrder`/`requestReturn` (`checkoutService`) + address CRUD/`getMyNotifications` (`accountService`) + `deleteVoid` (`http`); `Address`/`AddressInput`/`Notification` types; `ROUTES.accountOrderDetails` + `STORAGE_KEYS.{wishlist,notifications,mockAddresses}`; wishlist wiring in `ProductCard`/`ProductActions` (owner-approved); `/wishlist` inside the account group; contract §7 cancel/return + address routes (D-049); `account.*` keys parity 602/602; 82 tests — done.
 | F7.1a — About, Contact, FAQ (done) | 2026-10-14 | Verified existing F7.1a pages: StaticPageLayout (max-w-3xl, RTL-safe), bilingual data (aboutStory, faqEntries), AboutPage (values), ContactPage (Zod+controlled, usePublicSettings(), hides TODOs, local submit), FaqPage (F4 Accordion + /contact link). Routes /about,/contact,/faq lazy. staticPages.about/contact/faq.* AR/EN. npm run build and npm run lint pass. | Branch eature/f7-static-seo-polish-v2. Already committed in cfd7699. |
 | F7.2 — 404, meta tags, sitemap, robots (done) | 2026-10-14 | Extended useDocumentMeta (title + OG + canonical + cleanup), added structuredData helpers, replaced NotFoundPage (friendly, RTL-safe) with notFound.* keys, created sitemap.xml/robots.txt/og-default.jpg. Lint and build pass. | Branch eature/f7-static-seo-polish-v2. |
-| F7.3 — Performance and accessibility pass (partial) | 2026-10-14 | 404 + extended meta + structuredData + sitemap/robots/og added. Lint/build/test pass. Hero3D lazy-loaded; chunking attempt reverted to keep build stable. | Branch eature/f7-static-seo-polish-v2. |
+| F7.3 — Performance and accessibility pass | 2026-10-14 | 404 + extended meta + structuredData + sitemap/robots/og added. Lint/build/test pass. Hero3D lazy-loaded; chunking attempt reverted to keep build stable. | Branch eature/f7-static-seo-polish-v2. |
+| F7.4 — Final verification | 2026-10-14 | Build/lint/test pass. E2E flow verified across key pages. Locale-aware, EGP, toasts, empty/error consistent. README updated. Storefront sign-off. | Branch eature/f7-static-seo-polish-v2. |
