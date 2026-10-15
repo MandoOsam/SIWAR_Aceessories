@@ -6,18 +6,24 @@
  *
  * Light values live on `:root` and dark values on `.dark` (Tailwind `darkMode: "class"`).
  * Dark is the product default (D-013).
+ *
+ * R1 contrast refresh (08-owner-ui-revisions.md §R1): `--accent`, `--accent-2`,
+ * `--text-muted`, `--border` and `--surface-2` were tuned so every text pair reaches
+ * WCAG AA (>= 4.5:1) and every border reaches >= 3:1 against `--bg`, `--surface` and
+ * `--surface-2`. `--bg`, `--surface` and `--text` are intentionally unchanged.
+ * The ratios for the previously failing pair are recorded beside each token.
  */
 
 :root {
   /* Colours — light */
   --bg: #f6f0e8;
   --surface: #ffffff;
-  --surface-2: #efe6db;
-  --border: #ddd0c2;
+  --surface-2: #e8dccc; /* elevated surface, more distinct from --surface */
+  --border: #7d7364; /* UI border: 4.11 on --bg, 4.66 on --surface, 3.45 on --surface-2 */
   --text: #1a1213;
-  --text-muted: #6e605c;
-  --accent: #8a6a2f;
-  --accent-2: #a24f5c;
+  --text-muted: #5f514d; /* 6.69 on --bg, 5.61 on --surface-2 */
+  --accent: #7a5a23; /* was #8a6a2f (4.43 on --bg) -> now 5.60 on --bg, 4.69 on --surface-2 */
+  --accent-2: #9b4757; /* 5.40 on --bg, 4.53 on --surface-2 */
   /* 05 section 4.1 defines --wine and --silver for dark mode only; these light-mode
      equivalents keep every token readable on the light background. */
   --wine: #6e1f2e;
@@ -25,6 +31,13 @@
   --glass: rgb(246 240 232 / 82%);
   /* Text/icon colour that sits on top of an accent fill. */
   --on-accent: #fdf9f3;
+
+  /*
+   * Brand exception (08-owner-ui-revisions.md §R3): WhatsApp green is a fixed third-party brand
+   * colour, identical in both themes, so it is the one raw hex allowed to back a utility
+   * (`bg-whatsapp`). Everything else stays on the theme tokens above.
+   */
+  --brand-whatsapp: #25d366;
 
   /*
    * The hero background is a dark, animated asset in both themes, so text sitting on top of it
@@ -54,12 +67,12 @@
 .dark {
   --bg: #0b0909;
   --surface: #151112;
-  --surface-2: #1e1819;
-  --border: #2c2325;
+  --surface-2: #241d1e; /* elevated surface, more distinct from --surface */
+  --border: #756a6d; /* UI border: 3.82 on --bg, 3.60 on --surface, 3.18 on --surface-2 */
   --text: #f3ede6;
-  --text-muted: #a89c98;
-  --accent: #c9a66b;
-  --accent-2: #b76e79;
+  --text-muted: #bdb2ae; /* 9.59 on --bg, 7.99 on --surface-2 */
+  --accent: #c9a66b; /* already 8.65 on --bg (>= AA); left on brand gold */
+  --accent-2: #bf7883; /* 5.89 on --bg, 4.91 on --surface-2 */
   --wine: #3a141d;
   --silver: #cfcfd4;
   --glass: rgb(11 9 9 / 72%);

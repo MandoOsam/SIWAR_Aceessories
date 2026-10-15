@@ -34,6 +34,8 @@ const config: Config = {
           DEFAULT: "var(--ink-on-hero)",
           muted: "var(--ink-on-hero-muted)",
         },
+        // Fixed third-party brand colour (08-owner-ui-revisions.md §R3); tokenised in tokens.css.
+        whatsapp: "var(--brand-whatsapp)",
       },
       fontFamily: {
         heading: "var(--font-heading)",
@@ -77,10 +79,25 @@ const config: Config = {
           from: { transform: "translateX(var(--drawer-from, -100%))" },
           to: { transform: "translateX(0)" },
         },
+        // WhatsApp FAB (08-owner-ui-revisions.md §R3.b): a one-off gentle bounce on mount.
+        "wa-bounce": {
+          "0%": { transform: "translateY(10px)", opacity: "0" },
+          "60%": { transform: "translateY(-4px)", opacity: "1" },
+          "80%": { transform: "translateY(2px)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        // ...and a subtle, endless pulse ring behind it (kept small so it never clips the viewport).
+        "wa-pulse": {
+          "0%": { transform: "scale(1)", opacity: "0.55" },
+          "70%": { transform: "scale(1.6)", opacity: "0" },
+          "100%": { transform: "scale(1.6)", opacity: "0" },
+        },
       },
       animation: {
         "fade-in": "fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both",
         "drawer-in": "slide-in-start 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "wa-bounce": "wa-bounce 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "wa-pulse": "wa-pulse 2.4s ease-out infinite",
       },
     },
   },
