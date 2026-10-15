@@ -4,9 +4,11 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 import { z } from "zod";
 
 import { CONTROL_CLASSES, Field } from "@/components/checkout/fields";
+import { SOCIAL_ICONS } from "@/components/icons/socialIcons";
 import { StaticPageLayout } from "@/components/static/StaticPageLayout";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { WhatsAppFab } from "@/components/WhatsAppFab";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { usePublicSettings } from "@/hooks/useCatalog";
 import { isPlaceholder, toInternationalPhone } from "@/utils/format";
@@ -132,19 +134,25 @@ export default function ContactPage() {
               <h3 className="mb-2 mt-6 font-heading text-xs uppercase tracking-[0.24em] text-fg-muted">
                 {t("staticPages.contact.followUs")}
               </h3>
-              <ul className="flex flex-wrap gap-x-4">
-                {socials.map((item) => (
-                  <li key={item.platform}>
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
-                    >
-                      {t(`social.${item.platform}`)}
-                    </a>
-                  </li>
-                ))}
+              <ul className="-ms-2 flex flex-wrap">
+                {socials.map((item) => {
+                  const Icon = SOCIAL_ICONS[item.platform];
+                  return (
+                    <li key={item.platform}>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={t("social.openInNewTab", {
+                          platform: t(`social.${item.platform}`),
+                        })}
+                        className="inline-flex size-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
+                      >
+                        <Icon aria-hidden="true" className="size-6" />
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </>
           ) : null}
@@ -222,6 +230,9 @@ export default function ContactPage() {
           </p>
         </div>
       </form>
+
+      {/* Floating CTA (08-owner-ui-revisions.md §R3.b). */}
+      <WhatsAppFab />
     </StaticPageLayout>
   );
 }

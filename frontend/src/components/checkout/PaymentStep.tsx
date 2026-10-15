@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { Field, CONTROL_CLASSES } from "@/components/checkout/fields";
+import { PAYMENT_ICONS } from "@/components/icons/paymentIcons";
 import { useLocale } from "@/hooks/useLocale";
 import type { PaymentMethod, PaymentMethodId } from "@/services/types";
 import { cn } from "@/utils/cn";
@@ -46,6 +47,11 @@ export function PaymentStep({
       <ul className="space-y-3">
         {methods.map((method) => {
           const isSelected = method.id === value;
+          const Icon = PAYMENT_ICONS[method.id];
+          const number =
+            method.accountValue !== undefined && !isPlaceholder(method.accountValue)
+              ? method.accountValue
+              : null;
           return (
             <li key={method.id}>
               <label
@@ -62,7 +68,15 @@ export function PaymentStep({
                   onChange={() => onChange(method.id)}
                   className="accent-accent"
                 />
+                {Icon !== undefined ? (
+                  <Icon aria-hidden="true" className="size-5 shrink-0 text-fg-muted" />
+                ) : null}
                 <span className="font-medium text-fg">{localize(method.name, locale)}</span>
+                {number !== null ? (
+                  <span dir="ltr" className="ms-auto text-sm text-fg-muted">
+                    {number}
+                  </span>
+                ) : null}
               </label>
             </li>
           );

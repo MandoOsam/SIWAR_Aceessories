@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { MessageCircle } from "lucide-react";
 
+import { PAYMENT_ICONS } from "@/components/icons/paymentIcons";
+import { SOCIAL_ICONS } from "@/components/icons/socialIcons";
 import { Logo } from "@/components/layout/Logo";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { FOOTER_HELP_LINKS, FOOTER_LEGAL_LINKS, FOOTER_SHOP_LINKS } from "@/config/navigation";
@@ -54,14 +56,29 @@ export function Footer() {
             <ul className="flex flex-wrap gap-2">
               {(settings?.paymentMethods ?? [])
                 .filter((method) => method.isEnabled)
-                .map((method) => (
-                  <li
-                    key={method.id}
-                    className="rounded-card border border-line px-3 py-1.5 text-xs text-fg-muted"
-                  >
-                    {t(PAYMENT_LABEL_KEY[method.id])}
-                  </li>
-                ))}
+                .map((method) => {
+                  const Icon = PAYMENT_ICONS[method.id];
+                  const number =
+                    method.accountValue !== undefined && !isPlaceholder(method.accountValue)
+                      ? method.accountValue
+                      : null;
+                  return (
+                    <li
+                      key={method.id}
+                      className="flex items-center gap-2 rounded-card border border-line px-3 py-1.5 text-xs text-fg-muted"
+                    >
+                      {Icon !== undefined ? (
+                        <Icon aria-hidden="true" className="size-4 shrink-0" />
+                      ) : null}
+                      <span>{t(PAYMENT_LABEL_KEY[method.id])}</span>
+                      {number !== null ? (
+                        <span dir="ltr" className="font-medium text-fg">
+                          {number}
+                        </span>
+                      ) : null}
+                    </li>
+                  );
+                })}
             </ul>
           )}
         </div>
@@ -111,31 +128,34 @@ export function Footer() {
           <h2 className="mb-4 font-heading text-xs uppercase tracking-[0.24em] text-fg-muted">
             {t("footer.followUs")}
           </h2>
-          <ul className="space-y-1">
+          <ul className="-ms-2 flex flex-wrap">
             {isPending ? (
               <>
-                <Skeleton className="h-11 w-32" />
-                <Skeleton className="h-11 w-32" />
+                <Skeleton className="size-11" />
+                <Skeleton className="size-11" />
               </>
             ) : (
               (settings?.social ?? [])
                 // Channels without a URL yet are hidden rather than linked to a broken address.
                 .filter((item) => !isPlaceholder(item.url))
-                .map((item) => (
-                  <li key={item.platform}>
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={t("social.openInNewTab", {
-                        platform: t(`social.${item.platform}`),
-                      })}
-                      className="inline-flex min-h-11 items-center text-sm text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
-                    >
-                      {t(`social.${item.platform}`)}
-                    </a>
-                  </li>
-                ))
+                .map((item) => {
+                  const Icon = SOCIAL_ICONS[item.platform];
+                  return (
+                    <li key={item.platform}>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={t("social.openInNewTab", {
+                          platform: t(`social.${item.platform}`),
+                        })}
+                        className="inline-flex size-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-500 ease-smooth hover:text-accent"
+                      >
+                        <Icon aria-hidden="true" className="size-6" />
+                      </a>
+                    </li>
+                  );
+                })
             )}
           </ul>
 

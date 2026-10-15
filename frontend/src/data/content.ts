@@ -9,9 +9,10 @@ const PLACEHOLDER = "/assets/placeholder";
  * Contact channels are the owner's confirmed values (2026-10-04). They live here only, never in a
  * component, so the admin dashboard becomes the single place to edit them later.
  *
- * TODO(Mando): the owner still has to confirm the shipping fee and the payment account numbers,
- * and supply a support email (open questions O-003 and O-005). Those stay `TODO(Mando)` on purpose:
- * `isPlaceholder()` hides them instead of publishing a broken link.
+ * TODO(Mando): the owner still has to confirm the shipping fee and supply a support email (open
+ * questions O-003 and O-010). Those stay `TODO(Mando)` on purpose: `isPlaceholder()` hides them
+ * instead of publishing a broken link. The transfer numbers below are the owner-provided
+ * placeholders (2026-10-14, 08-owner-ui-revisions.md §R3.c) and stay editable from the admin in A6.
  */
 export const storeSettings: StoreSettings = {
   storeName: "SIWAR",
@@ -34,7 +35,8 @@ export const storeSettings: StoreSettings = {
         ar: "حوّلي المبلغ على الرقم التالي ثم ارفعي صورة التحويل.",
         en: "Transfer the amount to the number below, then upload a screenshot.",
       },
-      accountValue: "TODO(Mando)",
+      // TODO(Mando): owner-provided placeholder number, admin-editable in A6.
+      accountValue: "01278259732",
     },
     {
       id: "vodafone-cash",
@@ -44,7 +46,8 @@ export const storeSettings: StoreSettings = {
         ar: "حوّلي المبلغ على الرقم التالي ثم ارفعي صورة التحويل.",
         en: "Transfer the amount to the number below, then upload a screenshot.",
       },
-      accountValue: "TODO(Mando)",
+      // TODO(Mando): owner-provided placeholder number, admin-editable in A6.
+      accountValue: "01041921899",
     },
   ],
   trustBadges: {

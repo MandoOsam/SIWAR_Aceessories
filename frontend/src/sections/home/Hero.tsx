@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { ButtonLink } from "@/components/ui/Button";
@@ -10,15 +10,15 @@ import { fadeUp, reducedMotionVariants, stagger } from "@/utils/animations";
 import { localize } from "@/utils/format";
 import { cn } from "@/utils/cn";
 
-import Hero3D from "./Hero3D";
 import HeroBackground from "./HeroBackground";
 
 const HERO_VIDEO_SRC = "/assets/hero/hero.mp4";
 const HERO_POSTER_SRC = "/assets/hero/hero-poster.jpg";
 
 /**
- * Home hero (05-ui-context.md §7.2 item 1): animated background, a single decorative 3D element,
- * the mixed serif/italic headline, the subline, two CTAs and a scroll indicator.
+ * Home hero (05-ui-context.md §7.2 item 1): animated background, the mixed serif/italic headline,
+ * the subline, two CTAs and a scroll indicator. The decorative 3D ring that used to sit over the
+ * background was removed by the owner's R5 hotfix (08-owner-ui-revisions.md).
  */
 export function Hero() {
   const { t } = useTranslation();
@@ -33,11 +33,6 @@ export function Hero() {
   return (
     <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden">
       <HeroBackground videoSrc={HERO_VIDEO_SRC} posterSrc={HERO_POSTER_SRC} overlayOpacity={0.55} />
-
-      {/* Decorative 3D ring, lazily loaded. Hidden on small screens to protect mobile perf. */}
-      <div className="absolute end-[6%] top-1/2 hidden h-[360px] w-[360px] -translate-y-1/2 lg:block">
-        <Hero3D fallbackImage={HERO_POSTER_SRC} />
-      </div>
 
       <div className="container-page relative z-10">
         <motion.div variants={containerVariants} initial="hidden" animate="visible">
@@ -79,11 +74,22 @@ export function Hero() {
                 {localize(content.hero.subline, locale)}
               </motion.p>
               <motion.div variants={itemVariants} className="mt-8 flex flex-wrap gap-4">
-                <ButtonLink to={content.hero.primaryCta.href} size="lg">
+                <ButtonLink
+                  to={content.hero.primaryCta.href}
+                  size="lg"
+                  className="min-h-14 py-4"
+                >
                   {localize(content.hero.primaryCta.label, locale)}
+                  <ArrowRight aria-hidden="true" className="size-6 rtl-flip" />
                 </ButtonLink>
-                <ButtonLink to={content.hero.secondaryCta.href} size="lg" variant="secondary">
+                <ButtonLink
+                  to={content.hero.secondaryCta.href}
+                  size="lg"
+                  variant="secondary"
+                  className="min-h-14 py-4"
+                >
                   {localize(content.hero.secondaryCta.label, locale)}
+                  <ArrowRight aria-hidden="true" className="size-6 rtl-flip" />
                 </ButtonLink>
               </motion.div>
             </>

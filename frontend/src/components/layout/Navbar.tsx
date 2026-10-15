@@ -59,7 +59,7 @@ export function Navbar() {
     >
       <nav
         aria-label={t("nav.menu")}
-        className="container-page flex h-16 items-center gap-2 lg:h-20 lg:gap-6"
+        className="container-page flex h-16 items-center gap-4 lg:h-20 lg:gap-6"
       >
         {/* Inline start: menu on mobile, categories and links on desktop. */}
         <div className="flex flex-1 items-center gap-1 lg:gap-6">
@@ -93,7 +93,7 @@ export function Navbar() {
         </div>
 
         {/* Inline end: utilities. */}
-        <div className="flex flex-1 items-center justify-end gap-0.5 sm:gap-1">
+        <div className="flex flex-1 items-center justify-end gap-3">
           <div className="hidden sm:block">
             <IconButton
               label={t("nav.openSearch")}
