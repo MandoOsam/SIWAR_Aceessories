@@ -53,7 +53,8 @@ class MiniRingErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
   }
 
   override componentDidCatch(error: Error): void {
-    console.error("MiniRing3D failed to render, using static fallback.", error);
+    // Failed to render 3D scene; fallback to static poster below
+    void error;
   }
 
   override render(): ReactNode {
