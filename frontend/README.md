@@ -12,6 +12,62 @@ See the repo-root `AGENTS.md` and the `context/` folder for the full project rul
 | Lint             | `npm run lint`  |
 | Tests            | `npm test`      |
 
+## Storefront overview
+
+Every customer route lives in `src/app/AppRoutes.tsx` and is lazy-loaded with `React.lazy` +
+`Suspense`.
+
+| Area | Routes |
+| --- | --- |
+| Home | `/` |
+| Catalogue | `/shop`, `/category/:slug`, `/search?q=…` |
+| Product | `/products/:slug` |
+| Cart & checkout | `/cart`, `/checkout`, `/order/success/:id`, `/track-order` |
+| Auth | `/login`, `/register`, `/forgot-password`, `/reset-password/:token` |
+| Account (protected) | `/account`, `/account/orders`, `/account/orders/:id`, `/account/wishlist`, `/account/addresses`, `/account/notifications`, `/account/profile`, `/account/password`, `/wishlist` |
+| Static | `/about`, `/contact`, `/faq`, `/shipping`, `/returns`, `/privacy`, `/terms` |
+| Fallback | any unknown URL → `NotFoundPage` (404) |
+
+## Architecture
+
+- **Routing** — `src/app/AppRoutes.tsx` owns every route; `src/App.tsx` only mounts providers. Routes
+  are code-split, and the account group is wrapped in `src/components/ProtectedRoute.tsx`, which
+  redirects to `/login?redirect=<path>` when signed out.
+- **Data layer** — components never call `fetch` or import `src/data/` directly. Everything goes
+  through `src/services/` (re-exported from `api.ts`), which answers the `02-architecture.md`
+  contract from the mock adapter until `VITE_API_URL` is set. TanStack Query owns server state.
+- **Client state** — Zustand stores in `src/store/`: cart, wishlist, notifications, auth,
+  recently-viewed, UI overlays and the toast queue. Catalogue filters / sort / page live **only** in
+  the query string (`useProductFilters`), never in a store.
+- **SEO** — `hooks/useDocumentMeta.ts` sets the per-page `<title>`, meta description, canonical link
+  and Open Graph tags.
+
+## Adding a new page
+
+1. Add the page under `src/pages/` (one component per file, ≤ 300 lines) and register it as a lazy
+   route in `src/app/AppRoutes.tsx`; add its path to `ROUTES` in `src/config/app.ts`.
+2. Fetch data through a `src/services/` function exposed by a `src/hooks/` query — never `fetch` in
+   the component.
+3. Call `useDocumentMeta(title, description, …)` for per-page SEO, and translate every string with
+   `t("…")` — add the keys to **both** `src/locales/en.json` and `src/locales/ar.json` (they must
+   stay key-for-key in sync).
+4. Handle loading, empty and error states. If the page needs a session, put it inside the
+   `ProtectedRoute` account group.
+
+## Switching from the mock layer to the real API
+
+The storefront runs entirely on **mock data** (`src/data/` via `src/services/mockAdapter.ts`) until
+the backend phases land (B1 to B8). Setting `VITE_API_URL` switches the whole app to the real API —
+`src/config/env.ts` exposes it as `API_BASE_URL` and `IS_MOCK_MODE` becomes `false` — and
+`src/services/http.ts` then calls the real endpoints. No component changes are needed.
+
+```bash
+# frontend/.env
+VITE_API_URL=https://api.example.com/api/v1
+```
+
+Until then, auth, orders, addresses, notifications and all catalogue content are local mocks.
+
 ## Catalogue pages (F3)
 
 - `/shop` — full catalogue (`src/pages/ShopPage.tsx`)
