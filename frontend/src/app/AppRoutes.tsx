@@ -44,10 +44,7 @@ export function AppRoutes() {
       <Routes>
         <Route path={ROUTES.home} element={<HomePage />} />
 
-        {/*
-          Routes for phases F3–F6. They render one shared placeholder so navigation from the navbar
-          works today without inventing page content before its phase.
-        */}
+        {/* Storefront routes (F3–F7). */}
         <Route path={ROUTES.shop} element={<ShopPage />} />
         <Route path="/category/:slug" element={<CategoryPage />} />
         <Route path={ROUTES.search} element={<SearchPage />} />
