@@ -41,6 +41,25 @@ function isAppError(err: unknown): err is AppError {
   return err instanceof AppError;
 }
 
+/**
+ * Body-parser rejects a malformed or oversized JSON body before it reaches a
+ * route. That is a client mistake, so it is answered with the contract error
+ * shape (400/413) instead of being reported as a server fault.
+ */
+function bodyParserError(err: unknown): AppError | null {
+  if (!(err instanceof SyntaxError) || !("body" in err)) return null;
+  return new AppError("VALIDATION_ERROR", 400, "Malformed JSON body");
+}
+
+function payloadTooLarge(err: unknown): AppError | null {
+  if (typeof err !== "object" || err === null) return null;
+  const type = (err as { type?: string }).type;
+  if (type === "entity.too.large") {
+    return new AppError("VALIDATION_ERROR", 413, "Request body is too large");
+  }
+  return null;
+}
+
 export function errorHandler(
   err: unknown,
   req: Request,
@@ -55,6 +74,14 @@ export function errorHandler(
   if (isAppError(err)) {
     res.status(err.status).json({
       error: { code: err.code, message: err.message, details: err.details ?? [] },
+    });
+    return;
+  }
+
+  const clientError = bodyParserError(err) ?? payloadTooLarge(err);
+  if (clientError) {
+    res.status(clientError.status).json({
+      error: { code: clientError.code, message: clientError.message, details: [] },
     });
     return;
   }

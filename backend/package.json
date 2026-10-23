@@ -19,6 +19,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@node-rs/argon2": "^2.2.2",
     "cloudinary": "^2.11.0",
     "cors": "^2.8.6",
     "drizzle-orm": "^0.45.4",
@@ -46,5 +47,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.0",
     "vitest": "^4.1.12"
+  },
+  "optionalDependencies": {
+    "@node-rs/argon2-wasm32-wasi": "2.2.2"
   }
 }

@@ -65,11 +65,66 @@ npm run dev        # tsx watch + --env-file=.env
 
 ## Tests
 
+Tests are Vitest + Supertest. The health test runs fully in-process. The auth
+tests use a **real throwaway PostgreSQL** configured in `.env.test`
+(git-ignored) — no mocking of the repository layer.
+
+Start a disposable test database:
+
+```bash
+docker run -d --name siwar-test-pg -e POSTGRES_PASSWORD=test \
+  -e POSTGRES_USER=test -e POSTGRES_DB=siwar_test -p 5433:5432 postgres:17-alpine
+```
+
+Create `backend/.env.test` (copy the values from `.env.example`, then set):
+
+```
+NODE_ENV=test
+DATABASE_URL=postgresql://test:test@localhost:5433/siwar_test
+DIRECT_URL=postgresql://test:test@localhost:5433/siwar_test
+```
+
+Then run:
+
 ```bash
 npm test
 ```
 
-Tests are Vitest + Supertest and run against the Express app in-process (no server port needed). Required environment variables are supplied by `tests/setup.ts`, so a real `.env` is not needed in CI.
+Migrations are applied automatically by the test setup (`tests/db.ts`) and each
+test starts from empty tables. Test files run **one after another**
+(`fileParallelism: false` in `vitest.config.ts`) because they share that single
+database.
+
+### Argon2 on Windows
+
+Passwords are hashed with Argon2id through `@node-rs/argon2`, which loads a
+prebuilt **native** binary. Some managed Windows machines run a code-integrity
+policy that blocks unsigned native modules, and the API then fails to boot with
+`Cannot find native binding`. The package `@node-rs/argon2-wasm32-wasi` is
+therefore installed as an **optional dependency**: the same library ships a WASM
+build, and `@node-rs/argon2` falls back to it automatically when the native
+binary cannot be loaded. On Linux (Render) the native binding is used and the
+WASM build is never touched.
+
+## Auth endpoints
+
+Base path `/api/v1`. Every mutating request needs the `Origin` header and an
+`X-CSRF-Token` header matching the `siwar_csrf` cookie from `GET /auth/csrf`.
+
+| Method & path | Cookie | Purpose |
+|---|---|---|
+| `GET /auth/csrf` | sets `siwar_csrf` | issues the CSRF token |
+| `POST /auth/register` | sets `siwar_sid` | create a customer account |
+| `POST /auth/login` | sets `siwar_sid` | customer login |
+| `POST /auth/logout` | clears `siwar_sid` | end the customer session |
+| `GET /auth/me` | `siwar_sid` | current customer |
+| `POST /admin/auth/login` | sets `siwar_admin_sid` | staff login (staff role required) |
+| `POST /admin/auth/logout` | clears `siwar_admin_sid` | end the staff session |
+| `GET /admin/auth/me` | `siwar_admin_sid` | current staff user |
+
+The two session cookies are separate and the session `kind` must match the
+cookie it arrives on, so a customer session can never open an admin route
+(02-architecture §5).
 
 ## Deploy to Render
 

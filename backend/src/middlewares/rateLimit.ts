@@ -1,0 +1,35 @@
+import rateLimit from "express-rate-limit";
+
+/**
+ * Rate limiter factory (02-architecture §5). Auth routes are the sensitive
+ * ones; limits are relaxed under NODE_ENV=test so the test suite is not
+ * throttled.
+ */
+export function createRateLimiter(options?: {
+  windowMs?: number;
+  max?: number;
+  message?: string;
+}) {
+  const isTest = process.env.NODE_ENV === "test";
+  return rateLimit({
+    windowMs: options?.windowMs ?? 15 * 60 * 1000,
+    max: isTest ? 1000 : (options?.max ?? 20),
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (_req, res) => {
+      res.status(429).json({
+        error: {
+          code: "RATE_LIMITED",
+          message: options?.message ?? "Too many requests, please try again later",
+          details: [],
+        },
+      });
+    },
+  });
+}
+
+/** Strict limiter for login/register. */
+export const authRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 });
+
+/** Stricter limiter for staff login (fewer attempts allowed). */
+export const adminAuthRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 10 });
