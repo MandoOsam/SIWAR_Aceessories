@@ -18,7 +18,7 @@ export async function runMigrations(): Promise<void> {
 /** Empties all app tables between tests. */
 export async function truncateAll(): Promise<void> {
   await db.execute(
-    sql`TRUNCATE TABLE "product_images", "products", "categories", "sessions", "users" RESTART IDENTITY CASCADE`,
+    sql`TRUNCATE TABLE "product_images", "products", "categories", "content_blocks", "pages", "store_settings", "sessions", "users" RESTART IDENTITY CASCADE`,
   );
 }
 

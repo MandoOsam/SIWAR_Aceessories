@@ -3,16 +3,18 @@ import type { ZodType } from "zod";
 
 import { AppError } from "@/middlewares/errorHandler.js";
 
+/** Flattens Zod issues into the API error `details` shape (02-architecture §4). */
+export function issueDetails(
+  issues: { path: PropertyKey[]; message: string }[],
+): { path: string; message: string }[] {
+  return issues.map((issue) => ({
+    path: issue.path.map(String).join("."),
+    message: issue.message,
+  }));
+}
+
 function validationError(message: string, issues: { path: PropertyKey[]; message: string }[]) {
-  return new AppError(
-    "VALIDATION_ERROR",
-    400,
-    message,
-    issues.map((issue) => ({
-      path: issue.path.map(String).join("."),
-      message: issue.message,
-    })),
-  );
+  return new AppError("VALIDATION_ERROR", 400, message, issueDetails(issues));
 }
 
 /**

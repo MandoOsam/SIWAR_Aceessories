@@ -11,6 +11,8 @@ import { adminAuthRouter } from "@/modules/auth/admin.routes.js";
 import { authRouter } from "@/modules/auth/routes.js";
 import { adminCatalogRouter } from "@/modules/catalog/admin.routes.js";
 import { catalogRouter } from "@/modules/catalog/routes.js";
+import { adminContentRouter } from "@/modules/content/admin.routes.js";
+import { contentRouter } from "@/modules/content/routes.js";
 import { healthRouter } from "@/modules/health/routes.js";
 import { adminUploadsRouter } from "@/modules/uploads/routes.js";
 
@@ -36,8 +38,10 @@ export function createApp(): express.Express {
   app.use(apiPrefix, authRouter);
   app.use(apiPrefix, adminAuthRouter);
   app.use(apiPrefix, adminCatalogRouter);
+  app.use(apiPrefix, adminContentRouter);
   app.use(apiPrefix, adminUploadsRouter);
   app.use(apiPrefix, catalogRouter);
+  app.use(apiPrefix, contentRouter);
 
   app.use((_req, res) => {
     res.status(404).json({

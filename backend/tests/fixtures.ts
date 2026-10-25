@@ -1,10 +1,14 @@
 import { hashPassword } from "@/lib/password.js";
 import { db } from "@/db/client.js";
 import { categories } from "@/db/schema/categories.js";
+import { contentBlocks } from "@/db/schema/contentBlocks.js";
+import { pages } from "@/db/schema/pages.js";
 import { productImages } from "@/db/schema/productImages.js";
 import { products } from "@/db/schema/products.js";
 import type { ProductStatus } from "@/db/schema/products.js";
+import { storeSettings, type NewStoreSettings } from "@/db/schema/storeSettings.js";
 import type { UserRole } from "@/db/schema/users.js";
+import type { HeroContent, StoryContent } from "@/types/content.js";
 import { insertUser } from "@/modules/auth/repository.js";
 import type { L10n } from "@/types/l10n.js";
 
@@ -115,3 +119,88 @@ export async function seedProduct(seed: ProductSeed) {
 
   return product;
 }
+
+export const sampleHero: HeroContent = {
+  headline: { ar: "تلبسيها كل يوم.", en: "Worn every day." },
+  headlineAccent: { ar: "وعمرها ما تبهت.", en: "Never fades." },
+  subline: { ar: "ستانلس ستيل.", en: "Stainless steel." },
+  primaryCta: { label: { ar: "تسوقي", en: "Shop Now" }, href: "/shop" },
+  secondaryCta: { label: { ar: "المجموعات", en: "Collections" }, href: "/shop" },
+  posterUrl: "/assets/placeholder/hero-poster.svg",
+};
+
+export const sampleStory: StoryContent = {
+  title: { ar: "قصة SIWAR", en: "The SIWAR Story" },
+  body: { ar: "بدأت بفكرة بسيطة.", en: "It began with a simple idea." },
+  imageUrl: "/assets/placeholder/story.svg",
+  ctaLabel: { ar: "اعرفي المزيد", en: "Learn more" },
+  ctaHref: "/about",
+};
+
+type ContentBlockSeed = {
+  key: string;
+  data?: Record<string, unknown>;
+  sortOrder?: number;
+  isActive?: boolean;
+};
+
+export async function seedContentBlock(seed: ContentBlockSeed) {
+  const [block] = await db
+    .insert(contentBlocks)
+    .values({
+      key: seed.key,
+      data: seed.data ?? {},
+      sortOrder: seed.sortOrder ?? 0,
+      isActive: seed.isActive ?? true,
+    })
+    .returning();
+  if (!block) throw new Error("could not seed content block");
+  return block;
+}
+
+type PageSeed = { slug: string; title?: L10n; body?: L10n };
+
+export async function seedPage(seed: PageSeed) {
+  const [page] = await db
+    .insert(pages)
+    .values({
+      slug: seed.slug,
+      title: seed.title ?? { ar: `صفحة ${seed.slug}`, en: seed.slug },
+      body: seed.body ?? { ar: `نص ${seed.slug}`, en: `${seed.slug} body` },
+    })
+    .returning();
+  if (!page) throw new Error("could not seed page");
+  return page;
+}
+
+/** Inserts the settings singleton; pass overrides to exercise a specific field. */
+export async function seedSettings(overrides: Partial<NewStoreSettings> = {}) {
+  const [row] = await db
+    .insert(storeSettings)
+    .values({
+      shipping: { defaultFee: 60, freeAbove: 3000 },
+      paymentMethods: [
+        { id: "cod", name: { ar: "الدفع عند الاستلام", en: "Cash on Delivery" }, isEnabled: true },
+        {
+          id: "instapay",
+          name: { ar: "إنستاباي", en: "InstaPay" },
+          isEnabled: false,
+          instructions: { ar: "حوّلي المبلغ.", en: "Transfer the amount." },
+          accountValue: "01278259732",
+        },
+      ],
+      trustBadges: {
+        shipping: { ar: "شحن لكل المحافظات", en: "Shipping nationwide" },
+        payment: { ar: "دفع عند الاستلام", en: "Cash on delivery" },
+        returns: { ar: "استبدال 14 يوم", en: "14-day returns" },
+        support: { ar: "دعم واتساب", en: "WhatsApp support" },
+      },
+      social: [{ platform: "instagram", url: "https://www.instagram.com/siwar_accessories00/" }],
+      contact: { phone: "01041921899", whatsapp: "https://wa.me/201041921899" },
+      ...overrides,
+    })
+    .returning();
+  if (!row) throw new Error("could not seed store settings");
+  return row;
+}
+

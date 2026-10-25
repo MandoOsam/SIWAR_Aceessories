@@ -6,6 +6,7 @@ import { categories } from "@/db/schema/categories.js";
 import { productImages } from "@/db/schema/productImages.js";
 import { products } from "@/db/schema/products.js";
 import { users } from "@/db/schema/users.js";
+import { seedContent } from "@/db/seedContent.js";
 import { logger } from "@/lib/logger.js";
 import { hashPassword } from "@/lib/password.js";
 import type { L10n } from "@/types/l10n.js";
@@ -476,6 +477,7 @@ async function main(): Promise<void> {
   const bySlug = await seedCategories();
   await seedProducts(bySlug);
   await seedOwner();
+  const content = await seedContent();
 
   const [{ count: productCount = 0 } = { count: 0 }] = await db
     .select({ count: sql<number>`count(*)::int` })
@@ -487,6 +489,9 @@ async function main(): Promise<void> {
 
   logger.info(
     `Seed complete: ${String(categoryCount)} categories, ${String(productCount)} products, owner ${String(env.OWNER_EMAIL)}`,
+  );
+  logger.info(
+    `Content: ${String(content.blocks)} blocks inserted, ${String(content.pages)} pages inserted, settings ${content.settings ? "created" : "kept"}`,
   );
 }
 

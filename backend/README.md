@@ -63,7 +63,7 @@ npm run dev        # tsx watch + --env-file=.env
 | `npm run test:watch` | Vitest (watch mode) |
 | `npm run db:generate` | Generate a Drizzle migration from the schema |
 | `npm run db:migrate` | Apply migrations (uses `DIRECT_URL`) |
-| `npm run db:seed` | Create/reset the owner account and the starter catalogue (idempotent, dev only) |
+| `npm run db:seed` | Create/reset the owner account, the starter catalogue and the demo content (idempotent, dev only) |
 | `npm run db:push` | Push schema straight to the DB (dev only) |
 | `npm run db:studio` | Open Drizzle Studio |
 
@@ -185,11 +185,47 @@ never leaves the server, and a signature is bound to its folder. The admin app
 posts the file plus these fields to `uploadUrl`; Cloudinary answers with the
 secure URL that is stored in `product_images.url` / `categories.image_url`.
 
+## Content and settings endpoints
+
+Public, no cookie or CSRF needed:
+
+| Method & path | Response |
+|---|---|
+| `GET /content/home` | `{ data: { hero, story, featuredCollections } }`; 404 when the hero/story blocks are not seeded |
+| `GET /content/pages` | `{ data: StaticPage[] }` ordered by slug (feeds the footer sitemap) |
+| `GET /content/pages/:slug` | `{ data: StaticPage \| null }` — **200 with `null`** when it does not exist |
+| `GET /settings/public` | `{ data: StoreSettings }` with `storeName`, `currency`, `shipping`, **enabled** `paymentMethods`, `trustBadges`, `social`, `contact`; `seo` is never exposed |
+
+Home is composed from `content_blocks` rows: `hero`, `story` and one
+`featured:<id>` per featured collection (ordered by `sortOrder`, inactive rows
+skipped). The `<id>` in the key becomes the collection `id` in the response, so
+editing a key keeps the collection stable. Known keys are validated with a
+strict schema; other keys (e.g. `banner:1`) must be a JSON object.
+
+Admin (`content:write` for content/pages, `settings:write` for settings; both
+need the staff session, writes also need CSRF):
+
+| Method & path | Purpose |
+|---|---|
+| `GET /admin/content` | `{ data: AdminContentBlock[] }`, inactive included |
+| `GET /admin/content/:key` | one block; 404 when missing |
+| `PUT /admin/content/:key` | **upsert** (201 created / 200 updated), body: `data`, optional `sortOrder`, `isActive` |
+| `DELETE /admin/content/:key` | 204 |
+| `GET /admin/pages`, `GET /admin/pages/:slug` | page list / one page |
+| `PUT /admin/pages/:slug` | upsert, body: `title`, `body` (both `{ ar, en }`) |
+| `DELETE /admin/pages/:slug` | 204 |
+| `GET /admin/settings` | the singleton including `seo` and disabled payment methods |
+| `PATCH /admin/settings` | partial update; at least one field required |
+
+The store settings table holds one row (created by `npm run db:seed`); the admin
+API never creates a second one. `PATCH /admin/settings` answers 404 before the
+row exists.
+
 
 ## Seed the database
 
 ```bash
-npm run db:seed     # idempotent: upserts 5 categories + 14 demo products, resets the owner password
+npm run db:seed     # idempotent: 5 categories + 14 demo products + home blocks, pages and settings
 ```
 
 It reads `OWNER_EMAIL`, `OWNER_PASSWORD` and `OWNER_NAME` from `.env` and fails
@@ -198,6 +234,11 @@ matched by `slug`, so running it again updates the demo rows in place; it never
 deletes rows created by hand. Product images point at the storefront placeholders
 (`/assets/placeholder/product-<tone>.svg`); replace them with Cloudinary URLs via
 `PATCH /admin/products/:id` once the admin panel uploads real photos.
+
+Content is seeded only when missing: `hero`, `story` and two `featured:<id>`
+blocks, the seven static pages (`about`, `contact`, `faq`, `shipping`, `returns`,
+`privacy`, `terms`) and the settings singleton. Dashboard edits are never
+overwritten by a later seed run.
 
 ## Deploy to Render
 
