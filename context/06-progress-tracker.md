@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-18 (Owner UI revisions R1ï¿½R6 done, then an owner **hotfix R2/R4/R5-partial** on branch `The-last-updates-in-storefront`: removed the decorative 3D bracelet from the Home hero, widened the Navbar icon gap, and enlarged both Home hero CTAs (supersedes the R5 "keep Hero3DScene" and R4 "button untouched" constraints ï¿½ owner-confirmed). build/lint/test green (82 tests). **Next: B1 ï¿½ Backend foundation** (D-018), not to start without explicit instruction).
+> Last updated: 2026-10-25 (B2 - Auth & sessions deployed and verified.)
 
 ## 1. Current status
 
@@ -14,19 +14,19 @@
 
 |---|---|
 
-| **Current phase** | **F7 ï¿½ Static pages, SEO, Polish: done** |
+| **Current phase** | **B2 - Auth & sessions: done** |
 
-| Last completed phase | F7 ï¿½ Static pages, SEO, Polish |
+| Last completed phase | B2 - Auth & sessions |
 
-| Next phase | B1 ï¿½ Backend foundation |
+| Next phase (proposed) | B3 - Catalog |
 
-| Backend | Not started. Nothing implemented. **Out of scope until the storefront is done** (D-018). |
+| Backend | B2 done - users + sessions tables, argon2id, customer & staff login, CSRF, rate limits, roles/permissions, RLS on every table. |
 
 | Storefront (`frontend/`) | F1ï¿½F7 **done**, then owner UI revisions **R1ï¿½R6 done** (`08-owner-ui-revisions.md`) on branch `The-last-updates-in-storefront`. **Backend next per D-018.** |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
-| Blockers | None for the storefront. Open decisions D-001 (backend hosting) and D-004 (email provider) only block B2/B8 |
+| Blockers | None for B2. Two open items for the next phases: the email provider (D-004) for B2.1 password reset, and a staff seed account before A3 (see Known issues). |
 
 
 
@@ -55,6 +55,9 @@
 - [x] Animated hero background ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? wired at `/assets/hero/hero.mp4` with poster fallback and `prefers-reduced-motion` support (O-001 resolved 2026-10-10; still needs compression + WebM before ship)
 
 - [ ] Full processed logo set (light/gold PNG, monogram, standard favicon sizes) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? only 3 source files exist; see O-009
+
+- [x] **B1 Foundation done** - Express + TS + Drizzle + Supabase connected; /health works; lint/test/build green.
+- [x] **B2 Auth & sessions done** - `users` + `sessions` tables (argon2id, RLS on), server-side sessions in two cookies (`siwar_sid` / `siwar_admin_sid`), customer + staff login, double-submit CSRF + Origin check, rate limits, `requireRole` / `requirePermission`, 25 tests green. Password reset deferred to B2.1 (needs the email provider).
 
 
 
@@ -88,9 +91,9 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 
 ### Backend (`backend/`)
 
-- [ ] **B1 Foundation** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? Express + TypeScript, env validation, Drizzle + Supabase connection, migrations setup, health check, error handler, pino logging, helmet/CORS, lint/test setup. *(If a leftover `mongoose` dependency exists, remove it.)*
+- [x] **B1 Foundation** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? Express + TypeScript, env validation, Drizzle + Supabase connection, migrations setup, health check, error handler, pino logging, helmet/CORS, lint/test setup. *(If a leftover `mongoose` dependency exists, remove it.)*
 
-- [ ] **B2 Auth & sessions** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? users, sessions, argon2, customer + admin login, CSRF, roles/permissions middleware, rate limits, RLS enabled on all tables
+- [x] **B2 Auth & sessions** - users, sessions, argon2, customer + admin login, CSRF, roles/permissions middleware, rate limits, RLS enabled on all tables. **Done 2026-10-22**; `POST /auth/forgot-password` + `POST /auth/reset-password` moved to B2.1 (email provider still open, D-004).
 
 - [ ] **B3 Catalog** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? categories, products, images, Cloudinary signing endpoint, public listing/filter/search/sort/pagination
 
@@ -320,6 +323,11 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 
 
 | D-057 | 2026-10-18 | **Storefront audit (07) decisions.** A1: split `useProductFilters` (319 -> 276 lines) into `productFiltersUtils.ts`; removed 3 dead files (`HomeSkeleton`, `banners.ts`, `PlaceholderPage.tsx`); kept `useLenis.ts`/`structuredData.ts` pending an owner call. A2: added `frontend/public/_redirects` (`/* /index.html 200`) as the spec requires; no `_headers` added (host-level, logged). A3: made the Google Fonts stylesheet non-render-blocking in `index.html` (no new library); kept `chunkSizeWarningLimit: 900` with **no** `manualChunks` (the F7.3 revert stands - stability over the perf lever); wildcard host headers (CSP/HSTS) left to Cloudflare. A4: verified by code inspection + route status (no browser automation available); the A4.4 Lighthouse re-run was contaminated by host load (identical bundle hash scored 85 vs 38), so the **A3 idle-host numbers are authoritative**; the 4 A4.2 consistency gaps were logged, not fixed (no scope creep). | default |
+| D-058 | 2026-10-22 | **B2 - argon2 WASM fallback is an optional dependency.** `@node-rs/argon2` loads a prebuilt native binary, and the owner's Windows machine runs a code-integrity policy that blocks unsigned native modules, so the API could not even boot (`Cannot find native binding`). `@node-rs/argon2-wasm32-wasi` is the WASM build of the SAME library and is installed as an **optionalDependency**: `@node-rs/argon2` falls back to it automatically when the native binary cannot load, and Linux (Render) keeps using the native binding. No new third-party library, no code change. | owner |
+| D-059 | 2026-10-22 | **B2 - admin auth lives in the auth module, not a new `modules/admin/`.** `src/modules/auth/admin.routes.ts` mounts `POST /admin/auth/login`, `POST /admin/auth/logout` and `GET /admin/auth/me` (contract 02-architecture Â§7). One feature = one folder; the URLs stay under `/admin/...` as the contract requires. Staff login issues the `siwar_admin_sid` cookie only and accepts staff roles (`super_admin`, `manager`, `support`, `content`) - a customer account gets the same 401 as a wrong password so the endpoint does not leak which emails exist. | default |
+| D-060 | 2026-10-22 | **B2 - the session `kind` must match the cookie it arrives on.** `validateSession(sessionId, kind)` rejects a session whose stored kind does not match the cookie, and an admin session stops working the moment the account loses its staff role. Without this, a customer session id pasted into `siwar_admin_sid` would open admin routes - the exact thing 02-architecture Â§5 asks for. Covered by tests in `tests/adminAuth.test.ts`. | default |
+| D-061 | 2026-10-22 | **B2 - Row Level Security is declared in the schema, not hand-written into the migration.** `users` and `sessions` use `.enableRLS()`, so Drizzle keeps the flag in its snapshot and every future migration (and `db:push`) keeps RLS on. Migration `0001` only contains the two idempotent `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` statements. | default |
+| D-062 | 2026-10-22 | **B2 - password reset is deferred to B2.1.** `POST /auth/forgot-password` and `POST /auth/reset-password` are in the contract (02-architecture Â§7) but need a mailer, and the email provider (D-004) is still open. Owner chose to close B2 without them and decide the provider in B2.1. | owner |
 
 ## 5. Open questions for the owner
 
@@ -401,6 +409,12 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 - **Unused dependencies `lenis` and `date-fns` (from audit A1/A3; target: own dependency-cleanup change).** Declared in `frontend/package.json`, imported nowhere, tree-shaken so no bundle cost. Remove together with the lockfile in one change.
 
 - **Lighthouse Performance on `/shop` (73) and `/products/:slug` (77) remains below the =80 target (audit A3/A4).** The render-blocking Google Fonts stylesheet was fixed in A3; the remaining cost is the ~530 KB critical-path `index` JS parse on simulated Slow-4G / 4x CPU. Closing the gap needs vendor chunking (`manualChunks`, tried & reverted in F7.3) or trimming the main bundle. Target: a F7-style performance pass.
+
+- **Supabase is migrated and verified (2026-10-25).** The `users` and `sessions` tables exist, RLS is enabled on both, and `drizzle.__drizzle_migrations` holds the exact SHA-256 of `0000_icy_invisible_woman.sql` and `0001_remarkable_leader.sql`. The earlier failure was a **truncated project ref** (19 instead of 20 characters) in `backend/.env`; the pooler answered `tenant/user ... not found`. `DIRECT_URL` now uses the session pooler on port 5432 (DDL-capable) and `DATABASE_URL` the transaction pooler on 6543.
+- **No staff account exists yet.** The schema supports the 5 roles and staff login is implemented, but there is no seed script, so there is no way to log into the admin app yet. B8 has `seed data` in its scope; a `npm run db:seed` that creates the owner account from env variables would unblock A3.
+- **`SESSION_SECRET` is required by the env schema but unused.** Sessions are opaque random UUIDs looked up in PostgreSQL, so no secret is needed to sign them. Either drop the variable or use it to sign the cookie value; the contract (02-architecture Â§9) still lists it.
+- **Windows code-integrity policy blocks native npm binaries.** Not only argon2 - any unsigned `.node` module from npm is blocked on this machine (D-058 solves it for argon2 with the WASM build). Keep it in mind before adding a native dependency.
+- **`context/06-progress-tracker.md` itself is encoding-corrupted.** 812 U+FFFD replacement characters sit where em dashes and arrows used to be (the other context files are clean). The original bytes are unrecoverable; a cleanup pass would replace the runs with ASCII `-` / `->`.
 
 ## 8. Storefront audit (07)
 
@@ -541,4 +555,7 @@ eature/f7-static-seo-polish-v2. |
 | A3 ï¿½ Security, accessibility & performance (storefront audit 07) | 2026-10-16 | **Security (A3.1):** no secrets/`eval`/`new Function`/`dangerouslySetInnerHTML` in the client; all 5 `target="_blank"` links carry `rel="noopener noreferrer"`; no source maps in the production build; every `localStorage` key is on the allowed list (theme, locale, cart, wishlist, notifications, recentlyViewed, recentSearches, mock.*). **A11y (A3.2):** skip-link (`#main-content`) + `<main id="main-content">` present; `prefers-reduced-motion` respected in 42 places; focus traps in modals/drawers (D-024); Lighthouse A11y 96-100 (>=90). **Perf (A3.3):** made the render-blocking ~350 KB Google Fonts stylesheet non-render-blocking in `index.html` (`media="print" onload="this.media='all'"` + `<noscript>` fallback) - no new library. Mobile Lighthouse (median of runs, `vite preview` + simulate): `/` Perf 45->**85**, `/cart` 61->**94**, `/login` 63->**86**, `/shop` 51->**73**, `/products/signature-ring-band` ~61-65->**77**; A11y 96-100, BP 100, SEO 92 (except `/cart` 58 - expected, robots.txt disallows `/cart`). `/shop` (73) and `/products` (77) remain **below the 80 target**: LCP is a product image gated behind the 530 KB critical-path JS parse on simulated Slow-4G / 4x CPU; closing the gap needs the critical-path JS reduced (manualChunks vendor split - tried & reverted in F7.3 for stability) and/or the 4 font families self-hosted + subset to fewer weights (needs font files, larger change) - both beyond a safe no-library A3 fix. `npm run build`/`lint`/`test` pass. | Branch `feature/storefront-audit`. Known issues added: unused deps gsap/lenis/date-fns (tree-shaken, no bundle cost - A4/B-scope); host-level security headers (CSP/HSTS) configured at Cloudflare, not in repo. |
 | Storefront audit - A4 | 2026-10-18 | Final verification & sign-off. Static checks on final state: `npx tsc --noEmit` 0 errors, `npm run lint` 0, `npm test` 82 passed, `npm run build` OK. A4.1 flows and A4.2 consistency verified by code inspection + route checks (28 routes return 200; all lazy + ProtectedRoute + catch-all 404). A4.2 gaps logged (no scope creep): HomePage has no per-page <title>/meta; ToastViewport mounted only in ProductPage/AccountLayout so toasts silent on Home/Shop/Category/Search/Cart; TrustBadges hard-coded strings; parallel meta mechanisms. A4.4 Lighthouse re-run contaminated by host load (byte-identical bundle Perf 85 vs 38, TBT 210ms vs 3110ms), so A3 idle-host numbers stand: / 85, /shop 73, /products/signature-ring-band 77, /cart 94, /login 86 (shop/products <80); A11y 96-100, BP 100, SEO 92 (cart 58 expected). Updated frontend/README.md (overview, architecture, add-a-page, mock->real API). | Branch `feature/storefront-audit`. Commit `chore(audit): A4 final verification and storefront sign-off`. |
 
-**Storefront verified. F1 to F7 + Audit A1 to A4 done. Ready to start B1 - Backend foundation.**
+| B1 | 2026-10-18 | Backend foundation: Express + TS + Drizzle + Supabase, /health, pino, helmet, CORS, Vitest. | `1c4fce4`. Next: B2 ï¿½ Auth & Sessions. |
+| B2 - Auth & sessions | 2026-10-22 | `users` + `sessions` tables (Drizzle, `gen_random_uuid` ids, Argon2id hashes, RLS on both with no policies), server-side sessions with a 30-day TTL stored in PostgreSQL and issued through two httpOnly cookies (`siwar_sid`, `siwar_admin_sid`); customer register/login/logout/me plus staff `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`; double-submit CSRF + Origin check on every mutating route; rate limits (20/15 min customer, 10/15 min staff); `requireRole` + `requirePermission` on top of the shared permission map; malformed JSON now answers 400 instead of 500. 25 Vitest tests against a real PostgreSQL, lint/build green. Verified RLS with a non-owner role (0 rows for `anon`, full access for the backend role). The first `npm run db:migrate` failed because the project ref in `backend/.env` was truncated (19 chars); after the ref was corrected the same command applied both migrations to Supabase on 2026-10-25. Password reset deferred to B2.1 (D-062). | `8bdf03e` on `feature/backend-foundation`; migrations `0000` + `0001` applied to Supabase on 2026-10-25 (`users`, `sessions`, RLS on, migration hashes verified). |
+
+**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 done and deployed. Next: B3.1 - Catalog foundation.**
