@@ -38,6 +38,9 @@ cp .env.example .env      # Windows PowerShell: Copy-Item .env.example .env
 | `CLOUDINARY_CLOUD_NAME` | yes | Cloudinary account (uploads start in B3) |
 | `CLOUDINARY_API_KEY` | yes | Cloudinary API key |
 | `CLOUDINARY_API_SECRET` | yes | Cloudinary API secret |
+| `OWNER_EMAIL` | no | Owner account created by `npm run db:seed` (B3+) |
+| `OWNER_PASSWORD` | no | Password for that owner account |
+| `OWNER_NAME` | no | Display name for that owner account (default `Owner`) |
 
 The app **fails fast at startup** with a clear message if any required variable is missing or malformed (`src/config/env.ts`).
 
@@ -60,6 +63,7 @@ npm run dev        # tsx watch + --env-file=.env
 | `npm run test:watch` | Vitest (watch mode) |
 | `npm run db:generate` | Generate a Drizzle migration from the schema |
 | `npm run db:migrate` | Apply migrations (uses `DIRECT_URL`) |
+| `npm run db:seed` | Create/reset the owner account and the starter catalogue (idempotent, dev only) |
 | `npm run db:push` | Push schema straight to the DB (dev only) |
 | `npm run db:studio` | Open Drizzle Studio |
 
@@ -125,6 +129,36 @@ Base path `/api/v1`. Every mutating request needs the `Origin` header and an
 The two session cookies are separate and the session `kind` must match the
 cookie it arrives on, so a customer session can never open an admin route
 (02-architecture §5).
+
+## Catalogue endpoints (public)
+
+Read-only in B3.1; admin CRUD arrives in B3.2. No cookie and no CSRF needed.
+
+| Method & path | Response |
+|---|---|
+| `GET /categories` | `{ data: Category[] }`, active categories ordered by `sortOrder` |
+| `GET /categories/:slug` | `{ data: Category \| null }` — **200 with `null`** when it does not exist |
+| `GET /products` | `{ data: Product[], total, page, limit }`, active products only |
+| `GET /products/:slug` | `{ data: { product, matching, related } \| null }` — **200 with `null`** when it does not exist |
+
+`GET /products` accepts `category` (slug), `minPrice`, `maxPrice`, `inStock`,
+`color` (`gold \| silver \| rose-gold \| black`), `size`, `discount`, `isNew`,
+`search`, `sort` (`newest \| best-selling \| price-asc \| price-desc \| rating`),
+`page` and `limit` (default 20, max 100). `rating` is accepted but ignored until
+reviews ship in B6; `sort=rating` falls back to best sellers. An unknown
+`category` returns an empty page, not a 404. Money is returned as a JSON number.
+
+## Seed the database
+
+```bash
+npm run db:seed     # idempotent: upserts 5 categories + 14 demo products, resets the owner password
+```
+
+It reads `OWNER_EMAIL`, `OWNER_PASSWORD` and `OWNER_NAME` from `.env` and fails
+with a clear message when the first two are missing. Products and categories are
+matched by `slug`, so running it again updates the demo rows in place; it never
+deletes rows created by hand. Product images point at the storefront placeholders
+(`/assets/placeholder/product-<tone>.svg`) until Cloudinary uploads land in B3.3.
 
 ## Deploy to Render
 

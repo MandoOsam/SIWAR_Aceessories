@@ -16,6 +16,11 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
   CLOUDINARY_API_KEY: z.string().min(1),
   CLOUDINARY_API_SECRET: z.string().min(1),
+
+  // Only used by `npm run db:seed`; optional so the API and tests boot without them.
+  OWNER_EMAIL: z.string().email().optional(),
+  OWNER_PASSWORD: z.string().min(8).optional(),
+  OWNER_NAME: z.string().min(1).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
