@@ -1,3 +1,5 @@
+import { eq } from "drizzle-orm";
+
 import { db } from "@/db/client.js";
 import { contentBlocks, type NewContentBlock } from "@/db/schema/contentBlocks.js";
 import { pages, type NewPage } from "@/db/schema/pages.js";
@@ -162,7 +164,7 @@ const social: SocialLink[] = [
 const settingsSeed: NewStoreSettings = {
   storeName: "SIWAR",
   currency: "EGP",
-  shipping: { defaultFee: 60, freeAbove: 3000 },
+  shipping: { defaultFee: 60, expressFee: 120, freeAbove: 3000 },
   paymentMethods,
   trustBadges,
   social,
@@ -188,12 +190,24 @@ export async function seedContent(): Promise<{ blocks: number; pages: number; se
     .returning({ id: pages.id });
 
   const [existingSettings] = await db
-    .select({ id: storeSettings.id })
+    .select({ id: storeSettings.id, shipping: storeSettings.shipping })
     .from(storeSettings)
     .limit(1);
   const createdSettings = existingSettings === undefined;
   if (createdSettings) {
     await db.insert(storeSettings).values(settingsSeed);
+  } else if (existingSettings.shipping.expressFee === undefined) {
+    // Rows created before B5 have no express fee; keep every other edit.
+    await db
+      .update(storeSettings)
+      .set({
+        shipping: {
+          ...existingSettings.shipping,
+          expressFee: settingsSeed.shipping.expressFee,
+        },
+        updatedAt: new Date(),
+      })
+      .where(eq(storeSettings.id, existingSettings.id));
   }
 
   return {

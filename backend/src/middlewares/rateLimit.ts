@@ -36,3 +36,6 @@ export const adminAuthRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000
 
 /** Upload signatures are cheap to issue but open a spend path on Cloudinary. */
 export const uploadRateLimiter = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 30 });
+
+/** Coupon codes are guessable; throttle validation to slow enumeration down. */
+export const couponRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 40 });

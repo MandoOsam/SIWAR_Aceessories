@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-25 (B3.2/B3.3 - Catalogue admin CRUD + Cloudinary upload signatures.)
+> Last updated: 2026-10-25 (B5 - Orders, coupons, tracking and admin order management.)
 
 ## 1. Current status
 
@@ -14,13 +14,13 @@
 
 |---|---|
 
-| **Current phase** | **B4 - Content & settings: done** |
+| **Current phase** | **B5 - Orders & checkout: done** |
 
-| Last completed phase | B4 - Content & settings |
+| Last completed phase | B5 - Orders & checkout |
 
-| Next phase (proposed) | B5 - Orders |
+| Next phase (proposed) | B6 - Customer features |
 
-| Backend | B4 done - users, sessions, catalogue (B3) plus `content_blocks`, `pages` and `store_settings` with RLS; public `GET /content/home`, `/content/pages`, `/content/pages/:slug`, `/settings/public`; admin CRUD for content blocks and pages (PUT upsert) and settings GET/PATCH behind the real guard; content seeded by `npm run db:seed`; 109 tests. |
+| Backend | B5 done - users, sessions, catalogue (B3) and content/settings (B4) plus `coupons`, `orders`, `order_items`, `order_events` with RLS and `order_number_seq`; public `POST /orders` (transactional totals + stock/coupon locks), `GET /orders/track`, `GET /orders/:id`, `POST /coupons/validate`; admin order list/detail + status transitions + manual payment confirmation; `db:seed` adds 3 coupons and the express fee; 150 tests. |
 
 | Storefront (`frontend/`) | F1ï¿½F7 **done**, then owner UI revisions **R1ï¿½R6 done** (`08-owner-ui-revisions.md`) on branch `The-last-updates-in-storefront`. **Backend next per D-018.** |
 
@@ -62,6 +62,7 @@
 - [x] **B3.1 Catalog foundation done** - `categories`, `products`, `product_images` (RLS on, `numeric(10,2)` money, bilingual jsonb names, `text[]` colors/sizes, slug+SKU unique); public read-only API `GET /categories`, `GET /categories/:slug`, `GET /products` (filters, sort, pagination), `GET /products/:slug` (product + matching + related), both slug endpoints answer **200 `{ data: null }`** for unknown slugs; `npm run db:seed` upserts the owner account + 5 categories + 14 demo products. 25 new tests (50 total), lint/build green, applied to Supabase and smoke-tested against it.
 - [x] **B4 Content & settings done** - `content_blocks` (free-form `key`, jsonb `data`, `sort_order`, `is_active`), `pages` (slug + bilingual title/body) and the `store_settings` singleton (`store_name`, `currency`, shipping, payment methods, trust badges, social, contact, seo; RLS on) with migration `0003_b4_content_settings.sql`; public `GET /content/home` (hero + story + ordered `featured:<id>` blocks), `GET /content/pages`, `GET /content/pages/:slug` (200 `null` when missing), `GET /settings/public` (enabled payment methods only, never `seo`); admin `GET/PUT/DELETE /admin/content[/:key]`, `GET/PUT/DELETE /admin/pages[/:slug]`, `GET/PATCH /admin/settings` behind the real guard + CSRF; `db:seed` adds 4 blocks, 7 pages and the settings row without overwriting edits. 26 new tests (109 total), tsc/lint/build green, migration applied to Supabase, live smoke 18/18.
 - [x] **B3.2/B3.3 Catalog admin + uploads done** - `src/lib/cloudinary.ts` (env-initialised, folder-scoped signatures, 5 MB / jpg-png-webp allow-list) + `POST /admin/uploads/sign` (staff session, CSRF, `products:write`, 30 req / 10 min); admin catalogue module (`modules/catalog/admin.*`): list/create/update/delete for categories and products, draft + inactive support, derived slug/SKU, compare-at price auto-discount, whole-gallery replace inside a transaction, slug/SKU conflicts 409, in-use category delete 409, parent-loop guard. 33 new tests (83 total), lint/build green.
+- [x] **B5 Orders & checkout done** - `coupons` (`free_shipping`), `orders` (`delivery_option_id`), `order_items` (nullable `product_id` + snapshot) and `order_events` with migration `0004_b5_orders_coupons.sql` (RLS on), plus the `order_number_seq` sequence (starts at 10025); public `POST /orders` (server recomputes totals, merges duplicate lines, locks coupon + stock `FOR UPDATE`, increments usage, writes the first timeline event), `GET /orders/track` (200 `null` on mismatch), `GET /orders/:id` for the success page and `POST /coupons/validate` (always 200, 40/15 min rate limit); admin `GET /admin/orders`, `GET /admin/orders/:id`, `PATCH /admin/orders/:id/status` (validated transitions + note) and `PATCH /admin/orders/:id/payment` behind `orders:read`/`orders:write` + CSRF; `db:seed` inserts SIWAR10/WELCOME50/FREESHIP and backfills `shipping.expressFee`. 41 new tests (150 total), tsc/lint/build green, migration applied to Supabase, live smoke 11/11.
 
 
 
@@ -104,7 +105,7 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 
 - [x] **B4 Content & settings** - **done 2026-10-25** - content blocks (hero, story, featured collections, free-form banners), static pages, store settings, public content/settings endpoints, admin CRUD
 
-- [ ] **B5 Orders** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? coupons, order creation (transaction, server-side totals, stock), manual payment methods + proof upload, tracking, order events, admin order management
+- [x] **B5 Orders & coupons** - **done 2026-10-25** - coupons, transactional order creation (server-side totals, stock + coupon locks), manual payment methods with transfer-proof URL, public tracking, order events timeline, admin order management (status transitions + payment confirmation)
 
 - [ ] **B6 Customer features** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? reviews (submit/moderate), wishlist, addresses, notifications, newsletter, recently viewed support
 
@@ -352,6 +353,11 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 | D-078 | 2026-10-25 | **B4 - admin content uses PUT upserts and the public pages list was added.** `GET /content/pages` is in the contract now (the footer sitemap already called it); admin `PUT /admin/content/:key` and `PUT /admin/pages/:slug` answer 201 on create and 200 on update so the dashboard can add keys/pages without a separate POST, and list endpoints (`GET /admin/content`, `/admin/pages`) feed A6. | frontend already needed the list; dashboard needs create |
 | D-079 | 2026-10-25 | **B4 - permissions split content from settings.** Content and pages (read and write) use `content:write` (super_admin/manager/content) because no `content:read` exists; settings use `settings:write` (super_admin/manager) because fees and payment methods change checkout. Public settings expose enabled payment methods only and never `seo`. | default |
 
+| D-080 | 2026-10-25 | **B5 - shipping fees are resolved server-side from `store_settings.shipping`.** `standard` charges `defaultFee` and becomes free when the subtotal reaches `freeAbove`; `express` charges `expressFee` (falling back to `defaultFee`) and is never free; an unknown `deliveryOptionId` answers 422. `db:seed` backfills `expressFee` (120) on settings rows created before B5 without touching other edits. Per-governorate fees (O-003) stay open. | O-003 still unanswered; flat fees match the storefront |
+| D-081 | 2026-10-25 | **B5 - order numbers come from a sequence and items keep a snapshot.** `order_number_seq` starts at 10025 and produces `SW-<n>`, so concurrent checkouts cannot collide. `order_items.product_id` is nullable with `ON DELETE SET NULL` and each row keeps the name/image/price snapshot, so deleting a sold product is allowed and history stays intact (supersedes the B3.2 hard-delete note). | default; the storefront mock used `SW-10025` |
+| D-082 | 2026-10-25 | **B5 - coupons: `free_shipping` flag and a non-error validate endpoint.** `FREESHIP` is stored as `type=fixed`, `value=0`, `free_shipping=true`; `POST /coupons/validate` always answers 200 (`{valid:true,...}` or `{valid:false,error}`) so the cart can show a message instead of an error toast. Checkout re-evaluates the code inside the transaction, locks the row `FOR UPDATE` and increments `used_count` once per order. | default; matches the F5 mock codes |
+| D-083 | 2026-10-25 | **B5 - statuses move along a fixed path.** `pending->confirmed->processing->shipped->out_for_delivery->delivered`, `cancelled` from `pending`/`confirmed`, `delivered->returned->refunded`; `cancelled`/`refunded` are final. Repeating the current status or an invalid move answers 409 and writes no event. Payment changes are a separate action (no gateway in v1) and record an event with the order's current status. | default; v1 has no gateway (D-007) |
+
 ## 5. Open questions for the owner
 
 
@@ -450,11 +456,16 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 - **14 demo products, not 15.** The storefront seed list (`frontend/src/data/productSeeds.ts`) contains 14 products across 5 categories; `db:seed` mirrors it exactly, so the catalogue and the mock UI show the same items.
 - **Admin mutations do not write `activity_log` yet.** The table is defined in `02-architecture` section 6 but not created; the audit trail lands with B8.
 
-- **Product delete is a hard delete.** Fine while orders do not reference products; once B5 creates `order_items` the FK will block deleting a sold product (500 unless handled), so switch to archive/soft delete in B5.
+- **Product delete stays a hard delete, now order-safe.** B5 made `order_items.product_id` nullable with `ON DELETE SET NULL` and each line keeps a name/image/price snapshot (D-081), so deleting a sold product no longer blocks or corrupts order history.
 
 - **Seeded content uses storefront placeholder assets.** `db:seed` writes `/assets/placeholder/hero-poster.svg`, `story.svg` and the two banners; replace hero/story/featured images with Cloudinary URLs (`scope: content`, `siwar/content`) once the owner supplies real photos (O-001).
 - **The contact email is not seeded.** The owner has not supplied a support email (O-010), so `contact.email` is omitted from `GET /settings/public`; A6 should edit it when the address exists.
 - **The settings singleton is code-enforced only.** No unique constraint stops a second `store_settings` row written by hand; the repository always reads/updates the oldest row. `PATCH /admin/settings` answers 404 until `db:seed` has created the row.
+- **Orders do not restock on cancel/return.** `PATCH /admin/orders/:id/status` writes the status and event but never returns stock or coupon usage; a restock policy lands with returns (B6/B7).
+- **No public shipping/governorate endpoint yet.** Fees are resolved from `store_settings.shipping` on the server; the storefront keeps its own `shippingOptions` numbers until F8 wiring (O-003).
+- **Guest orders are not linked to accounts.** `orders.user_id` stays `null` for guest checkout, so `GET /account/orders` (B6) can only show orders placed while logged in.
+- **Manual order creation is not implemented.** `POST /admin/orders` is in the contract but has no route yet (dashboard/phone orders, A4/B7).
+- **Order detail is public by UUID.** `GET /orders/:id` answers anyone holding the UUID (the success page has no session); tracking still needs number + phone.
 
 ## 8. Storefront audit (07)
 
@@ -601,4 +612,6 @@ eature/f7-static-seo-polish-v2. |
 | B3.2 + B3.3 - Catalog admin & upload signatures | 2026-10-25 | `src/lib/cloudinary.ts` (env config, folder-bound signatures, format/size metadata) and `POST /admin/uploads/sign` (rate limit 30/10 min, CSRF, staff + `products:write`; scope `product|category|content` -> `siwar/<scope>`); `modules/catalog/admin.*` with `GET/POST/PATCH/DELETE /admin/categories` and `/admin/products` (lists include drafts, status/category/search filters, pagination, `productCount`), derived slug/SKU, auto discount, transactional gallery replace, 409 on slug/SKU conflicts and in-use category deletes, 422 on unknown category/parent, 404 on missing ids, parent-loop guard. 33 new tests (83 total), tsc/lint/build green; no schema change, so no new migration. | `feature/backend-foundation`; decisions D-071..D-075; admin dashboard wiring still pending (A3). |
 | B4 - Content & settings | 2026-10-25 | `content_blocks`, `pages` and `store_settings` tables (migration `0003_b4_content_settings.sql`, RLS on); public module (`modules/content/`) with `GET /content/home` (hero + story + ordered `featured:<id>` blocks, 404 when unconfigured), `GET /content/pages`, `GET /content/pages/:slug` (200 `null` when missing) and `GET /settings/public` (enabled payment methods only, `seo` omitted); admin `GET/PUT/DELETE /admin/content[/:key]`, `GET/PUT/DELETE /admin/pages[/:slug]` (`content:write`) and `GET/PATCH /admin/settings` (`settings:write`), all behind the real B2 guard with CSRF on writes; strict Zod validation per block key, PUT upsert semantics, issue details prefixed `data.*`; `db:seed` now inserts 4 blocks, 7 pages and the settings row without overwriting dashboard edits. 26 new tests (109 total), tsc/lint/build green; migration applied to Supabase and live smoke 18/18 (public home/pages/settings, admin lists, temp block create/delete, CSRF rejection). | `feature/backend-catalog`; decisions D-076..D-079; contract section 6 (`store_name`/`currency`) and section 7 (`GET /content/pages`, admin lists) updated first. |
 
-**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 + B3 + B4 done. Next: B5 - Orders.**
+| B5 - Orders & checkout | 2026-10-25 | `coupons` (`free_shipping`), `orders` (`delivery_option_id`, status/payment/tracking columns), `order_items` (nullable `product_id` + snapshot) and `order_events` tables plus `order_number_seq` (migration `0004_b5_orders_coupons.sql`, RLS on); public `POST /orders` (transaction: re-priced lines, merged duplicates, coupon + stock `FOR UPDATE` locks, usage count, first timeline event), `GET /orders/track` (200 `null` on mismatch), `GET /orders/:id` and `POST /coupons/validate` (rate limited 40/15 min); admin `GET /admin/orders`, `GET /admin/orders/:id`, `PATCH /admin/orders/:id/status` (validated transitions + event) and `PATCH /admin/orders/:id/payment` behind `orders:read`/`orders:write` + CSRF; `db:seed` adds SIWAR10/WELCOME50/FREESHIP and backfills `shipping.expressFee`. 41 new tests (150 total), tsc/lint/build green; migration applied to Supabase; live smoke 11/11 (public settings, create + track + detail, coupon validate, admin list/status/payment, cleanup restored stock). | `feature/backend-catalog`; decisions D-080..D-083; contract sections 6/7 updated first. |
+
+**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 + B3 + B4 + B5 done. Next: B6 - Customer features.**

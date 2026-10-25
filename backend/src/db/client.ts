@@ -9,3 +9,6 @@ export const pool = new Pool({
 });
 
 export const db = drizzle(pool, { schema });
+
+/** Transaction handle passed to repositories that must run inside `db.transaction`. */
+export type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];

@@ -76,16 +76,16 @@ All tables have `id uuid pk`, `created_at`, `updated_at` unless noted. Use snake
 | `products` | slug (unique), sku (unique), name jsonb, description jsonb, category_id, price, old_price, discount_percent, stock, low_stock_threshold, status (`draft`/`active`/`archived`), is_new, is_best_seller, is_featured, colors text[], sizes text[], material, plating, water_resistant, hypoallergenic, seo jsonb |
 | `product_images` | product_id, url, alt jsonb, is_primary, sort_order |
 | `addresses` | user_id, governorate, city, street, building, apartment, phone, is_default |
-| `orders` | number (unique, e.g. `SW-10025`), user_id (nullable for guests), customer_name, phone, email, address jsonb, subtotal, shipping, discount, total, coupon_code, payment_method (`cod`/`instapay`/`vodafone_cash`), payment_status (`unpaid`/`paid`/`refunded`), payment_proof_url, status, tracking_number, courier, internal_note |
-| `order_items` | order_id, product_id, name_snapshot jsonb, variant jsonb, qty, unit_price |
+| `orders` | number (unique, e.g. `SW-10025`), user_id (nullable for guests), customer_name, phone, email, address jsonb, delivery_option_id (`standard`/`express`), subtotal, shipping, discount, total, coupon_code, payment_method (`cod`/`instapay`/`vodafone_cash`), payment_status (`unpaid`/`paid`/`refunded`), payment_proof_url, status, tracking_number, courier, internal_note |
+| `order_items` | order_id, product_id (nullable; `set null` keeps the snapshot after a product is deleted), name_snapshot jsonb, image_url, variant jsonb, qty, unit_price |
 | `order_events` | order_id, status, note, actor_id, created_at (timeline) |
 | `reviews` | product_id (nullable), user_id (nullable), author_name, rating 1–5, text jsonb, images text[], status (`pending`/`approved`/`hidden`), is_seed, show_on_home, is_verified_purchase |
 | `wishlist_items` | user_id, product_id |
-| `coupons` | code (unique), type (`percent`/`fixed`), value, min_order, max_discount, expires_at, usage_limit, used_count, is_active |
+| `coupons` | code (unique), type (`percent`/`fixed`), value, min_order, max_discount, free_shipping, expires_at, usage_limit, used_count, is_active |
 | `campaigns` | name jsonb, discount_percent, starts_at, ends_at, is_active, target (products/categories) |
 | `content_blocks` | key (`hero`, `story`, `banner:<n>`...), data jsonb, sort_order, is_active |
 | `pages` | slug (`about`, `faq`...), title jsonb, body jsonb |
-| `store_settings` | single row: store_name, currency, shipping, payment_methods, trust_badges, social, contact, seo |
+| `store_settings` | single row: store_name, currency, shipping (`defaultFee`, `expressFee?`, `freeAbove?`), payment_methods, trust_badges, social, contact, seo |
 | `inventory_movements` | product_id, delta, reason, actor_id |
 | `notifications` | target (`admin`/user id), type, payload jsonb, read_at |
 | `activity_log` | actor_id, action, entity, entity_id, meta jsonb |
@@ -113,8 +113,11 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 | `POST /coupons/validate` | validate code against a cart |
 | `POST /orders` | create order (guest or logged in) — server recomputes totals and checks stock |
 | `GET /orders/track?number=&phone=` | public tracking |
+| `GET /orders/:id` | order read for the success page (UUID; not a list) |
 | `POST /newsletter` | subscribe |
 | `POST /uploads/payment-proof` | signed upload params for a transfer screenshot (rate limited) |
+
+**Order payloads (B5).** `POST /orders` takes `{ customer, address, deliveryOptionId, paymentMethod, paymentProofUrl?, items, couponCode? }`, where `deliveryOptionId` is `standard` or `express` (fees resolved server-side from `store_settings.shipping`; `expressFee` falls back to `defaultFee`), and returns `{ data: { id, number, total } }`. `GET /orders/track` answers **200 `{ data: null }`** when number + phone do not match, so orders cannot be enumerated. `POST /coupons/validate` takes `{ code, subtotal }` and always answers 200 with `{ valid: true, code, type, value, discount, freeShipping?, maxDiscount? }` or `{ valid: false, error: "invalid" | "min-order" }` (rate limited).`Order` payloads (tracking + admin detail) add `deliveryOptionId`, `estimatedDelivery` and a `timeline` array from `order_events` (`{ status, note?, createdAt }`). DB payment method `vodafone_cash` is exposed as `vodafone-cash` (the storefront id).
 
 ### Auth & account
 `GET /auth/csrf`, `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`, `POST /auth/forgot-password`, `POST /auth/reset-password`;
@@ -124,7 +127,7 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`;
 `GET /admin/dashboard?range=`;
  CRUD: `/admin/products`, `/admin/categories`, `/admin/coupons`, `/admin/campaigns`, `/admin/reviews`, `/admin/content`, `/admin/content/:key`, `/admin/pages`, `/admin/pages/:slug`, `/admin/users`;
-Orders: `GET /admin/orders`, `GET /admin/orders/:id`, `PATCH /admin/orders/:id/status`, `PATCH /admin/orders/:id/payment`, `POST /admin/orders` (manual order);
+Orders: `GET /admin/orders`, `GET /admin/orders/:id`, `PATCH /admin/orders/:id/status` (`{ status, note? }`, validated transitions), `PATCH /admin/orders/:id/payment` (`{ paymentStatus, note? }`), `POST /admin/orders` (manual order);
 `GET /admin/customers`, `GET /admin/customers/:id`;
 Inventory: `GET /admin/inventory`, `POST /admin/inventory/adjust`;
 `GET|PATCH /admin/settings`; `GET /admin/notifications`, `PATCH /admin/notifications/read`; `GET /admin/activity`;

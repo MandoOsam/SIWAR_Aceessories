@@ -75,6 +75,8 @@ export type ContactSettings = {
 
 export type ShippingSettings = {
   defaultFee: number;
+  /** Express delivery fee; falls back to `defaultFee` when unset. */
+  expressFee?: number;
   freeAbove?: number;
 };
 

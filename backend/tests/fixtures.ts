@@ -2,11 +2,13 @@ import { hashPassword } from "@/lib/password.js";
 import { db } from "@/db/client.js";
 import { categories } from "@/db/schema/categories.js";
 import { contentBlocks } from "@/db/schema/contentBlocks.js";
+import { coupons } from "@/db/schema/coupons.js";
 import { pages } from "@/db/schema/pages.js";
 import { productImages } from "@/db/schema/productImages.js";
 import { products } from "@/db/schema/products.js";
 import type { ProductStatus } from "@/db/schema/products.js";
 import { storeSettings, type NewStoreSettings } from "@/db/schema/storeSettings.js";
+import type { CouponType } from "@/types/orders.js";
 import type { UserRole } from "@/db/schema/users.js";
 import type { HeroContent, StoryContent } from "@/types/content.js";
 import { insertUser } from "@/modules/auth/repository.js";
@@ -178,7 +180,7 @@ export async function seedSettings(overrides: Partial<NewStoreSettings> = {}) {
   const [row] = await db
     .insert(storeSettings)
     .values({
-      shipping: { defaultFee: 60, freeAbove: 3000 },
+      shipping: { defaultFee: 60, expressFee: 120, freeAbove: 3000 },
       paymentMethods: [
         { id: "cod", name: { ar: "الدفع عند الاستلام", en: "Cash on Delivery" }, isEnabled: true },
         {
@@ -202,5 +204,41 @@ export async function seedSettings(overrides: Partial<NewStoreSettings> = {}) {
     .returning();
   if (!row) throw new Error("could not seed store settings");
   return row;
+}
+
+type CouponSeed = {
+  code: string;
+  type?: CouponType;
+  value?: number;
+  minOrder?: number;
+  maxDiscount?: number | null;
+  freeShipping?: boolean;
+  expiresAt?: Date | null;
+  usageLimit?: number | null;
+  usedCount?: number;
+  isActive?: boolean;
+};
+
+/** Inserts a coupon directly so checkout/coupon tests control every rule. */
+export async function seedCoupon(seed: CouponSeed) {
+  const [coupon] = await db
+    .insert(coupons)
+    .values({
+      code: seed.code.toUpperCase(),
+      type: seed.type ?? "percent",
+      value: (seed.value ?? 10).toFixed(2),
+      minOrder: (seed.minOrder ?? 0).toFixed(2),
+      maxDiscount: seed.maxDiscount === undefined || seed.maxDiscount === null
+        ? null
+        : seed.maxDiscount.toFixed(2),
+      freeShipping: seed.freeShipping ?? false,
+      expiresAt: seed.expiresAt ?? null,
+      usageLimit: seed.usageLimit ?? null,
+      usedCount: seed.usedCount ?? 0,
+      isActive: seed.isActive ?? true,
+    })
+    .returning();
+  if (!coupon) throw new Error("could not seed coupon");
+  return coupon;
 }
 

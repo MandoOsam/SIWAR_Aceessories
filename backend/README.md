@@ -221,11 +221,42 @@ The store settings table holds one row (created by `npm run db:seed`); the admin
 API never creates a second one. `PATCH /admin/settings` answers 404 before the
 row exists.
 
+## Orders and coupons endpoints
+
+Checkout is public (guests allowed), but both mutations need the CSRF token:
+call `GET /auth/csrf` first and send `x-csrf-token` plus the `siwar_csrf` cookie.
+
+| Method & path | Response |
+|---|---|
+| `POST /orders` | 201 `{ data: { id, number, total } }`; body: `customer` (`name`, `phone`, `email?`), `address` (`governorate`, `city`, `street`, `building?`, `apartment?`, `notes?`), `deliveryOptionId` (`standard` \| `express`), `paymentMethod` (`cod` \| `instapay` \| `vodafone-cash`), `paymentProofUrl?`, `items` (`productId`, `variant`, `qty`), `couponCode?` |
+| `GET /orders/track?number=&phone=` | `{ data: Order \| null }` — **200 with `null`** when number + phone do not match |
+| `GET /orders/:id` | `{ data: Order \| null }` for the success page (UUID) |
+| `POST /coupons/validate` | always 200: `{ valid: true, code, type, value, discount, freeShipping?, maxDiscount? }` or `{ valid: false, error: "invalid" \| "min-order" }` (rate limited) |
+
+Totals are always recomputed server-side: lines are re-priced from the database,
+duplicate lines merged, stock checked and decremented, and the coupon row locked
+(`FOR UPDATE`) before `used_count` is incremented. Order numbers come from the
+`order_number_seq` sequence (`SW-10025` onward). `standard` shipping uses
+`store_settings.shipping.defaultFee` and becomes free at `freeAbove`; `express`
+uses `expressFee` and falls back to `defaultFee` when unset.
+
+Admin (`orders:read` / `orders:write`, staff session, CSRF on writes):
+
+| Method & path | Purpose |
+|---|---|
+| `GET /admin/orders?status=&paymentStatus=&search=&page=&limit=` | `{ data: Order[], total, page, limit }`; search matches number, phone or customer name |
+| `GET /admin/orders/:id` | one order with its items and full timeline |
+| `PATCH /admin/orders/:id/status` | body `{ status, note? }`; validated transitions, 409 on an invalid move, appends an `order_events` row |
+| `PATCH /admin/orders/:id/payment` | body `{ paymentStatus, note? }`; manual confirmation, idempotent when unchanged |
+
+Status path: `pending → confirmed → processing → shipped → out_for_delivery →
+delivered`, with `cancelled` allowed before processing and `returned → refunded`
+after delivery. Cancelling or returning does not restock yet.
 
 ## Seed the database
 
 ```bash
-npm run db:seed     # idempotent: 5 categories + 14 demo products + home blocks, pages and settings
+npm run db:seed     # idempotent: 5 categories + 14 demo products + content + settings + 3 coupons
 ```
 
 It reads `OWNER_EMAIL`, `OWNER_PASSWORD` and `OWNER_NAME` from `.env` and fails
@@ -238,7 +269,9 @@ deletes rows created by hand. Product images point at the storefront placeholder
 Content is seeded only when missing: `hero`, `story` and two `featured:<id>`
 blocks, the seven static pages (`about`, `contact`, `faq`, `shipping`, `returns`,
 `privacy`, `terms`) and the settings singleton. Dashboard edits are never
-overwritten by a later seed run.
+overwritten by a later seed run. Coupons `SIWAR10` (10%), `WELCOME50` (EGP 50 off
+over 300) and `FREESHIP` are inserted by code, and a settings row created before
+B5 gets `shipping.expressFee` backfilled without touching other fields.
 
 ## Deploy to Render
 

@@ -14,6 +14,8 @@ import { catalogRouter } from "@/modules/catalog/routes.js";
 import { adminContentRouter } from "@/modules/content/admin.routes.js";
 import { contentRouter } from "@/modules/content/routes.js";
 import { healthRouter } from "@/modules/health/routes.js";
+import { adminOrdersRouter } from "@/modules/orders/admin.routes.js";
+import { ordersRouter } from "@/modules/orders/routes.js";
 import { adminUploadsRouter } from "@/modules/uploads/routes.js";
 
 export const apiPrefix = "/api/v1";
@@ -39,9 +41,11 @@ export function createApp(): express.Express {
   app.use(apiPrefix, adminAuthRouter);
   app.use(apiPrefix, adminCatalogRouter);
   app.use(apiPrefix, adminContentRouter);
+  app.use(apiPrefix, adminOrdersRouter);
   app.use(apiPrefix, adminUploadsRouter);
   app.use(apiPrefix, catalogRouter);
   app.use(apiPrefix, contentRouter);
+  app.use(apiPrefix, ordersRouter);
 
   app.use((_req, res) => {
     res.status(404).json({

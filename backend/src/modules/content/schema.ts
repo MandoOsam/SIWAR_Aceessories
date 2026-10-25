@@ -99,6 +99,7 @@ export const paymentMethodSchema = z.object({
 
 export const shippingSettingsSchema = z.object({
   defaultFee: z.number().nonnegative().max(99_999),
+  expressFee: z.number().nonnegative().max(99_999).optional(),
   freeAbove: z.number().nonnegative().max(9_999_999).optional(),
 });
 
