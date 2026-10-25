@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-25 (B2 - Auth & sessions deployed and verified.)
+> Last updated: 2026-10-25 (B3.2/B3.3 - Catalogue admin CRUD + Cloudinary upload signatures.)
 
 ## 1. Current status
 
@@ -14,19 +14,19 @@
 
 |---|---|
 
-| **Current phase** | **B2 - Auth & sessions: done** |
+| **Current phase** | **B3.2/B3.3 - Catalog admin + upload signatures: done** |
 
-| Last completed phase | B2 - Auth & sessions |
+| Last completed phase | B3.2 - Catalog admin CRUD (+ B3.3 upload signatures) |
 
-| Next phase (proposed) | B3 - Catalog |
+| Next phase (proposed) | B4 - Content & settings |
 
-| Backend | B2 done - users + sessions tables, argon2id, customer & staff login, CSRF, rate limits, roles/permissions, RLS on every table. |
+| Backend | B3 done - users, sessions, categories, products and product_images with RLS; public read API; admin CRUD for categories/products (drafts, derived slug/SKU, gallery replace, conflict handling); `POST /admin/uploads/sign` (Cloudinary signatures, CSRF + rate limited); idempotent `npm run db:seed`; 83 tests. |
 
 | Storefront (`frontend/`) | F1ï¿½F7 **done**, then owner UI revisions **R1ï¿½R6 done** (`08-owner-ui-revisions.md`) on branch `The-last-updates-in-storefront`. **Backend next per D-018.** |
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
-| Blockers | None for B2. Two open items for the next phases: the email provider (D-004) for B2.1 password reset, and a staff seed account before A3 (see Known issues). |
+| Blockers | None. Open items for later phases: email provider (D-004) for the B2.1 password reset; staff accounts before A3 (O-007). |
 
 
 
@@ -58,6 +58,10 @@
 
 - [x] **B1 Foundation done** - Express + TS + Drizzle + Supabase connected; /health works; lint/test/build green.
 - [x] **B2 Auth & sessions done** - `users` + `sessions` tables (argon2id, RLS on), server-side sessions in two cookies (`siwar_sid` / `siwar_admin_sid`), customer + staff login, double-submit CSRF + Origin check, rate limits, `requireRole` / `requirePermission`, 25 tests green. Password reset deferred to B2.1 (needs the email provider).
+
+- [x] **B3.1 Catalog foundation done** - `categories`, `products`, `product_images` (RLS on, `numeric(10,2)` money, bilingual jsonb names, `text[]` colors/sizes, slug+SKU unique); public read-only API `GET /categories`, `GET /categories/:slug`, `GET /products` (filters, sort, pagination), `GET /products/:slug` (product + matching + related), both slug endpoints answer **200 `{ data: null }`** for unknown slugs; `npm run db:seed` upserts the owner account + 5 categories + 14 demo products. 25 new tests (50 total), lint/build green, applied to Supabase and smoke-tested against it.
+- [x] **B3.2/B3.3 Catalog admin + uploads done** - `src/lib/cloudinary.ts` (env-initialised, folder-scoped signatures, 5 MB / jpg-png-webp allow-list) + `POST /admin/uploads/sign` (staff session, CSRF, `products:write`, 30 req / 10 min); admin catalogue module (`modules/catalog/admin.*`): list/create/update/delete for categories and products, draft + inactive support, derived slug/SKU, compare-at price auto-discount, whole-gallery replace inside a transaction, slug/SKU conflicts 409, in-use category delete 409, parent-loop guard. 33 new tests (83 total), lint/build green.
+
 
 
 
@@ -95,7 +99,7 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 
 - [x] **B2 Auth & sessions** - users, sessions, argon2, customer + admin login, CSRF, roles/permissions middleware, rate limits, RLS enabled on all tables. **Done 2026-10-22**; `POST /auth/forgot-password` + `POST /auth/reset-password` moved to B2.1 (email provider still open, D-004).
 
-- [ ] **B3 Catalog** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? categories, products, images, Cloudinary signing endpoint, public listing/filter/search/sort/pagination
+- [x] **B3 Catalog** - **done 2026-10-25** (B3.1 schema + public API + seed, B3.2 admin CRUD, B3.3 upload signatures) - categories, products, images, Cloudinary signing endpoint, public listing/filter/search/sort/pagination
 
 - [ ] **B4 Content & settings** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?? content blocks (hero, banners, story), static pages, store settings, public settings endpoint
 
@@ -328,6 +332,19 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 | D-060 | 2026-10-22 | **B2 - the session `kind` must match the cookie it arrives on.** `validateSession(sessionId, kind)` rejects a session whose stored kind does not match the cookie, and an admin session stops working the moment the account loses its staff role. Without this, a customer session id pasted into `siwar_admin_sid` would open admin routes - the exact thing 02-architecture Â§5 asks for. Covered by tests in `tests/adminAuth.test.ts`. | default |
 | D-061 | 2026-10-22 | **B2 - Row Level Security is declared in the schema, not hand-written into the migration.** `users` and `sessions` use `.enableRLS()`, so Drizzle keeps the flag in its snapshot and every future migration (and `db:push`) keeps RLS on. Migration `0001` only contains the two idempotent `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` statements. | default |
 | D-062 | 2026-10-22 | **B2 - password reset is deferred to B2.1.** `POST /auth/forgot-password` and `POST /auth/reset-password` are in the contract (02-architecture Â§7) but need a mailer, and the email provider (D-004) is still open. Owner chose to close B2 without them and decide the provider in B2.1. | owner |
+| D-063 | 2026-10-25 | **B3.1 - money is `numeric(10,2)` in PostgreSQL and a JSON `number` in the API.** Drizzle returns `numeric` as a string, so the catalogue service converts every money field (`Number(product.price)`) before it leaves the module; writes (seed now, admin CRUD in B3.2) pass `toFixed(2)` strings. The storefront contract types money as `number` (`services/types.ts`). | default |
+| D-064 | 2026-10-25 | **B3.1 - product lifecycle is `draft | active | archived` and only `active` rows are public.** `status` is `varchar(20)` + a TS `$type` (not a PG enum) so a new state is a code change, not a migration. `category` filter, product detail and category detail all require `active`; a slug miss answers **200 `{ data: null }`**, and an unknown `category` filter answers an empty page (200) instead of 404 - filters are a search, and the storefront tells "missing" from "failed" via `isSuccess && data === null`. | default |
+| D-065 | 2026-10-25 | **B3.1 - relational catalogue shape.** `products.categoryId` is NOT NULL with `onDelete: restrict` (a category cannot vanish under live products), `product_images.productId` cascades, `categories.parentId` is a self-reference with `onDelete: set null` (sub-categories later), `slug` is unique per table and derived from the English name, `sku` is unique. Indexes on `status`, `category_id`, `price`, `created_at`, `is_active` and `sort_order` match the public query patterns. | default |
+| D-066 | 2026-10-25 | **B3.1 - RLS is on for every catalogue table, with no policies.** Same rule as B2 (D-061): public reads go through the backend role over `DATABASE_URL`; the Supabase anon key stays unable to read anything. `.enableRLS()` is declared in the Drizzle schema so migrations keep the flag. | default |
+| D-067 | 2026-10-25 | **B3.1 - ratings are placeholders until B6.** `ProductDto.rating` / `reviewsCount` are hard-coded `0`, the `rating` filter is accepted and ignored (contract compatibility), and `sort=rating` falls back to best sellers (`isBestSeller`, then `isFeatured`). `sort=best-selling` is approximated by `isBestSeller` + `stock` until orders produce real sales counts. | default |
+| D-068 | 2026-10-25 | **B3.1 - `npm run db:seed` is idempotent and development-only.** It upserts 5 categories and 14 products by `slug` (matching `frontend/src/data/productSeeds.ts`), replaces their images, never deletes hand-made rows, and resets the owner account (`OWNER_EMAIL` / `OWNER_PASSWORD` / `OWNER_NAME`, optional in the env schema) to `super_admin`. Demo images point at `/assets/placeholder/product-<tone>.svg` (`rose-gold` -> `rose`) until Cloudinary uploads land in B3.3. | owner (approved the owner account + demo catalogue) |
+| D-069 | 2026-10-25 | **B3.1 - `validateQuery` / `validateParams` write to `req.validatedQuery` / `req.validatedParams`.** Express 5 makes `req.query` read-only and the parsers (`z.coerce`) change types, so the middleware validates without mutating the request; `req.body` keeps the existing `validateBody` contract. Booleans accept only `"true"`/`"false"` (a raw `z.coerce.boolean()` would turn `"false"` into `true`). | default |
+| D-070 | 2026-10-25 | **B3.1 - the storefront still runs on mock data.** `IS_MOCK_MODE` stays on until `VITE_API_URL` is configured (F8/wiring); the backend contract was implemented first so the frontend can be pointed at it without shape changes. | default |
+| D-071 | 2026-10-25 | **B3.2 - the admin guard is the real B2 guard, not a placeholder.** All admin catalogue and upload routes use `authGuard({ kind: "admin" })` + the permission map (`products:read` for reads, `products:write` for writes, including categories) and `csrfProtection` on every mutation. B7 can add media-specific permissions without changing these routes. | owner asked for a placeholder; the real guard already existed |
+| D-072 | 2026-10-25 | **B3.3 - Cloudinary signing is local and folder-bound.** `cloudinary.utils.api_sign_request` signs only `folder` + `timestamp`; the API secret never leaves the server and a signature cannot be reused for another folder. Scopes: `siwar/products`, `siwar/categories`, `siwar/content`. Limits: 5 MB, jpg/jpeg/png/webp, returned as metadata for the client-side check; rate limit 30 / 10 min per IP. | default |
+| D-073 | 2026-10-25 | **B3.2 - slug and SKU are derived when omitted.** `slug` comes from `slugify(name.en)` (empty for Arabic-only names -> 400), `sku` from `SW-<SLUG>`; both stay unique and a clash answers 409. A compare-at `oldPrice` without `discountPercent` computes it server-side (`round((old-price)/old * 100)`), and `oldPrice < price` is a 400. | default |
+| D-074 | 2026-10-25 | **B3.2 - sending `images` replaces the whole gallery.** The form owns the list, so a PATCH with `images` deletes and re-inserts inside one transaction (`[]` clears it); exactly one row becomes `isPrimary` (the marked one, else the first). Product + gallery creation is also a transaction, so a half-created product is never visible. | default |
+| D-075 | 2026-10-25 | **B3.2 - delete semantics.** Categories and products are hard-deleted; a category with products answers 409 (pre-check + `restrict` FK), product galleries go with the cascade, and category re-parenting rejects loops. No soft delete or activity log until orders (B5) and auditing (B8) exist. | default |
 
 ## 5. Open questions for the owner
 
@@ -414,7 +431,21 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 - **No staff account exists yet.** The schema supports the 5 roles and staff login is implemented, but there is no seed script, so there is no way to log into the admin app yet. B8 has `seed data` in its scope; a `npm run db:seed` that creates the owner account from env variables would unblock A3.
 - **`SESSION_SECRET` is required by the env schema but unused.** Sessions are opaque random UUIDs looked up in PostgreSQL, so no secret is needed to sign them. Either drop the variable or use it to sign the cookie value; the contract (02-architecture Â§9) still lists it.
 - **Windows code-integrity policy blocks native npm binaries.** Not only argon2 - any unsigned `.node` module from npm is blocked on this machine (D-058 solves it for argon2 with the WASM build). Keep it in mind before adding a native dependency.
-- **`context/06-progress-tracker.md` itself is encoding-corrupted.** 812 U+FFFD replacement characters sit where em dashes and arrows used to be (the other context files are clean). The original bytes are unrecoverable; a cleanup pass would replace the runs with ASCII `-` / `->`.
+- **`context/06-progress-tracker.md` itself is encoding-corrupted.** 784 U+FFFD replacement characters sit where em dashes and arrows used to be (the other context files are clean). The original bytes are unrecoverable; a cleanup pass would replace the runs with ASCII `-` / `->`.
+
+- **The storefront is still on mock data.** `IS_MOCK_MODE` remains on in `frontend/` until `VITE_API_URL` is set (D-070), so the B3.1 live catalogue is not visible in the UI yet.
+
+- **Demo catalogue images are placeholder SVGs.** Products created by `db:seed` use `/assets/placeholder/product-<tone>.svg`; the admin can now replace them with Cloudinary URLs via `PATCH /admin/products/:id` (signatures are live).
+
+- **`db:seed` resets the owner password.** It writes the `OWNER_PASSWORD` from `.env` on every run (dev-only script); changing `OWNER_EMAIL` creates a second owner instead of renaming the existing one.
+
+- **Ratings and sales-based sorting are approximations until B6.** `rating`/`reviewsCount` are always `0`, the `rating` filter is ignored, and `best-selling` uses `isBestSeller` + `stock` (D-067).
+
+- **14 demo products, not 15.** The storefront seed list (`frontend/src/data/productSeeds.ts`) contains 14 products across 5 categories; `db:seed` mirrors it exactly, so the catalogue and the mock UI show the same items.
+- **Admin mutations do not write `activity_log` yet.** The table is defined in `02-architecture` section 6 but not created; the audit trail lands with B8.
+
+- **Product delete is a hard delete.** Fine while orders do not reference products; once B5 creates `order_items` the FK will block deleting a sold product (500 unless handled), so switch to archive/soft delete in B5.
+
 
 ## 8. Storefront audit (07)
 
@@ -557,5 +588,7 @@ eature/f7-static-seo-polish-v2. |
 
 | B1 | 2026-10-18 | Backend foundation: Express + TS + Drizzle + Supabase, /health, pino, helmet, CORS, Vitest. | `1c4fce4`. Next: B2 ï¿½ Auth & Sessions. |
 | B2 - Auth & sessions | 2026-10-22 | `users` + `sessions` tables (Drizzle, `gen_random_uuid` ids, Argon2id hashes, RLS on both with no policies), server-side sessions with a 30-day TTL stored in PostgreSQL and issued through two httpOnly cookies (`siwar_sid`, `siwar_admin_sid`); customer register/login/logout/me plus staff `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`; double-submit CSRF + Origin check on every mutating route; rate limits (20/15 min customer, 10/15 min staff); `requireRole` + `requirePermission` on top of the shared permission map; malformed JSON now answers 400 instead of 500. 25 Vitest tests against a real PostgreSQL, lint/build green. Verified RLS with a non-owner role (0 rows for `anon`, full access for the backend role). The first `npm run db:migrate` failed because the project ref in `backend/.env` was truncated (19 chars); after the ref was corrected the same command applied both migrations to Supabase on 2026-10-25. Password reset deferred to B2.1 (D-062). | `8bdf03e` on `feature/backend-foundation`; migrations `0000` + `0001` applied to Supabase on 2026-10-25 (`users`, `sessions`, RLS on, migration hashes verified). |
+| B3.1 - Catalog foundation | 2026-10-25 | `categories`, `products` and `product_images` tables (bilingual jsonb names, `numeric(10,2)` money, `text[]` colors/sizes, slug/SKU unique, constraints + indexes, RLS on, migration `0002_lucky_chronomancer.sql`); read-only public catalogue module (`modules/catalog/`: routes/controller/service/repository/schema/types) with `GET /categories`, `GET /categories/:slug`, `GET /products` (category, price range, color, size, inStock, discount, isNew, search in Arabic/English/SKU, sort, page/limit<=100) and `GET /products/:slug` (product + matching + related); new `validateQuery`/`validateParams` middleware (`req.validatedQuery`/`validatedParams`); `npm run db:seed` (owner `super_admin` + 5 categories + 14 demo products from the storefront seed list, idempotent). 25 new Vitest tests (50 total), lint/build green. Migration `0002` applied to Supabase and verified (tables, RLS flags, FKs, migration hash); live smoke against Supabase: 20/20 checks (catalogue reads, filters, detail nulls, admin login/me/logout with the seeded owner). | `feature/backend-foundation`; decisions D-063..D-070; the temporary smoke script was removed after the run. |
+| B3.2 + B3.3 - Catalog admin & upload signatures | 2026-10-25 | `src/lib/cloudinary.ts` (env config, folder-bound signatures, format/size metadata) and `POST /admin/uploads/sign` (rate limit 30/10 min, CSRF, staff + `products:write`; scope `product|category|content` -> `siwar/<scope>`); `modules/catalog/admin.*` with `GET/POST/PATCH/DELETE /admin/categories` and `/admin/products` (lists include drafts, status/category/search filters, pagination, `productCount`), derived slug/SKU, auto discount, transactional gallery replace, 409 on slug/SKU conflicts and in-use category deletes, 422 on unknown category/parent, 404 on missing ids, parent-loop guard. 33 new tests (83 total), tsc/lint/build green; no schema change, so no new migration. | `feature/backend-foundation`; decisions D-071..D-075; admin dashboard wiring still pending (A3). |
 
-**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 done and deployed. Next: B3.1 - Catalog foundation.**
+**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 + B3.1 + B3.2 + B3.3 done. Next: B4 - Content & settings.**
