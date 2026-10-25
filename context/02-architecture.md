@@ -85,7 +85,7 @@ All tables have `id uuid pk`, `created_at`, `updated_at` unless noted. Use snake
 | `campaigns` | name jsonb, discount_percent, starts_at, ends_at, is_active, target (products/categories) |
 | `content_blocks` | key (`hero`, `story`, `banner:<n>`...), data jsonb, sort_order, is_active |
 | `pages` | slug (`about`, `faq`...), title jsonb, body jsonb |
-| `store_settings` | single row: shipping, payment_methods, trust_badges, social, contact, seo |
+| `store_settings` | single row: store_name, currency, shipping, payment_methods, trust_badges, social, contact, seo |
 | `inventory_movements` | product_id, delta, reason, actor_id |
 | `notifications` | target (`admin`/user id), type, payload jsonb, read_at |
 | `activity_log` | actor_id, action, entity, entity_id, meta jsonb |
@@ -107,7 +107,7 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 | `GET /categories`, `GET /categories/:slug` | categories |
 | `GET /search/suggest?q=` | autocomplete + popular searches |
 | `GET /content/home` | hero, banners, story, trust badges, featured sections |
-| `GET /content/pages/:slug` | static pages |
+| `GET /content/pages`, `GET /content/pages/:slug` | static pages (list feeds the footer sitemap; detail answers **200 `{ data: null }`** when missing) |
 | `GET /reviews`, `GET /products/:id/reviews`, `POST /products/:id/reviews` | approved reviews, submit (goes to `pending`) |
 | `GET /settings/public` | shipping fees, enabled payment methods + instructions, social |
 | `POST /coupons/validate` | validate code against a cart |
@@ -123,7 +123,7 @@ All paths are under `/api/v1`. `A` = needs admin session + permission.
 ### Admin (`/admin/...`, role-checked)
 `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`;
 `GET /admin/dashboard?range=`;
-CRUD: `/admin/products`, `/admin/categories`, `/admin/coupons`, `/admin/campaigns`, `/admin/reviews`, `/admin/content/:key`, `/admin/pages/:slug`, `/admin/users`;
+ CRUD: `/admin/products`, `/admin/categories`, `/admin/coupons`, `/admin/campaigns`, `/admin/reviews`, `/admin/content`, `/admin/content/:key`, `/admin/pages`, `/admin/pages/:slug`, `/admin/users`;
 Orders: `GET /admin/orders`, `GET /admin/orders/:id`, `PATCH /admin/orders/:id/status`, `PATCH /admin/orders/:id/payment`, `POST /admin/orders` (manual order);
 `GET /admin/customers`, `GET /admin/customers/:id`;
 Inventory: `GET /admin/inventory`, `POST /admin/inventory/adjust`;
