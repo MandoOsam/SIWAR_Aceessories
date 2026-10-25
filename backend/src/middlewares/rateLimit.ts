@@ -33,3 +33,6 @@ export const authRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max
 
 /** Stricter limiter for staff login (fewer attempts allowed). */
 export const adminAuthRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 10 });
+
+/** Upload signatures are cheap to issue but open a spend path on Cloudinary. */
+export const uploadRateLimiter = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 30 });

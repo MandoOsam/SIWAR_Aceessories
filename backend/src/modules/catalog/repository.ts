@@ -32,7 +32,7 @@ const ACTIVE: ProductStatus = "active";
 export type ProductRow = { product: Product; category: Category };
 
 /** Escapes LIKE wildcards so a search for "50%" is a literal search. */
-function escapeLike(term: string): string {
+export function escapeLike(term: string): string {
   return term.replace(/[\\%_]/g, (character) => `\\${character}`);
 }
 

@@ -12,7 +12,7 @@ import type {
 /** Ratings come from reviews, which land in B6. Until then the API reports zeros. */
 const RATING_PLACEHOLDER = 0;
 
-function toCategoryDto(category: Category): CategoryDto {
+export function toCategoryDto(category: Category): CategoryDto {
   return {
     id: category.id,
     slug: category.slug,
@@ -25,7 +25,7 @@ function toCategoryDto(category: Category): CategoryDto {
   };
 }
 
-function toProductDto(row: ProductRow, images: ProductImage[]): ProductDto {
+export function toProductDto(row: ProductRow, images: ProductImage[]): ProductDto {
   const { product, category } = row;
   return {
     id: product.id,

@@ -132,7 +132,7 @@ cookie it arrives on, so a customer session can never open an admin route
 
 ## Catalogue endpoints (public)
 
-Read-only in B3.1; admin CRUD arrives in B3.2. No cookie and no CSRF needed.
+Read-only. No cookie and no CSRF needed.
 
 | Method & path | Response |
 |---|---|
@@ -148,6 +148,44 @@ Read-only in B3.1; admin CRUD arrives in B3.2. No cookie and no CSRF needed.
 reviews ship in B6; `sort=rating` falls back to best sellers. An unknown
 `category` returns an empty page, not a 404. Money is returned as a JSON number.
 
+## Admin catalogue endpoints
+
+Staff session (`siwar_admin_sid`) + permission + CSRF (`Origin` header and
+`X-CSRF-Token`). Reads need `products:read`; every write needs `products:write`
+(categories live in the catalogue, so they share the product permissions).
+Listings include drafts and inactive rows; `slug` and `sku` are derived from the
+English name when omitted, and a compare-at `oldPrice` fills `discountPercent`.
+
+| Method & path | Purpose |
+|---|---|
+| `GET /admin/categories?search=&isActive=` | `{ data: AdminCategory[] }`, each with `productCount` |
+| `POST /admin/categories` | 201, body: `name`, optional `slug`, `description`, `imageUrl`, `parentId`, `sortOrder`, `isActive`, `seo` |
+| `PATCH /admin/categories/:id` | partial update; 409 if the new slug is taken; 400 on a parent loop |
+| `DELETE /admin/categories/:id` | 204; 409 while the category still has products |
+| `GET /admin/products?status=&category=&search=&sort=&page=&limit=` | `{ data: AdminProduct[], total, page, limit }` |
+| `GET /admin/products/:id` | `{ data: AdminProduct }`; 404 when missing |
+| `POST /admin/products` | 201, body: `name`, `description`, `categoryId`, `price`, optional `slug`/`sku`/`oldPrice`/`stock`/`status`/`colors`/`sizes`/`images`/… |
+| `PATCH /admin/products/:id` | partial update; sending `images` replaces the whole gallery (`[]` clears it) |
+| `DELETE /admin/products/:id` | 204; the gallery is removed by the cascade |
+
+Errors follow the contract: `400 VALIDATION_ERROR` (bad input),
+`404 NOT_FOUND`, `409 CONFLICT` (slug/SKU duplicate, category still in use),
+`422 UNPROCESSABLE_ENTITY` (unknown category/parent), `403` for a role without
+the permission.
+
+## Upload signatures
+
+`POST /admin/uploads/sign` (staff + `products:write`, CSRF, rate limited to
+30 requests / 10 min) returns the parameters for a direct browser → Cloudinary
+upload: `signature`, `timestamp`, `apiKey`, `cloudName`, `folder`, `uploadUrl`,
+`maxBytes` (5 MB) and `allowedFormats` (`jpg`, `jpeg`, `png`, `webp`). Body:
+`{ "scope": "product" | "category" | "content" }` (default `product`), which
+selects `siwar/products`, `siwar/categories` or `siwar/content`. The API secret
+never leaves the server, and a signature is bound to its folder. The admin app
+posts the file plus these fields to `uploadUrl`; Cloudinary answers with the
+secure URL that is stored in `product_images.url` / `categories.image_url`.
+
+
 ## Seed the database
 
 ```bash
@@ -158,7 +196,8 @@ It reads `OWNER_EMAIL`, `OWNER_PASSWORD` and `OWNER_NAME` from `.env` and fails
 with a clear message when the first two are missing. Products and categories are
 matched by `slug`, so running it again updates the demo rows in place; it never
 deletes rows created by hand. Product images point at the storefront placeholders
-(`/assets/placeholder/product-<tone>.svg`) until Cloudinary uploads land in B3.3.
+(`/assets/placeholder/product-<tone>.svg`); replace them with Cloudinary URLs via
+`PATCH /admin/products/:id` once the admin panel uploads real photos.
 
 ## Deploy to Render
 

@@ -15,7 +15,7 @@ export const PRODUCT_SORTS = [
  * Query strings arrive as text, so booleans accept "true"/"false" only.
  * `z.coerce.boolean()` would turn the string "false" into `true`.
  */
-const booleanQuery = z
+export const booleanQuery = z
   .union([z.boolean(), z.enum(["true", "false"])])
   .transform((value) => value === true || value === "true");
 
