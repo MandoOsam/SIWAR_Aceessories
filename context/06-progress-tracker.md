@@ -4,7 +4,7 @@
 
 > State file. Update it at the end of **every phase** (see `04-ai-workflow-rules.md`). Never delete the Decisions log or the Phase history.
 
-> Last updated: 2026-10-22 (B2 - Auth & sessions done.)
+> Last updated: 2026-10-25 (B2 - Auth & sessions deployed and verified.)
 
 ## 1. Current status
 
@@ -26,7 +26,7 @@
 
 | Admin (`admin/`) | Template `MandoOsam/Free-Admin-Dashboard` analyzed, sitting at `SIWAR/Free-Admin-Dashboard/` (has its own `.git` + `node_modules`), **not yet moved to `admin/`**. Modification plan written (`05b`). **Out of scope until the storefront is done** (D-018). |
 
-| Blockers | B2 needs two things from the owner: working `DATABASE_URL` / `DIRECT_URL` for the Supabase project (the ones in `backend/.env` point at a project that no longer exists) and a decision on the email provider for password reset (D-004, deferred to B2.1). |
+| Blockers | None for B2. Two open items for the next phases: the email provider (D-004) for B2.1 password reset, and a staff seed account before A3 (see Known issues). |
 
 
 
@@ -410,7 +410,7 @@ Legend: `[ ]` in progress (F2.1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ `[~]` in progress ï¿½ï¿½ï¿½ï
 
 - **Lighthouse Performance on `/shop` (73) and `/products/:slug` (77) remains below the =80 target (audit A3/A4).** The render-blocking Google Fonts stylesheet was fixed in A3; the remaining cost is the ~530 KB critical-path `index` JS parse on simulated Slow-4G / 4x CPU. Closing the gap needs vendor chunking (`manualChunks`, tried & reverted in F7.3) or trimming the main bundle. Target: a F7-style performance pass.
 
-- **The Supabase connection strings in `backend/.env` do not point at a reachable project.** The project ref there is 19 characters (Supabase refs are exactly 20) and the pooler answers `tenant/user ... not found`, so `npm run db:migrate` exits 1 while drizzle-kit hides the error behind its spinner. The schema itself is verified - the same migrations were applied to a throwaway PostgreSQL and the RLS behaviour was probed with a non-owner role - but the dev database needs the correct connection strings before B3.
+- **Supabase is migrated and verified (2026-10-25).** The `users` and `sessions` tables exist, RLS is enabled on both, and `drizzle.__drizzle_migrations` holds the exact SHA-256 of `0000_icy_invisible_woman.sql` and `0001_remarkable_leader.sql`. The earlier failure was a **truncated project ref** (19 instead of 20 characters) in `backend/.env`; the pooler answered `tenant/user ... not found`. `DIRECT_URL` now uses the session pooler on port 5432 (DDL-capable) and `DATABASE_URL` the transaction pooler on 6543.
 - **No staff account exists yet.** The schema supports the 5 roles and staff login is implemented, but there is no seed script, so there is no way to log into the admin app yet. B8 has `seed data` in its scope; a `npm run db:seed` that creates the owner account from env variables would unblock A3.
 - **`SESSION_SECRET` is required by the env schema but unused.** Sessions are opaque random UUIDs looked up in PostgreSQL, so no secret is needed to sign them. Either drop the variable or use it to sign the cookie value; the contract (02-architecture Â§9) still lists it.
 - **Windows code-integrity policy blocks native npm binaries.** Not only argon2 - any unsigned `.node` module from npm is blocked on this machine (D-058 solves it for argon2 with the WASM build). Keep it in mind before adding a native dependency.
@@ -556,6 +556,6 @@ eature/f7-static-seo-polish-v2. |
 | Storefront audit - A4 | 2026-10-18 | Final verification & sign-off. Static checks on final state: `npx tsc --noEmit` 0 errors, `npm run lint` 0, `npm test` 82 passed, `npm run build` OK. A4.1 flows and A4.2 consistency verified by code inspection + route checks (28 routes return 200; all lazy + ProtectedRoute + catch-all 404). A4.2 gaps logged (no scope creep): HomePage has no per-page <title>/meta; ToastViewport mounted only in ProductPage/AccountLayout so toasts silent on Home/Shop/Category/Search/Cart; TrustBadges hard-coded strings; parallel meta mechanisms. A4.4 Lighthouse re-run contaminated by host load (byte-identical bundle Perf 85 vs 38, TBT 210ms vs 3110ms), so A3 idle-host numbers stand: / 85, /shop 73, /products/signature-ring-band 77, /cart 94, /login 86 (shop/products <80); A11y 96-100, BP 100, SEO 92 (cart 58 expected). Updated frontend/README.md (overview, architecture, add-a-page, mock->real API). | Branch `feature/storefront-audit`. Commit `chore(audit): A4 final verification and storefront sign-off`. |
 
 | B1 | 2026-10-18 | Backend foundation: Express + TS + Drizzle + Supabase, /health, pino, helmet, CORS, Vitest. | `1c4fce4`. Next: B2 ï¿½ Auth & Sessions. |
-| B2 - Auth & sessions | 2026-10-22 | `users` + `sessions` tables (Drizzle, `gen_random_uuid` ids, Argon2id hashes, RLS on both with no policies), server-side sessions with a 30-day TTL stored in PostgreSQL and issued through two httpOnly cookies (`siwar_sid`, `siwar_admin_sid`); customer register/login/logout/me plus staff `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`; double-submit CSRF + Origin check on every mutating route; rate limits (20/15 min customer, 10/15 min staff); `requireRole` + `requirePermission` on top of the shared permission map; malformed JSON now answers 400 instead of 500. 25 Vitest tests against a real PostgreSQL, lint/build green. Verified RLS with a non-owner role (0 rows for `anon`, full access for the backend role). `npm run db:migrate` against the dev Supabase project fails - the connection strings in `backend/.env` point at a project that no longer exists (see Known issues). Password reset deferred to B2.1 (D-062). | uncommitted - branch `main` |
+| B2 - Auth & sessions | 2026-10-22 | `users` + `sessions` tables (Drizzle, `gen_random_uuid` ids, Argon2id hashes, RLS on both with no policies), server-side sessions with a 30-day TTL stored in PostgreSQL and issued through two httpOnly cookies (`siwar_sid`, `siwar_admin_sid`); customer register/login/logout/me plus staff `POST /admin/auth/login`, `POST /admin/auth/logout`, `GET /admin/auth/me`; double-submit CSRF + Origin check on every mutating route; rate limits (20/15 min customer, 10/15 min staff); `requireRole` + `requirePermission` on top of the shared permission map; malformed JSON now answers 400 instead of 500. 25 Vitest tests against a real PostgreSQL, lint/build green. Verified RLS with a non-owner role (0 rows for `anon`, full access for the backend role). `npm run db:migrate` against the dev Supabase project fails - the connection strings in `backend/.env` point at a project that no longer exists (see Known issues). Password reset deferred to B2.1 (D-062). | `8bdf03e` on `feature/backend-foundation`; migrations `0000` + `0001` applied to Supabase on 2026-10-25 (`users`, `sessions`, RLS on, migration hashes verified). |
 
-**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 (foundation) and B2 (auth & sessions) done. Next: B3 - Catalog, once the dev Supabase connection strings work.**
+**Storefront verified (F1-F7 + Audit A1-A4). Backend B1 + B2 done and deployed. Next: B3.1 - Catalog foundation.**
