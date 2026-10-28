@@ -109,6 +109,21 @@ export async function updateStatus(
     });
   });
 
+  try {
+    const order = await repo.findOrderById(id);
+    if (order?.userId !== null && order?.userId !== undefined) {
+      const { createNotification } = await import("@/modules/account/notification.service.js");
+      const { orderStatusPayload } = await import("@/types/notifications.js");
+      await createNotification(
+        order.userId,
+        "order",
+        orderStatusPayload({ id: order.id, number: order.number }, order.status),
+      );
+    }
+  } catch {
+    /* best effort */
+  }
+
   return loadOne(id);
 }
 

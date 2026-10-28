@@ -36,6 +36,20 @@
       "when": 1792933039132,
       "tag": "0004_b5_orders_coupons",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792934845046,
+      "tag": "0005_b6_reviews",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792935770192,
+      "tag": "0006_b6_account",
+      "breakpoints": true
     }
   ]
 }

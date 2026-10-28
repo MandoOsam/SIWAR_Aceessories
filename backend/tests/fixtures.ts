@@ -7,8 +7,10 @@ import { pages } from "@/db/schema/pages.js";
 import { productImages } from "@/db/schema/productImages.js";
 import { products } from "@/db/schema/products.js";
 import type { ProductStatus } from "@/db/schema/products.js";
+import { reviews } from "@/db/schema/reviews.js";
 import { storeSettings, type NewStoreSettings } from "@/db/schema/storeSettings.js";
 import type { CouponType } from "@/types/orders.js";
+import type { ReviewStatus } from "@/types/reviews.js";
 import type { UserRole } from "@/db/schema/users.js";
 import type { HeroContent, StoryContent } from "@/types/content.js";
 import { insertUser } from "@/modules/auth/repository.js";
@@ -218,6 +220,40 @@ type CouponSeed = {
   usedCount?: number;
   isActive?: boolean;
 };
+
+type ReviewSeed = {
+  productId?: string | null;
+  userId?: string | null;
+  authorName?: string;
+  rating?: number;
+  text?: L10n;
+  images?: string[];
+  status?: ReviewStatus;
+  isSeed?: boolean;
+  showOnHome?: boolean;
+  isVerifiedPurchase?: boolean;
+};
+
+/** Inserts a review directly so moderation tests control status and ownership. */
+export async function seedReview(seed: ReviewSeed = {}) {
+  const [review] = await db
+    .insert(reviews)
+    .values({
+      productId: seed.productId ?? null,
+      userId: seed.userId ?? null,
+      authorName: seed.authorName ?? "Mona S.",
+      rating: seed.rating ?? 5,
+      text: seed.text ?? { ar: "مراجعة تجريبية جميلة جدًا.", en: "A lovely sample review." },
+      images: seed.images ?? [],
+      status: seed.status ?? "approved",
+      isSeed: seed.isSeed ?? false,
+      showOnHome: seed.showOnHome ?? false,
+      isVerifiedPurchase: seed.isVerifiedPurchase ?? false,
+    })
+    .returning();
+  if (!review) throw new Error("could not seed review");
+  return review;
+}
 
 /** Inserts a coupon directly so checkout/coupon tests control every rule. */
 export async function seedCoupon(seed: CouponSeed) {

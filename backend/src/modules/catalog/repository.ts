@@ -45,8 +45,7 @@ function orderBy(sort: ProductSort): SQL[] {
     case "best-selling":
       return [desc(products.isBestSeller), desc(products.stock)];
     case "rating":
-      // No ratings until reviews (B6); best sellers are the closest proxy.
-      return [desc(products.isBestSeller), desc(products.isFeatured)];
+      return [desc(products.rating), desc(products.reviewsCount)];
     case "newest":
     default:
       return [desc(products.createdAt)];
@@ -70,6 +69,9 @@ function buildConditions(filters: ProductListFilters): SQL[] {
   }
   if (filters.maxPrice !== undefined) {
     conditions.push(lte(products.price, filters.maxPrice.toFixed(2)));
+  }
+  if (filters.rating !== undefined) {
+    conditions.push(gte(products.rating, filters.rating.toFixed(1)));
   }
   if (filters.inStock === true) {
     conditions.push(gte(products.stock, 1));
@@ -144,6 +146,26 @@ export async function findActiveProductBySlug(slug: string): Promise<ProductRow 
     .innerJoin(categories, eq(products.categoryId, categories.id))
     .where(and(eq(products.slug, slug), eq(products.status, ACTIVE)));
   return rows[0] ?? null;
+}
+
+export async function findActiveProductById(id: string): Promise<ProductRow | null> {
+  const rows = await db
+    .select({ product: products, category: categories })
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .where(and(eq(products.id, id), eq(products.status, ACTIVE)))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+/** Used by the wishlist; callers re-sort the result by their own ids. */
+export function findActiveProductsByIds(ids: string[]): Promise<ProductRow[]> {
+  if (ids.length === 0) return Promise.resolve([]);
+  return db
+    .select({ product: products, category: categories })
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .where(and(inArray(products.id, ids), eq(products.status, ACTIVE)));
 }
 
 /** Ordered primary-first, then by `sortOrder`. */

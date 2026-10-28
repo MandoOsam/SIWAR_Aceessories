@@ -33,7 +33,7 @@ export const listProductsQuerySchema = z
     category: z.string().trim().min(1).max(120).optional(),
     minPrice: z.coerce.number().nonnegative().optional(),
     maxPrice: z.coerce.number().nonnegative().optional(),
-    /** Accepted for contract compatibility; reviews (and therefore ratings) arrive in B6. */
+    /** Minimum average rating, matching the storefront "4+" filter. */
     rating: z.coerce.number().min(0).max(5).optional(),
     inStock: booleanQuery.optional(),
     color: z.enum(PRODUCT_COLORS).optional(),

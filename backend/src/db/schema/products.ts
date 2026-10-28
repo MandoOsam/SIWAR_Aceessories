@@ -46,6 +46,8 @@ export const products = pgTable(
     discountPercent: integer("discount_percent"),
     stock: integer("stock").notNull().default(0),
     lowStockThreshold: integer("low_stock_threshold").notNull().default(5),
+    rating: numeric("rating", { precision: 2, scale: 1 }).notNull().default("0"),
+    reviewsCount: integer("reviews_count").notNull().default(0),
     status: varchar("status", { length: 20 }).$type<ProductStatus>().notNull().default("draft"),
     isNew: boolean("is_new").notNull().default(false),
     isBestSeller: boolean("is_best_seller").notNull().default(false),
@@ -70,6 +72,7 @@ export const products = pgTable(
     index("products_category_id_idx").on(table.categoryId),
     index("products_status_idx").on(table.status),
     index("products_price_idx").on(table.price),
+    index("products_rating_idx").on(table.rating),
     index("products_created_at_idx").on(table.createdAt),
   ],
 ).enableRLS();

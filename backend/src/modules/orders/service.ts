@@ -192,6 +192,20 @@ export async function createOrder(
       note: "Order created",
     });
 
+    try {
+      const { createAdminNotification, createNotification } =
+        await import("@/modules/account/notification.service.js");
+      const { newOrderAdminPayload, orderCreatedPayload } =
+        await import("@/types/notifications.js");
+      const totalNum = Number(order.total);
+      await createAdminNotification("order", newOrderAdminPayload({ id: order.id, number: order.number }, totalNum));
+      if (userId !== undefined) {
+        await createNotification(userId, "order", orderCreatedPayload({ id: order.id, number: order.number }, totalNum));
+      }
+    } catch {
+      /* notifications are best-effort; checkout must not fail */
+    }
+
     return { id: order.id, number: order.number, total: Number(order.total) };
   });
 }

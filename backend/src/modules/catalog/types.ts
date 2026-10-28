@@ -21,7 +21,7 @@ export type ProductImageDto = {
 
 /**
  * Public product shape (`Product` in the frontend contract types).
- * `rating` and `reviewsCount` stay 0 until the reviews module exists (B6).
+ * `rating` and `reviewsCount` are denormalised from approved reviews (D-085).
  */
 export type ProductDto = {
   id: string;
@@ -63,6 +63,8 @@ export type ProductListFilters = {
   categoryId?: string;
   minPrice?: number;
   maxPrice?: number;
+  /** Minimum average rating ("4+" in the storefront filter). */
+  rating?: number;
   inStock?: boolean;
   color?: ProductColor;
   size?: string;

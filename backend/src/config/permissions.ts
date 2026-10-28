@@ -11,6 +11,8 @@ export const PERMISSIONS = {
   "products:read": ["super_admin", "manager", "support", "content"],
   "orders:write": ["super_admin", "manager", "support"],
   "orders:read": ["super_admin", "manager", "support"],
+  "reviews:write": ["super_admin", "manager", "content"],
+  "reviews:read": ["super_admin", "manager", "support", "content"],
   "customers:read": ["super_admin", "manager", "support"],
   "settings:write": ["super_admin", "manager"],
   "content:write": ["super_admin", "manager", "content"],

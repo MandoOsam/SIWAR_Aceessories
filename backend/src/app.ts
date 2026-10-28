@@ -9,6 +9,9 @@ import { logger } from "@/lib/logger.js";
 import { errorHandler } from "@/middlewares/errorHandler.js";
 import { adminAuthRouter } from "@/modules/auth/admin.routes.js";
 import { authRouter } from "@/modules/auth/routes.js";
+import { accountAddressesRouter } from "@/modules/account/addresses.routes.js";
+import { accountNotificationsRouter } from "@/modules/account/notifications.routes.js";
+import { accountWishlistRouter } from "@/modules/account/wishlist.routes.js";
 import { adminCatalogRouter } from "@/modules/catalog/admin.routes.js";
 import { catalogRouter } from "@/modules/catalog/routes.js";
 import { adminContentRouter } from "@/modules/content/admin.routes.js";
@@ -16,6 +19,8 @@ import { contentRouter } from "@/modules/content/routes.js";
 import { healthRouter } from "@/modules/health/routes.js";
 import { adminOrdersRouter } from "@/modules/orders/admin.routes.js";
 import { ordersRouter } from "@/modules/orders/routes.js";
+import { adminReviewsRouter } from "@/modules/reviews/admin.routes.js";
+import { reviewsRouter } from "@/modules/reviews/routes.js";
 import { adminUploadsRouter } from "@/modules/uploads/routes.js";
 
 export const apiPrefix = "/api/v1";
@@ -42,10 +47,15 @@ export function createApp(): express.Express {
   app.use(apiPrefix, adminCatalogRouter);
   app.use(apiPrefix, adminContentRouter);
   app.use(apiPrefix, adminOrdersRouter);
+  app.use(apiPrefix, adminReviewsRouter);
   app.use(apiPrefix, adminUploadsRouter);
+  app.use(apiPrefix, accountAddressesRouter);
+  app.use(apiPrefix, accountWishlistRouter);
+  app.use(apiPrefix, accountNotificationsRouter);
   app.use(apiPrefix, catalogRouter);
   app.use(apiPrefix, contentRouter);
   app.use(apiPrefix, ordersRouter);
+  app.use(apiPrefix, reviewsRouter);
 
   app.use((_req, res) => {
     res.status(404).json({

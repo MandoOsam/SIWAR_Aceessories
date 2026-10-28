@@ -39,3 +39,6 @@ export const uploadRateLimiter = createRateLimiter({ windowMs: 10 * 60 * 1000, m
 
 /** Coupon codes are guessable; throttle validation to slow enumeration down. */
 export const couponRateLimiter = createRateLimiter({ windowMs: 15 * 60 * 1000, max: 40 });
+
+/** Reviews are public to submit; throttle anonymous spam. */
+export const reviewRateLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 10 });

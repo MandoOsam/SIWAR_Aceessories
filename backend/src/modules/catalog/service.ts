@@ -9,9 +9,6 @@ import type {
   ProductListFilters,
 } from "./types.js";
 
-/** Ratings come from reviews, which land in B6. Until then the API reports zeros. */
-const RATING_PLACEHOLDER = 0;
-
 export function toCategoryDto(category: Category): CategoryDto {
   return {
     id: category.id,
@@ -48,8 +45,8 @@ export function toProductDto(row: ProductRow, images: ProductImage[]): ProductDt
     isNew: product.isNew,
     isBestSeller: product.isBestSeller,
     isFeatured: product.isFeatured,
-    rating: RATING_PLACEHOLDER,
-    reviewsCount: 0,
+    rating: Number(product.rating),
+    reviewsCount: product.reviewsCount,
     material: product.material,
     ...(product.plating === null ? {} : { plating: product.plating }),
     waterResistant: product.waterResistant,
@@ -150,4 +147,23 @@ export async function getProductDetail(slug: string): Promise<ProductDetailDto |
     matching: await toProductDtos(matching.rows),
     related: await toProductDtos(relatedRows),
   };
+}
+
+/** `GET /account/wishlist` and `POST /account/wishlist` reuse the storefront DTO. */
+export async function getActiveProduct(id: string): Promise<ProductDto | null> {
+  const row = await repo.findActiveProductById(id);
+  if (row === null) return null;
+  const [product] = await toProductDtos([row]);
+  return product ?? null;
+}
+
+/** Returns the saved products in the order of `ids`, skipping inactive/deleted ones. */
+export async function listProductsByIds(ids: string[]): Promise<ProductDto[]> {
+  if (ids.length === 0) return [];
+  const rows = await repo.findActiveProductsByIds(ids);
+  const byId = new Map((await toProductDtos(rows)).map((product) => [product.id, product]));
+  return ids.flatMap((id) => {
+    const product = byId.get(id);
+    return product === undefined ? [] : [product];
+  });
 }

@@ -8,6 +8,7 @@ import { products } from "@/db/schema/products.js";
 import { users } from "@/db/schema/users.js";
 import { seedContent } from "@/db/seedContent.js";
 import { seedCoupons } from "@/db/seedCoupons.js";
+import { seedReviews } from "@/db/seedReviews.js";
 import { logger } from "@/lib/logger.js";
 import { hashPassword } from "@/lib/password.js";
 import type { L10n } from "@/types/l10n.js";
@@ -480,6 +481,7 @@ async function main(): Promise<void> {
   await seedOwner();
   const content = await seedContent();
   const couponCount = await seedCoupons();
+  const reviewCount = await seedReviews();
 
   const [{ count: productCount = 0 } = { count: 0 }] = await db
     .select({ count: sql<number>`count(*)::int` })
@@ -496,6 +498,7 @@ async function main(): Promise<void> {
     `Content: ${String(content.blocks)} blocks inserted, ${String(content.pages)} pages inserted, settings ${content.settings ? "created" : "kept"}`,
   );
   logger.info(`Coupons: ${String(couponCount)} inserted`);
+  logger.info(`Reviews: ${String(reviewCount)} testimonials inserted`);
 }
 
 main()

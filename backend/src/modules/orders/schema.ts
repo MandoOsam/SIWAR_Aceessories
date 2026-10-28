@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { EGYPT_MOBILE, normalizePhone } from "@/lib/phone.js";
 import {
   ALL_ORDER_STATUSES,
   DELIVERY_OPTION_IDS,
@@ -7,12 +8,7 @@ import {
 } from "@/types/orders.js";
 import { PAYMENT_METHOD_IDS } from "@/types/content.js";
 
-const EGYPT_MOBILE = /^01[0125][0-9]{8}$/;
-
-/** Keeps only digits so `+20 101 234 5678`, `0101-234-5678` and `01012345678` all match. */
-export function normalizePhone(value: string): string {
-  return value.replace(/\D/g, "");
-}
+export { normalizePhone };
 
 const customerSchema = z.object({
   name: z.string().trim().min(2, "Name is too short").max(120, "Name is too long"),
