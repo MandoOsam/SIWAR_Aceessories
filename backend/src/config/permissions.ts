@@ -18,6 +18,8 @@ export const PERMISSIONS = {
   "content:write": ["super_admin", "manager", "content"],
   "users:manage": ["super_admin"],
   "analytics:read": ["super_admin", "manager"],
+  "campaigns:write": ["super_admin", "manager"],
+  "inventory:write": ["super_admin", "manager"],
 } as const satisfies Record<string, readonly UserRole[]>;
 
 export type Permission = keyof typeof PERMISSIONS;

@@ -19,6 +19,14 @@ export function insertUser(values: typeof users.$inferInsert) {
   return db.insert(users).values(values).returning();
 }
 
+export function updateUser(userId: string, values: Partial<typeof users.$inferInsert>) {
+  return db
+    .update(users)
+    .set({ ...values, updatedAt: new Date() })
+    .where(eq(users.id, userId))
+    .returning();
+}
+
 export function touchLastLogin(userId: string) {
   return db.update(users).set({ lastLoginAt: new Date() }).where(eq(users.id, userId));
 }
@@ -32,9 +40,11 @@ export function deleteSession(sessionId: string) {
 }
 
 export function deleteOtherSessions(userId: string, keepSessionId: string) {
-  return db
-    .delete(sessions)
-    .where(and(eq(sessions.userId, userId), ne(sessions.id, keepSessionId)));
+  const conditions = [eq(sessions.userId, userId)];
+  if (keepSessionId !== "") {
+    conditions.push(ne(sessions.id, keepSessionId));
+  }
+  return db.delete(sessions).where(and(...conditions));
 }
 
 /**

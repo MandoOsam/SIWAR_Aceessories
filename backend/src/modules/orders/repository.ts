@@ -67,6 +67,41 @@ export function insertOrderEvent(tx: DbTransaction, values: NewOrderEvent) {
   return tx.insert(orderEvents).values(values);
 }
 
+export async function listOrdersForUser(
+  userId: string,
+  page: number,
+  limit: number,
+): Promise<{ rows: Order[]; total: number }> {
+  const offset = (page - 1) * limit;
+  const conditions = [eq(orders.userId, userId)];
+  const where = and(...conditions);
+  const [rows, countRows] = await Promise.all([
+    db.select().from(orders).where(where).orderBy(desc(orders.createdAt)).limit(limit).offset(offset),
+    db.select({ total: sql<number>`count(*)::int` }).from(orders).where(where),
+  ]);
+  return { rows, total: countRows[0]?.total ?? 0 };
+}
+
+export async function findOrderByIdForUser(id: string, userId: string): Promise<Order | undefined> {
+  const rows = await db.select().from(orders).where(and(eq(orders.id, id), eq(orders.userId, userId))).limit(1);
+  return rows[0];
+}
+
+export async function decrementCouponUsageForOrder(tx: DbTransaction, code: string): Promise<void> {
+  const { coupons: couponsTable } = await import("@/db/schema/coupons.js");
+  await (tx
+    .update(couponsTable)
+    .set({ usedCount: sql`${couponsTable.usedCount} as number - 1` } as unknown as Record<string, unknown>)
+    .where(eq(couponsTable.code, code.toUpperCase())));
+}
+
+export async function incrementProductStock(tx: DbTransaction, productId: string, qty: number): Promise<void> {
+  const { products: productsTable } = await import("@/db/schema/products.js");
+  await (tx
+    .update(productsTable)
+    .set({ stock: sql`${productsTable.stock} as number + ${qty}`, updatedAt: new Date() } as unknown as Record<string, unknown>)
+    .where(eq(productsTable.id, productId)));
+}
 export function decrementStock(tx: DbTransaction, productId: string, qty: number) {
   return tx
     .update(products)

@@ -102,3 +102,31 @@ export async function validateSession(
 export async function logout(sessionId: string): Promise<void> {
   await repo.deleteSession(sessionId);
 }
+
+export async function updateProfile(
+  userId: string,
+  input: Partial<Pick<AuthUser, "name" | "phone" | "displayName">> & Record<string, unknown>,
+): Promise<AuthUser> {
+  const updates: Record<string, unknown> = {};
+  if (input.name !== undefined) updates.name = input.name;
+  if (input.phone !== undefined) updates.phone = input.phone;
+  if (input.displayName !== undefined) updates.displayName = input.displayName;
+  const [updated] = await repo.updateUser(userId, updates);
+  if (!updated) throw new AppError("INTERNAL_ERROR", 500, "Could not update profile");
+  return toAuthUser(updated);
+}
+
+export async function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+  keepSessionId?: string,
+): Promise<void> {
+  const user = await repo.findUserById(userId);
+  if (!user) throw new AppError("UNAUTHORIZED", 401, "Authentication required");
+  const ok = await verifyPassword(user.passwordHash, currentPassword);
+  if (!ok) throw new AppError("UNAUTHORIZED", 401, "Current password is incorrect");
+  const passwordHash = await hashPassword(newPassword);
+  await repo.updateUser(userId, { passwordHash });
+  await repo.deleteOtherSessions(userId, keepSessionId ?? "");
+}

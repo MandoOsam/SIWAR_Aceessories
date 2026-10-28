@@ -40,3 +40,25 @@ ordersRouter.get(
   validateParams(orderIdParamSchema),
   controller.getOrder,
 );
+
+ordersRouter.get("/account/orders", authGuard({ kind: "customer" }), controller.listMyOrders);
+ordersRouter.get(
+  "/account/orders/:id",
+  authGuard({ kind: "customer" }),
+  validateParams(orderIdParamSchema),
+  controller.getMyOrder,
+);
+ordersRouter.post(
+  "/orders/:id/cancel",
+  authGuard({ kind: "customer" }),
+  csrfProtection,
+  validateParams(orderIdParamSchema),
+  controller.cancelMyOrder,
+);
+ordersRouter.post(
+  "/orders/:id/return",
+  authGuard({ kind: "customer" }),
+  csrfProtection,
+  validateParams(orderIdParamSchema),
+  controller.requestReturn,
+);

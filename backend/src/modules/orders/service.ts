@@ -235,3 +235,103 @@ export async function trackOrder(input: TrackOrderQuery): Promise<OrderDto | nul
   ]);
   return toOrderDto(order, items, events);
 }
+
+import { and, eq } from "drizzle-orm";
+import { orders } from "@/db/schema/orders.js";
+
+function notFound(): AppError {
+  return new AppError("NOT_FOUND", 404, "Order not found");
+}
+
+export async function listMyOrders(
+  userId: string,
+  page: number,
+  limit: number,
+): Promise<{ data: OrderDto[]; total: number; page: number; limit: number }> {
+  const { rows, total } = await repo.listOrdersForUser(userId, page, limit);
+  const data = await Promise.all(
+    rows.map(async (order) => {
+      const [items, events] = await Promise.all([
+        repo.findOrderItems([order.id]),
+        repo.findOrderEvents([order.id]),
+      ]);
+      return toOrderDto(order, items, events);
+    }),
+  );
+  return { data, total, page, limit };
+}
+
+export async function getMyOrder(userId: string, id: string): Promise<OrderDto> {
+  const order = await repo.findOrderByIdForUser(id, userId);
+  if (order === undefined) throw notFound();
+  const [items, events] = await Promise.all([
+    repo.findOrderItems([order.id]),
+    repo.findOrderEvents([order.id]),
+  ]);
+  return toOrderDto(order, items, events);
+}
+
+export async function cancelMyOrder(userId: string, id: string): Promise<OrderDto> {
+  return db.transaction(async (tx) => {
+    const orderRows = await tx
+      .select()
+      .from(orders)
+      .where(and(eq(orders.id, id), eq(orders.userId, userId)))
+      .limit(1)
+      .for("update");
+    const o = orderRows[0];
+    if (!o) throw notFound();
+    if (o.status !== "pending" && o.status !== "confirmed") {
+      throw new AppError("CONFLICT", 409, "This order cannot be cancelled");
+    }
+    await repo.updateOrderStatus(tx, id, "cancelled");
+    if (o.couponCode) {
+      try {
+        await repo.decrementCouponUsageForOrder(tx, o.couponCode);
+      } catch {
+        /* best effort */
+      }
+    }
+    const items = await repo.findOrderItems([id]);
+    for (const item of items) {
+      const pid = (item as { productId?: string | null }).productId;
+      const qty = (item as { qty: number }).qty;
+      if (pid) {
+        try {
+          await repo.incrementProductStock(tx, pid, qty);
+        } catch {
+          /* best effort */
+        }
+      }
+    }
+    await repo.insertOrderEvent(tx, { orderId: id, status: "cancelled", note: "Cancelled by customer" });
+    const refreshed = await tx.select().from(orders).where(eq(orders.id, id)).limit(1);
+    const ord = refreshed[0];
+    if (!ord) throw notFound();
+    const [its, evs] = await Promise.all([repo.findOrderItems([id]), repo.findOrderEvents([id])]);
+    return toOrderDto(ord, its, evs);
+  });
+}
+
+export async function requestReturn(userId: string, id: string): Promise<OrderDto> {
+  return db.transaction(async (tx) => {
+    const orderRows = await tx
+      .select()
+      .from(orders)
+      .where(and(eq(orders.id, id), eq(orders.userId, userId)))
+      .limit(1)
+      .for("update");
+    const o = orderRows[0];
+    if (!o) throw notFound();
+    if (o.status !== "delivered") {
+      throw new AppError("CONFLICT", 409, "Only delivered orders can be returned");
+    }
+    await repo.updateOrderStatus(tx, id, "returned");
+    await repo.insertOrderEvent(tx, { orderId: id, status: "returned", note: "Return requested by customer" });
+    const refreshed = await tx.select().from(orders).where(eq(orders.id, id)).limit(1);
+    const ord = refreshed[0];
+    if (!ord) throw notFound();
+    const [its, evs] = await Promise.all([repo.findOrderItems([id]), repo.findOrderEvents([id])]);
+    return toOrderDto(ord, its, evs);
+  });
+}

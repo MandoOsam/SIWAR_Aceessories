@@ -12,6 +12,7 @@ import { authRouter } from "@/modules/auth/routes.js";
 import { accountAddressesRouter } from "@/modules/account/addresses.routes.js";
 import { accountNotificationsRouter } from "@/modules/account/notifications.routes.js";
 import { accountWishlistRouter } from "@/modules/account/wishlist.routes.js";
+import { newsletterRouter } from "@/modules/account/newsletter.routes.js";
 import { adminCatalogRouter } from "@/modules/catalog/admin.routes.js";
 import { catalogRouter } from "@/modules/catalog/routes.js";
 import { adminContentRouter } from "@/modules/content/admin.routes.js";
@@ -22,6 +23,7 @@ import { ordersRouter } from "@/modules/orders/routes.js";
 import { adminReviewsRouter } from "@/modules/reviews/admin.routes.js";
 import { reviewsRouter } from "@/modules/reviews/routes.js";
 import { adminUploadsRouter } from "@/modules/uploads/routes.js";
+import { adminOpsRouter } from "@/modules/ops/admin.routes.js";
 
 export const apiPrefix = "/api/v1";
 
@@ -49,9 +51,11 @@ export function createApp(): express.Express {
   app.use(apiPrefix, adminOrdersRouter);
   app.use(apiPrefix, adminReviewsRouter);
   app.use(apiPrefix, adminUploadsRouter);
+  app.use(apiPrefix, adminOpsRouter);
   app.use(apiPrefix, accountAddressesRouter);
   app.use(apiPrefix, accountWishlistRouter);
   app.use(apiPrefix, accountNotificationsRouter);
+  app.use(apiPrefix, newsletterRouter);
   app.use(apiPrefix, catalogRouter);
   app.use(apiPrefix, contentRouter);
   app.use(apiPrefix, ordersRouter);

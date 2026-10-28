@@ -10,7 +10,7 @@ import {
 import { AppError } from "@/middlewares/errorHandler.js";
 import { generateCsrfToken } from "@/middlewares/csrf.js";
 import * as authService from "./service.js";
-import type { LoginBody, RegisterBody } from "./schema.js";
+import type { ChangePasswordBody, LoginBody, RegisterBody, UpdateProfileBody } from "./schema.js";
 import type { SessionKind } from "@/db/schema/sessions.js";
 
 const CSRF_TTL_MS = 24 * 60 * 60 * 1000;
@@ -88,6 +88,25 @@ export function adminMe(req: Request, res: Response): void {
     throw new AppError("UNAUTHORIZED", 401, "Authentication required");
   }
   res.status(200).json({ data: req.user });
+}
+
+export async function getProfile(req: Request, res: Response): Promise<void> {
+  if (!req.user) throw new AppError("UNAUTHORIZED", 401, "Authentication required");
+  res.status(200).json({ data: req.user });
+}
+
+export async function updateProfile(req: Request, res: Response): Promise<void> {
+  if (!req.user) throw new AppError("UNAUTHORIZED", 401, "Authentication required");
+  const body = req.body as UpdateProfileBody;
+  const user = await authService.updateProfile(req.user.id, body);
+  res.status(200).json({ data: user });
+}
+
+export async function changePassword(req: Request, res: Response): Promise<void> {
+  if (!req.user) throw new AppError("UNAUTHORIZED", 401, "Authentication required");
+  const body = req.body as ChangePasswordBody;
+  await authService.changePassword(req.user.id, body.currentPassword, body.newPassword, req.sessionId);
+  res.status(204).end();
 }
 
 async function startCustomerSession(req: Request, res: Response, userId: string): Promise<void> {
